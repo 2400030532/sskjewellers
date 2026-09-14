@@ -28,7 +28,7 @@ Required production variables:
 
 1. Push this repository to GitHub.
 2. Create a MySQL database on Railway or another MySQL provider and copy its JDBC connection values.
-3. Create a Render Web Service from the GitHub repository. Render can use `render.yaml`; set the variables above in the dashboard.
-4. Host the static frontend on GitHub Pages or Render Static Site and set `window.SSK_API_BASE_URL` to the API URL.
+3. Create a Render Blueprint from the GitHub repository. `render.yaml` defines both the Spring Boot API and the static frontend.
+4. Set the variables above in the API service. The default frontend URL is `https://ssk-jewellers-site.onrender.com` and the default API URL is `https://ssk-jewellers-api.onrender.com`; change them if Render assigns different URLs.
 
 The public GitHub and Render URLs are created by the account owner during those steps; this workspace has no GitHub or hosting credentials to publish them on your behalf.

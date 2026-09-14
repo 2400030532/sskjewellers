@@ -21,3 +21,7 @@ services:
         sync: false
       - key: FRONTEND_ORIGIN
         sync: false
+  - type: static
+    name: ssk-jewellers-site
+    buildCommand: ""
+    staticPublishPath: .
