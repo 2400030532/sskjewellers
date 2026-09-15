@@ -4,14 +4,14 @@ spring:
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://db.vecpbavrcirkekteeios.supabase.co:5432/postgres}
     username: ${DB_USERNAME:postgres}
-    password: ${srisaikrishna9573l:}
+    password: ${DB_PASSWORD:}
   jpa:
     hibernate:
       ddl-auto: update
     open-in-view: false
   web:
     cors:
-      allowed-origins: ${FRONTEND_ORIGIN:https://ssk-jewellers-site.onrender.com}
+      allowed-origins: ${FRONTEND_ORIGIN:https://2400030532.github.io}
 app:
   jwt:
     secret: ${JWT_SECRET:}
