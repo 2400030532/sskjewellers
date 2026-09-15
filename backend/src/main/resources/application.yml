@@ -2,9 +2,9 @@ server:
   port: ${PORT:8080}
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/ssk_jewellers}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:}
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://db.vecpbavrcirkekteeios.supabase.co:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${srisaikrishna9573l:}
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,7 +18,8 @@ app:
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
   admin:
     username: ${ADMIN_USERNAME:admin}
-    password-hash: ${ADMIN_PASSWORD_HASH:}
+    password: ${ADMIN_PASSWORD:srisaikrishna9573l}
+    password-hash: ${ADMIN_PASSWORD_HASH:$2b$10$TWJY1XNHcbMxeC/XGh/5Ku7.Nex5iEvZJWswItSiuvfMMvSUDrJM6}
 management:
   endpoints:
     web:

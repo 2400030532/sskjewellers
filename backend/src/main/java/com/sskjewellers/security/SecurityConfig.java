@@ -33,9 +33,14 @@ public class SecurityConfig {
     return source;
   }
 
-  @Bean UserDetailsService users(@Value("${app.admin.username}") String username, @Value("${app.admin.password-hash}") String hash) {
-    if (hash.isBlank()) throw new IllegalStateException("ADMIN_PASSWORD_HASH must be configured");
-    return new InMemoryUserDetailsManager(User.withUsername(username).password(hash).roles("ADMIN").build());
+  @Bean UserDetailsService users(@Value("${app.admin.username}") String username,
+      @Value("${app.admin.password:}") String password,
+      @Value("${app.admin.password-hash:}") String hash) {
+    String storedPassword = (!hash.isBlank()) ? hash : ((password.isBlank()) ? "" : "{noop}" + password);
+    if (storedPassword.isBlank()) {
+      throw new IllegalStateException("ADMIN_PASSWORD or ADMIN_PASSWORD_HASH must be configured");
+    }
+    return new InMemoryUserDetailsManager(User.withUsername(username).password(storedPassword).roles("ADMIN").build());
   }
 
   @Bean AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { return config.getAuthenticationManager(); }

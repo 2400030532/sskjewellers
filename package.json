@@ -1,0 +1,19 @@
+{
+  "name": "sri-sai-krishna-jewellers",
+  "version": "1.0.0",
+  "description": "Customer-friendly digital showroom for Sai Baba Gudi Center, Etikoppaka, Andhra Pradesh - 531082.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2400030532/sskjewellers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2400030532/sskjewellers/issues"
+  },
+  "homepage": "https://github.com/2400030532/sskjewellers#readme"
+}
