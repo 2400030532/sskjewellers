@@ -2,24 +2,24 @@ server:
   port: ${PORT:8080}
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:postgresql://db.vecpbavrcirkekteeios.supabase.co:5432/postgres}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:}
+    url: ${JDBC_DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     open-in-view: false
   web:
     cors:
-      allowed-origins: ${FRONTEND_ORIGIN:https://2400030532.github.io}
+      allowed-origins: ${FRONTEND_ORIGIN}
 app:
   jwt:
-    secret: ${JWT_SECRET:}
+    secret: ${JWT_SECRET}
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
   admin:
-    username: ${ADMIN_USERNAME:admin}
-    password: ${ADMIN_PASSWORD:srisaikrishna9573l}
-    password-hash: ${ADMIN_PASSWORD_HASH:$2b$10$TWJY1XNHcbMxeC/XGh/5Ku7.Nex5iEvZJWswItSiuvfMMvSUDrJM6}
+    username: ${ADMIN_USERNAME}
+    password: ${ADMIN_PASSWORD:}
+    password-hash: ${ADMIN_PASSWORD_HASH}
 management:
   endpoints:
     web:
