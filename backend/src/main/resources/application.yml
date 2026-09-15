@@ -19,7 +19,6 @@ app:
   admin:
     username: ${ADMIN_USERNAME}
     password: ${ADMIN_PASSWORD:}
-    password-hash: ${ADMIN_PASSWORD_HASH:}
 management:
   endpoints:
     web:

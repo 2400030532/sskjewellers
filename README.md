@@ -19,7 +19,7 @@ Required production variables:
 - `DB_PASSWORD`
 - `JWT_SECRET` (32+ random characters)
 - `ADMIN_USERNAME`
-- `ADMIN_PASSWORD_HASH`
+- `ADMIN_PASSWORD`
 - `FRONTEND_ORIGIN`
 
 `GET /api/admin/session` requires `Authorization: Bearer <token>` and verifies the `ADMIN` role.
