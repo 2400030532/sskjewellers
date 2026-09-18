@@ -20,6 +20,8 @@ services:
         sync: false
       - key: FRONTEND_ORIGIN
         sync: false
+      - key: METALPRICE_API_KEY
+        sync: false
   - type: static
     name: ssk-jewellers-site
     buildCommand: ""

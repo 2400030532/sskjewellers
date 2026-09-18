@@ -63,7 +63,7 @@ function saveRates(rates, source = 'Manual') {
   currentRates = rates;
   rateSyncStatus.source = source;
   rateSyncStatus.lastUpdated = new Date().toISOString();
-  rateSyncStatus.isLive = source === 'Live API';
+  rateSyncStatus.isLive = source === 'Live API' || source === 'MetalpriceAPI';
 
   localStorage.setItem('ssk_daily_rates', JSON.stringify(rates));
   localStorage.setItem('ssk_rate_sync_status', JSON.stringify(rateSyncStatus));
@@ -84,51 +84,15 @@ async function fetchLiveBullionRates(userInitiated = false) {
   if (statusEl) statusEl.textContent = 'Fetching live rates...';
 
   try {
-    // Fetch Gold (XAU) and Silver (XAG) in INR simultaneously
-    const [goldRes, silverRes] = await Promise.all([
-      fetch('https://api.gold-api.com/price/XAU/INR', { cache: 'no-store' }),
-      fetch('https://api.gold-api.com/price/XAG/INR', { cache: 'no-store' })
-    ]);
+    const response = await fetch(`${API_BASE_URL}/api/rates/live`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Rates API responded with status ${response.status}`);
+    const newRates = await response.json();
 
-    if (!goldRes.ok || !silverRes.ok) {
-      throw new Error(`API responded with status: Gold (${goldRes.status}), Silver (${silverRes.status})`);
-    }
-
-    const goldData = await goldRes.json();
-    const silverData = await silverRes.json();
-
-    // 1 Troy Ounce = 31.1034768 Grams
-    const TROY_OUNCE_TO_GRAMS = 31.1034768;
-
-    if (!goldData.price || !silverData.price) {
-      throw new Error('Invalid price data received from Live Bullion API');
-    }
-
-    // Calculate rates per gram
-    const rawGoldPerGram = goldData.price / TROY_OUNCE_TO_GRAMS;
-    const rawSilverPerGram = silverData.price / TROY_OUNCE_TO_GRAMS;
-
-    // 24K pure gold per gram
-    const rate24k = Math.round(rawGoldPerGram);
-    // 22K (916 BIS Hallmark) = 22/24th of 24K (91.67% purity)
-    const rate22k = Math.round((rate24k * 22) / 24);
-    // 18K gold = 18/24th of 24K (75% purity)
-    const rate18k = Math.round((rate24k * 18) / 24);
-    // 925 Pure Silver per gram
-    const rateSilver = Math.round(rawSilverPerGram * 10) / 10;
-
-    const newRates = {
-      gold22k: rate22k,
-      gold24k: rate24k,
-      gold18k: rate18k,
-      silver: rateSilver
-    };
-
-    saveRates(newRates, 'Live API');
+    saveRates(newRates, 'MetalpriceAPI');
     rateSyncStatus.isLive = true;
 
     if (userInitiated) {
-      showToast(`Updated from Live Bullion API: 22K: ₹${rate22k.toLocaleString('en-IN')}/g, Silver: ₹${rateSilver}/g`);
+      showToast(`Updated from MetalpriceAPI: 22K: ₹${newRates.gold22k.toLocaleString('en-IN')}/g, Silver: ₹${newRates.silver}/g`);
     }
   } catch (error) {
     console.warn('Live rate fetch failed, maintaining cached/default rates:', error);

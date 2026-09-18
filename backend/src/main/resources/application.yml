@@ -19,6 +19,8 @@ app:
   admin:
     username: ${ADMIN_USERNAME}
     password: ${ADMIN_PASSWORD:}
+  metalprice:
+    api-key: ${METALPRICE_API_KEY:}
 management:
   endpoints:
     web:
