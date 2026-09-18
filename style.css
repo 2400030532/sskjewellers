@@ -55,6 +55,8 @@
   /* Transitions */
   --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-royal: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Reset & Base */
@@ -79,6 +81,19 @@ body {
     radial-gradient(circle at 90% 60%, rgba(212, 160, 36, 0.09) 0%, transparent 45%),
     radial-gradient(circle at 50% 90%, rgba(139, 19, 40, 0.08) 0%, transparent 50%);
   background-attachment: fixed;
+  animation: pageBreath 1.4s var(--ease-royal) both;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  background: linear-gradient(110deg, transparent 20%, rgba(255, 242, 178, 0.08) 48%, transparent 72%);
+  transform: translateX(-120%);
+  animation: goldSweep 1.8s 0.15s var(--ease-reveal) both;
 }
 
 /* Scrollbar */
@@ -136,6 +151,7 @@ body {
   padding: 0.45rem 0;
   position: relative;
   z-index: 50;
+  box-shadow: 0 1px 0 rgba(255, 242, 178, 0.05), 0 10px 35px rgba(0, 0, 0, 0.18);
 }
 
 .top-bar-inner {
@@ -168,6 +184,7 @@ body {
   text-transform: uppercase;
   font-size: 0.72rem;
   letter-spacing: 0.06em;
+  animation: badgeGlow 3.5s ease-in-out infinite;
 }
 
 .live-pulse {
@@ -478,6 +495,7 @@ body {
   object-position: center right;
   mask-image: radial-gradient(circle at 60% 50%, black 40%, transparent 80%);
   -webkit-mask-image: radial-gradient(circle at 60% 50%, black 40%, transparent 80%);
+  animation: heroImageDrift 16s ease-in-out infinite alternate;
 }
 
 .hero-content {
@@ -485,6 +503,17 @@ body {
   z-index: 10;
   max-width: 680px;
 }
+
+.hero-content > * {
+  opacity: 0;
+  animation: revealUp 0.85s var(--ease-reveal) forwards;
+}
+
+.hero-content > :nth-child(1) { animation-delay: 0.35s; }
+.hero-content > :nth-child(2) { animation-delay: 0.5s; }
+.hero-content > :nth-child(3) { animation-delay: 0.65s; }
+.hero-content > :nth-child(4) { animation-delay: 0.8s; }
+.hero-content > :nth-child(5) { animation-delay: 0.95s; }
 
 .hero-pill {
   display: inline-flex;
@@ -500,6 +529,8 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 1.25rem;
+  box-shadow: 0 0 0 rgba(229, 185, 76, 0);
+  animation: revealUp 0.85s var(--ease-reveal) 0.35s forwards, pillGlow 4s 1.5s ease-in-out infinite;
 }
 
 .hero-title {
@@ -561,7 +592,21 @@ body {
   cursor: pointer;
   transition: var(--transition-smooth);
   box-shadow: 0 4px 20px rgba(212, 160, 36, 0.35);
+  position: relative;
+  overflow: hidden;
 }
+
+.btn-primary-gold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 35%;
+  transform: translateX(-180%) skewX(-18deg);
+  background: rgba(255, 255, 255, 0.32);
+  transition: transform 0.7s var(--ease-reveal);
+}
+
+.btn-primary-gold:hover::after { transform: translateX(390%) skewX(-18deg); }
 
 .btn-primary-gold:hover {
   transform: translateY(-3px);
@@ -615,7 +660,13 @@ body {
   padding: 0.75rem;
   border-radius: 8px;
   transition: var(--transition-smooth);
+  animation: revealUp 0.75s var(--ease-reveal) both;
 }
+
+.trust-card:nth-child(1) { animation-delay: 0.1s; }
+.trust-card:nth-child(2) { animation-delay: 0.2s; }
+.trust-card:nth-child(3) { animation-delay: 0.3s; }
+.trust-card:nth-child(4) { animation-delay: 0.4s; }
 
 .trust-icon-box {
   width: 48px;
@@ -629,7 +680,10 @@ body {
   color: var(--gold-300);
   font-size: 1.35rem;
   flex-shrink: 0;
+  transition: var(--transition-bounce);
 }
+
+.trust-card:hover .trust-icon-box { transform: translateY(-5px) rotate(-4deg); box-shadow: var(--glow-gold); }
 
 .trust-info h4 {
   font-family: var(--font-royal);
@@ -660,6 +714,7 @@ body {
   box-shadow: var(--shadow-card);
   position: relative;
   overflow: hidden;
+  animation: revealUp 0.9s var(--ease-reveal) 0.2s both;
 }
 
 .calculator-card::before {
@@ -670,6 +725,7 @@ body {
   width: 100%;
   height: 2px;
   background: var(--gold-gradient);
+  animation: goldLine 4s ease-in-out infinite;
 }
 
 .calc-header {
@@ -798,6 +854,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  animation: revealUp 0.8s var(--ease-reveal) 0.35s both;
 }
 
 .filter-top-row {
@@ -824,6 +881,8 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
 }
 
 .filter-btn:hover {
@@ -838,6 +897,20 @@ body {
   font-weight: 700;
   box-shadow: 0 2px 10px rgba(212, 160, 36, 0.35);
 }
+
+.filter-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold-100);
+  transform: translateX(-50%);
+  transition: width 0.35s var(--ease-reveal);
+}
+
+.filter-btn.active::after, .filter-btn:hover::after { width: 55%; }
 
 .search-box-wrap {
   position: relative;
@@ -930,10 +1003,19 @@ body {
   flex-direction: column;
   position: relative;
   box-shadow: var(--shadow-card);
+  animation: cardReveal 0.8s var(--ease-reveal) both;
+  transform-origin: center bottom;
 }
 
+.product-card:nth-child(1) { animation-delay: 0.05s; }
+.product-card:nth-child(2) { animation-delay: 0.1s; }
+.product-card:nth-child(3) { animation-delay: 0.15s; }
+.product-card:nth-child(4) { animation-delay: 0.2s; }
+.product-card:nth-child(5) { animation-delay: 0.25s; }
+.product-card:nth-child(6) { animation-delay: 0.3s; }
+
 .product-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px) scale(1.012);
   border-color: var(--gold-400);
   box-shadow: var(--glow-gold), var(--shadow-elevated);
 }
@@ -956,6 +1038,18 @@ body {
   object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.card-image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 242, 178, 0.18) 50%, transparent 65%);
+  transform: translateX(-130%);
+  transition: transform 0.8s var(--ease-reveal);
+}
+
+.product-card:hover .card-image-wrap::after { transform: translateX(130%); }
 
 .product-card:hover .card-image-wrap img {
   transform: scale(1.08);
@@ -1948,6 +2042,56 @@ body {
 .toast-notice.show {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
+}
+
+@keyframes pageBreath {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+@keyframes goldSweep {
+  0% { opacity: 0; transform: translateX(-120%); }
+  25% { opacity: 1; }
+  70%, 100% { opacity: 0; transform: translateX(120%); }
+}
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(24px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes heroImageDrift {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to { transform: scale(1.08) translate3d(-1.5%, -0.5%, 0); }
+}
+
+@keyframes pillGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(229, 185, 76, 0); }
+  50% { box-shadow: 0 0 24px rgba(229, 185, 76, 0.16); }
+}
+
+@keyframes badgeGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(229, 185, 76, 0); }
+  50% { box-shadow: 0 0 18px rgba(229, 185, 76, 0.18); }
+}
+
+@keyframes goldLine {
+  0%, 100% { opacity: 0.65; transform: scaleX(0.75); transform-origin: left; }
+  50% { opacity: 1; transform: scaleX(1); transform-origin: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ==========================================================================
