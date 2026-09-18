@@ -250,7 +250,9 @@ const STORE_CONFIG = {
   phoneRaw: "9573199344",
   whatsappNumber: "919573199344",
   timings: "9:00 AM - 9:00 PM (All Days Open)",
-  address: "Sai Baba Gudi Center, Etikoppaka, Andhra Pradesh - 531082"
+  address: "Sai Baba Gudi Center, Etikoppaka, Andhra Pradesh - 531082",
+  mapsUrl: "https://maps.app.goo.gl/eypsoBYgweqtjr6c8",
+  mapsLabel: "Venugopal Swami Temple, Etikoppaka"
 };
 
 export { PRODUCTS_DATA, DEFAULT_RATES, STORE_CONFIG };
