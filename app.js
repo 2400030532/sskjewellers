@@ -13,7 +13,7 @@ let rateSyncStatus = {
   isFetching: false,
   source: 'Default'
 };
-const API_BASE_URL = window.SSK_API_BASE_URL || '';
+const API_BASE_URL = (window.SSK_API_BASE_URL || 'https://ssk-jewellers-api.onrender.com').replace(/\/$/, '');
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAdminRates();
   setupPromoMedia();
   setupThemeToggle();
+  setupShowroomNavigation();
+  keepBackendAwake();
   loadRemoteProducts();
   
   // Auto-fetch live rates from API on page load
@@ -39,7 +41,26 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(() => {
     fetchLiveBullionRates(false);
   }, 5 * 60 * 1000);
+
+  setInterval(keepBackendAwake, 5 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') keepBackendAwake();
+  });
 });
+
+function keepBackendAwake() {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
+  fetch(`${API_BASE_URL}/actuator/health`, {
+    cache: 'no-store',
+    headers: { Accept: 'application/json' },
+    signal: controller.signal
+  }).catch(() => {
+    // The catalogue remains usable from its cached browser data if the API is unavailable.
+  }).finally(() => {
+    clearTimeout(timeoutId);
+  });
+}
 
 function setupThemeToggle() {
   const toggle = document.getElementById('btn-theme-toggle');
@@ -83,6 +104,37 @@ function setupPromoMedia() {
       control.title = 'Play showroom film';
     }
   });
+}
+
+function setupShowroomNavigation() {
+  const sidebar = document.getElementById('showroom-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const menuButton = document.getElementById('btn-mobile-menu');
+  const navLinks = document.querySelectorAll('.side-nav-link');
+  const sections = [...document.querySelectorAll('.side-nav-link[data-section]')]
+    .map(link => document.getElementById(link.dataset.section))
+    .filter(Boolean);
+
+  if (!sidebar || !menuButton) return;
+
+  const setSidebarState = isOpen => {
+    sidebar.classList.toggle('open', isOpen);
+    backdrop?.classList.toggle('open', isOpen);
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+    menuButton.setAttribute('aria-label', isOpen ? 'Close showroom navigation' : 'Open showroom navigation');
+    menuButton.innerHTML = `<i class="${isOpen ? 'ri-close-line' : 'ri-menu-line'}"></i>`;
+  };
+
+  menuButton.addEventListener('click', () => setSidebarState(!sidebar.classList.contains('open')));
+  backdrop?.addEventListener('click', () => setSidebarState(false));
+  navLinks.forEach(link => link.addEventListener('click', () => setSidebarState(false)));
+
+  const observer = new IntersectionObserver(entries => {
+    const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (!visible) return;
+    navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === visible.target.id));
+  }, { rootMargin: '-18% 0px -62% 0px', threshold: [0.05, 0.2, 0.5] });
+  sections.forEach(section => observer.observe(section));
 }
 
 /* ==========================================================================
@@ -261,11 +313,11 @@ function toggleShortlist(productId) {
 
   if (index > -1) {
     shortlist.splice(index, 1);
-    showToast(`Removed from Shortlist: ${product.name}`);
+    showToast(`Removed from saved designs: ${product.name}`);
   } else {
     if (product) {
       shortlist.push(product);
-      showToast(`Added to Shortlist: ${product.name}`);
+      showToast(`Saved this design: ${product.name}`);
     }
   }
 
@@ -307,8 +359,8 @@ function renderShortlistDrawer() {
     listContainer.innerHTML = `
       <div class="empty-shortlist-notice">
         <i class="ri-heart-line" style="font-size: 2.5rem; color: var(--gold-400); display: block; margin-bottom: 0.5rem;"></i>
-        <p>Your inquiry tray is empty.</p>
-        <span style="font-size: 0.78rem; color: var(--text-dim);">Tap the heart icon on any design to add it to your consultation list.</span>
+        <p>You have not saved any designs yet.</p>
+        <span style="font-size: 0.78rem; color: var(--text-dim);">Tap the heart on a design to find it here later.</span>
       </div>
     `;
     if (summaryRow) summaryRow.style.display = 'none';
@@ -327,7 +379,7 @@ function renderShortlistDrawer() {
         <img src="${item.image}" alt="${item.name}" class="shortlist-item-img" onerror="this.src='assets/hero.jpg'">
         <div class="shortlist-item-info">
           <h5>${item.name}</h5>
-          <p><strong>${item.sku}</strong> • Approx ${item.approxGrossWeight}g</p>
+          <p><strong>${item.sku}</strong> • About ${item.approxGrossWeight}g</p>
           <span style="font-size: 0.72rem; color: var(--text-dim);">${item.availabilityText}</span>
         </div>
         <button class="btn-remove-shortlist" onclick="removeFromShortlist('${item.id}')" title="Remove">
@@ -340,7 +392,7 @@ function renderShortlistDrawer() {
   const weightEl = document.getElementById('drawer-total-weight');
   const countEl = document.getElementById('drawer-total-count');
   if (weightEl) weightEl.textContent = `~${totalWeight.toFixed(1)} grams`;
-  if (countEl) countEl.textContent = `${shortlist.length} item(s)`;
+  if (countEl) countEl.textContent = `${shortlist.length} saved design(s)`;
 }
 
 /* ==========================================================================
@@ -398,14 +450,14 @@ function renderProducts() {
           <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.src='assets/hero.jpg'">
           <div class="card-badges">
             <span class="badge-pill ${availabilityBadgeClass}">
-              <i class="${availabilityIcon}"></i> ${item.availability === 'ready' ? 'Ready in Shop' : 'Handmade to Order'}
+              <i class="${availabilityIcon}"></i> ${item.availability === 'ready' ? 'Available now' : 'Made to order'}
             </span>
             ${item.badge ? `<span class="badge-pill" style="background: rgba(10,5,7,0.85); color: var(--gold-300); border: 1px solid var(--border-gold);">${item.badge}</span>` : ''}
           </div>
           <span class="badge-sku">${item.sku}</span>
           <button class="btn-shortlist-heart ${isShortlisted ? 'active' : ''}" 
                   onclick="event.stopPropagation(); toggleShortlist('${item.id}')" 
-                  title="${isShortlisted ? 'Remove from Shortlist' : 'Add to Shortlist'}">
+                  title="${isShortlisted ? 'Remove saved design' : 'Save this design'}">
             <i class="${isShortlisted ? 'ri-heart-fill' : 'ri-heart-line'}"></i>
           </button>
         </div>
@@ -413,7 +465,7 @@ function renderProducts() {
         <div class="card-body">
           <div class="card-meta-row">
             <span class="card-purity">${item.purity}</span>
-            <span class="card-weight">Approx ${item.approxGrossWeight}g</span>
+            <span class="card-weight">About ${item.approxGrossWeight}g</span>
           </div>
           ${item.price ? `<div class="card-price">₹${Number(item.price).toLocaleString('en-IN')}</div>` : ''}
 
@@ -421,13 +473,13 @@ function renderProducts() {
           <h4 class="card-telugu-name">${item.teluguName}</h4>
 
           <p class="card-specs-mini">
-            <strong>Stones / Finish:</strong> ${item.stoneDetails}<br>
-            <strong>Craftsmanship:</strong> ${item.availabilityText}
+            <strong>Details:</strong> ${item.stoneDetails}<br>
+            <strong>Availability:</strong> ${item.availabilityText}
           </p>
 
           <div class="card-actions">
-            <a href="${getWhatsAppProductUrl(item)}" target="_blank" class="btn-inquire-whatsapp">
-              <i class="ri-whatsapp-line"></i> Inquire on WhatsApp
+            <a href="${getWhatsAppProductUrl(item)}" target="_blank" rel="noopener noreferrer" class="btn-inquire-whatsapp">
+              <i class="ri-whatsapp-line"></i> Ask about this design
             </a>
             <button class="btn-view-details" onclick="openProductModal('${item.id}')" title="View Details">
               <i class="ri-eye-line"></i>
@@ -536,7 +588,7 @@ function setupAdminPortal() {
       price: Number(document.getElementById('product-price').value),
       stoneDetails: document.getElementById('product-stones').value.trim(),
       availability,
-      availabilityText: availability === 'ready' ? 'Ready in Etikoppaka Shop' : 'Handmade to Order by Etikoppaka Karigars',
+      availabilityText: availability === 'ready' ? 'Available in shop' : 'Made to order',
       leadTime: document.getElementById('product-lead-time').value.trim(),
       badge: document.getElementById('product-badge').value.trim(),
       image,
@@ -679,14 +731,14 @@ function getWhatsAppProductUrl(product) {
     `*Approx Weight:* Gross: ${product.approxGrossWeight}g | Net: ${product.approxNetWeight}g\n` +
     `*Availability:* ${product.availabilityText}\n` +
     `*Stones/Work:* ${product.stoneDetails}\n\n` +
-    `Namaste Sri Sai Krishna Jewellers (Etikoppaka), I am interested in this design. Kindly share today's price quotation based on today's bullion rate, making charges, and dispatch/walk-in availability. Thank you!`;
+    `Namaste Sri Sai Krishna Jewellers (Etikoppaka), I am interested in this design. Please share today's price, whether it is available, and how long it will take if it needs to be made. Thank you!`;
 
   return `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
 
 function sendAllShortlistWhatsApp() {
   if (shortlist.length === 0) {
-    showToast('Your shortlist is empty!');
+    showToast('You have not saved any designs yet.');
     return;
   }
 
@@ -704,7 +756,7 @@ function sendAllShortlistWhatsApp() {
   });
 
   text += `*Total Selected Weight:* Approx ${totalWeight.toFixed(1)} grams\n\n` +
-    `Please review these designs and let me know today's quotation, availability in your Etikoppaka shop, or timeframe for crafting. Thank you!`;
+    `Please let me know today's price, which designs are available in your shop, and how long any custom work will take. Thank you!`;
 
   const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
@@ -750,11 +802,11 @@ function openProductModal(productId) {
 
   if (shortlistBtn) {
     const isSaved = shortlist.some(s => s.id === product.id);
-    shortlistBtn.innerHTML = isSaved ? `<i class="ri-heart-fill"></i> In Shortlist Tray` : `<i class="ri-heart-line"></i> Add to Shortlist Tray`;
+    shortlistBtn.innerHTML = isSaved ? `<i class="ri-heart-fill"></i> Saved` : `<i class="ri-heart-line"></i> Save this design`;
     shortlistBtn.onclick = () => {
       toggleShortlist(product.id);
       const nowSaved = shortlist.some(s => s.id === product.id);
-      shortlistBtn.innerHTML = nowSaved ? `<i class="ri-heart-fill"></i> In Shortlist Tray` : `<i class="ri-heart-line"></i> Add to Shortlist Tray`;
+      shortlistBtn.innerHTML = nowSaved ? `<i class="ri-heart-fill"></i> Saved` : `<i class="ri-heart-line"></i> Save this design`;
     };
   }
 
@@ -825,7 +877,7 @@ function submitCustomOrder(event) {
   const notes = document.getElementById('custom-notes').value.trim();
 
   if (!name || !phone || !weight) {
-    showToast('Please fill in your name, contact number, and target weight.');
+    showToast('Please fill in your name, phone number, and approximate weight.');
     return;
   }
 
@@ -841,7 +893,7 @@ function submitCustomOrder(event) {
 
   const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
-  showToast('Opening WhatsApp to send your custom design request!');
+  showToast('Opening WhatsApp to send your request.');
 }
 
 /* ==========================================================================

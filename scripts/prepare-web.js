@@ -21,4 +21,4 @@ function copyDirectory(source, destination) {
 }
 
 copyDirectory(path.join(root, 'assets'), path.join(output, 'assets'));
-console.log('Mobile web bundle prepared in www/.');
+console.log('Browser bundle prepared in www/.');

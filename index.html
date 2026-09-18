@@ -20,6 +20,31 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#catalog-section">Skip to jewellery</a>
+
+  <aside class="showroom-sidebar" id="showroom-sidebar" aria-label="Showroom navigation">
+    <div class="sidebar-brand-mark">SSK</div>
+    <div class="sidebar-brand-copy">
+      <strong>Sri Sai Krishna</strong>
+      <span>Gold &amp; silver jewellery</span>
+    </div>
+    <nav class="sidebar-nav" aria-label="Showroom sections">
+      <span class="sidebar-label">Start here</span>
+      <a href="#hero-section" class="side-nav-link active" data-section="hero-section"><i class="ri-home-5-line"></i><span>Home</span></a>
+      <a href="#catalog-section" class="side-nav-link" data-section="catalog-section"><i class="ri-layout-grid-line"></i><span>Browse jewellery</span><small>See designs and prices</small></a>
+      <a href="#calculator-section" class="side-nav-link" data-section="calculator-section"><i class="ri-calculator-line"></i><span>Check today's price</span><small>Estimate your budget</small></a>
+      <a href="#artisan-section" class="side-nav-link" data-section="artisan-section"><i class="ri-hammer-line"></i><span>See how we make it</span><small>Meet our local makers</small></a>
+      <a href="#custom-order-section" class="side-nav-link" data-section="custom-order-section"><i class="ri-draft-line"></i><span>Ask for a design</span><small>Share what you want</small></a>
+      <a href="#store-section" class="side-nav-link" data-section="store-section"><i class="ri-map-pin-line"></i><span>Visit our shop</span><small>Address and opening hours</small></a>
+    </nav>
+    <div class="sidebar-help-card">
+      <span class="sidebar-help-kicker"><i class="ri-customer-service-2-line"></i> Have a question?</span>
+      <strong>We can help you choose.</strong>
+      <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20I%20need%20help%20choosing%20a%20design." target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-line"></i> Message us</a>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
   <!-- ==========================================================================
        TOP BAR - DAILY BULLION RATES & QUICK CONTACT
        ========================================================================== -->
@@ -35,7 +60,7 @@
         <span class="rate-item">Pure Silver: <strong id="rate-silver">₹92</strong>/g</span>
         <button id="btn-refresh-rates" class="rate-refresh-btn" title="Refresh Live Gold & Silver Rates from API">
           <i class="ri-refresh-line rate-refresh-icon"></i>
-          <span>Live API Sync</span>
+          <span>Refresh rates</span>
         </button>
         <span class="rate-timestamp-badge">
           <i class="ri-time-line"></i> <span id="rate-time-label">Just now</span>
@@ -65,42 +90,49 @@
        ========================================================================== -->
   <nav class="navbar" id="main-navbar">
     <div class="container nav-inner">
-      <a href="#" class="brand-logo">
+      <a href="#hero-section" class="brand-logo">
         <span class="brand-title">SRI SAI KRISHNA JEWELLERS</span>
         <span class="brand-subtitle">శ్రీ సాయి కృష్ణ జ్యువెలర్స్ • ఏటికొప్పాక</span>
       </a>
 
-      <button id="btn-mobile-menu" class="mobile-menu-btn" aria-label="Open navigation menu" aria-expanded="false">
+      <button id="btn-mobile-menu" class="mobile-menu-btn" aria-label="Open showroom navigation" aria-expanded="false">
         <i class="ri-menu-line"></i>
       </button>
 
       <ul class="nav-links">
-        <li><a href="#catalog-section" class="nav-link">Digital Catalogue</a></li>
-        <li><a href="#calculator-section" class="nav-link">Rate Estimator</a></li>
-        <li><a href="#artisan-section" class="nav-link">Handmade Heritage</a></li>
-        <li><a href="#custom-order-section" class="nav-link">Custom Orders</a></li>
-        <li><a href="#store-section" class="nav-link">Visit Shop</a></li>
+        <li><a href="#catalog-section" class="nav-link">Browse jewellery</a></li>
+        <li><a href="#calculator-section" class="nav-link">Today's price</a></li>
+        <li><a href="#artisan-section" class="nav-link">How we make it</a></li>
+        <li><a href="#custom-order-section" class="nav-link">Ask for a design</a></li>
+        <li><a href="#store-section" class="nav-link">Visit our shop</a></li>
       </ul>
 
       <div class="nav-actions">
-        <button id="btn-nav-shortlist" class="btn-shortlist-nav btn-open-shortlist-drawer">
+        <button id="btn-nav-shortlist" class="btn-shortlist-nav btn-open-shortlist-drawer" type="button" aria-label="Open saved designs">
           <i class="ri-heart-line" style="color: #ff4d6d;"></i>
-          <span>Inquiry Tray</span>
+          <span>Saved designs</span>
           <span class="shortlist-badge shortlist-count" style="display: none;">0</span>
         </button>
 
-        <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20I%20would%20like%20to%20inquire%20about%20your%20jewellery%20collection." target="_blank" class="btn-whatsapp-nav">
+        <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20I%20would%20like%20to%20inquire%20about%20your%20jewellery%20collection." target="_blank" rel="noopener noreferrer" class="btn-whatsapp-nav" aria-label="Ask us on WhatsApp">
           <i class="ri-whatsapp-line"></i>
-          <span>Chat on WhatsApp</span>
+          <span>Ask us on WhatsApp</span>
         </a>
       </div>
     </div>
   </nav>
 
+  <nav class="mobile-quick-actions" aria-label="Quick actions">
+    <a href="#catalog-section"><i class="ri-layout-grid-line"></i><span>Browse</span></a>
+    <a href="#calculator-section"><i class="ri-price-tag-3-line"></i><span>Today's price</span></a>
+    <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20please%20help%20me%20choose%20a%20design." target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-line"></i><span>Ask us</span></a>
+  </nav>
+
   <!-- ==========================================================================
        HERO BANNER
        ========================================================================== */ -->
-  <header class="hero-section">
+  <main id="main-content">
+  <header class="hero-section" id="hero-section">
     <div class="hero-bg-visual">
       <img src="assets/hero.jpg" alt="Exquisite Indian Bridal Gold Jewellery" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1200&q=80'">
     </div>
@@ -108,37 +140,44 @@
     <div class="container">
       <div class="hero-content">
         <div class="hero-pill">
-          <i class="ri-ancient-gate-line"></i> Etikoppaka Artisan Goldsmith Heritage
+          <i class="ri-sparkling-2-line"></i> Welcome to Sri Sai Krishna Jewellers
         </div>
 
         <h1 class="hero-title">
-          Timeless Traditions, <br>
-          <span class="gold-text">Pure 916 Gold</span> &amp; Silver.
+          Find jewellery <br>
+          <span class="gold-text">you will love.</span>
         </h1>
 
         <p class="hero-description">
-          Welcome to the digital showroom of <strong>Sri Sai Krishna Jewellers</strong> in the artisan village of Etikoppaka. Browse our collection of ready-made designs and bespoke handmade creations crafted to your exact gold weight.
+          Browse our designs, check today's price, or message us for help. We will make it easy to choose.
         </p>
 
         <div class="hero-badges-row">
           <div class="pill-badge">
-            <i class="ri-shield-check-fill" style="color: var(--gold-400);"></i> 100% BIS Hallmark 916
+            <i class="ri-shield-check-fill" style="color: var(--gold-400);"></i> 916 BIS hallmarked gold
           </div>
           <div class="pill-badge">
-            <i class="ri-hammer-fill" style="color: var(--gold-400);"></i> Master Handcrafted &amp; Ready in Shop
+            <i class="ri-hammer-fill" style="color: var(--gold-400);"></i> Ready to buy or made for you
           </div>
           <div class="pill-badge">
-            <i class="ri-sparkling-fill" style="color: var(--silver-accent);"></i> Pure 925 Silver Pooja Articles
+            <i class="ri-sparkling-fill" style="color: var(--silver-accent);"></i> 925 pure silver
           </div>
         </div>
 
         <div class="hero-cta-group">
           <a href="#catalog-section" class="btn-primary-gold">
-            <i class="ri-store-2-line"></i> Explore Digital Catalogue
+            <i class="ri-store-2-line"></i> See our jewellery
           </a>
           <a href="#custom-order-section" class="btn-outline-gold">
-            <i class="ri-draft-line"></i> Order Custom Handmade
+            <i class="ri-draft-line"></i> Ask for a custom design
           </a>
+        </div>
+
+        <div class="hero-start-here" aria-label="Quick start">
+          <span>Not sure where to begin?</span>
+          <a href="#catalog-section"><i class="ri-layout-grid-line"></i> See jewellery</a>
+          <a href="#calculator-section"><i class="ri-calculator-line"></i> Check price</a>
+          <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20please%20help%20me%20choose%20a%20design." target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-line"></i> Ask us</a>
         </div>
       </div>
     </div>
@@ -235,22 +274,22 @@
       <div class="calculator-card">
         <div class="calc-header">
           <div class="calc-title-box">
-            <h3><i class="ri-calculator-line" style="color: var(--gold-400);"></i> Live Bullion Price Estimator</h3>
-            <p>Calculate the estimated pure metal value based on today's Etikoppaka showroom rates</p>
+            <h3><i class="ri-calculator-line" style="color: var(--gold-400);"></i> Check today's metal price</h3>
+            <p>Enter a weight to get a quick estimate using today's gold or silver price.</p>
           </div>
           <div style="font-size: 0.8rem; color: var(--gold-300); background: rgba(229,185,76,0.1); padding: 0.35rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-gold);">
-            <i class="ri-information-line"></i> Note: Making charges &amp; GST calculated on exact final weight
+            <i class="ri-information-line"></i> Final price may include making charges and GST
           </div>
         </div>
 
         <div class="calc-body">
           <div class="calc-input-group">
-            <label for="calc-weight">Weight in Grams</label>
+            <label for="calc-weight">How many grams?</label>
             <input type="number" id="calc-weight" value="20" min="0.5" step="0.5" placeholder="Enter grams">
           </div>
 
           <div class="calc-input-group">
-            <label for="calc-metal">Select Metal &amp; Purity</label>
+            <label for="calc-metal">Choose gold or silver</label>
             <select id="calc-metal">
               <option value="22k" selected>22K Gold (916 BIS Hallmark)</option>
               <option value="24k">24K Pure Fine Gold (999)</option>
@@ -260,13 +299,13 @@
           </div>
 
           <div class="calc-result-box">
-            <span>Estimated Metal Value</span>
+            <span>Estimated metal cost</span>
             <div class="calc-result-value" id="calc-result">₹1,37,000</div>
           </div>
 
           <div>
             <button class="btn-primary-gold" style="width: 100%; padding: 0.72rem 1rem;" onclick="bookVideoCall()">
-              <i class="ri-chat-voice-line"></i> Consult on WhatsApp
+              <i class="ri-chat-voice-line"></i> Ask us on WhatsApp
             </button>
           </div>
         </div>
@@ -280,10 +319,10 @@
   <section class="catalog-section" id="catalog-section">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Curated Collections</span>
-        <h2 class="section-title">Explore Our Digital Showroom</h2>
+        <span class="section-tag">Our collection</span>
+        <h2 class="section-title">Browse our jewellery</h2>
         <p class="section-subtitle">
-          Browse through our ready-to-wear showroom pieces and bespoke handmade designs. Inquire via WhatsApp for exact quotations and video viewing.
+          Look through ready-to-buy pieces and handmade designs. Tap any piece to see details, then message us for the exact price.
         </p>
       </div>
 
@@ -345,10 +384,10 @@
         </div>
 
         <div class="artisan-content">
-          <span class="section-tag">Generational Craft</span>
-          <h2>Bespoke Handmade Jewellery <br><span class="gold-text">Crafted In Etikoppaka</span></h2>
+          <span class="section-tag">Made by our local team</span>
+          <h2>Handmade jewellery <br><span class="gold-text">made in Etikoppaka</span></h2>
           <p>
-            While many stores sell only factory cast jewellery, <strong>Sri Sai Krishna Jewellers</strong> preserves authentic goldsmithing artistry. Our local master karigars shape raw 22K gold into heirloom Kasu Malas, intricately carved Vaddanams, and lightweight daily necklaces tailored to your exact budget and weight requirements.
+            Share a photo or tell us what you have in mind. Our local goldsmiths can make Kasu Malas, Vaddanams, and daily-wear necklaces to suit your budget and preferred weight.
           </p>
 
           <div class="craft-steps-list">
@@ -378,7 +417,7 @@
           </div>
 
           <a href="#custom-order-section" class="btn-primary-gold">
-            <i class="ri-hammer-line"></i> Consult on a Custom Design
+            <i class="ri-hammer-line"></i> Ask for a design
           </a>
         </div>
       </div>
@@ -392,10 +431,10 @@
     <div class="container">
       <div class="custom-card">
         <div class="section-head" style="margin-bottom: 1.5rem;">
-          <span class="section-tag">Custom Commission</span>
-          <h2 class="section-title">Design Your Custom Jewellery</h2>
+          <span class="section-tag">Want something made?</span>
+          <h2 class="section-title">Tell us what you want</h2>
           <p class="section-subtitle">
-            Fill in your preferred specifications below. Clicking submit will directly launch WhatsApp with our master goldsmiths at Sri Sai Krishna Jewellers.
+            Tell us a little about the jewellery you want. We will open WhatsApp so you can share photos and discuss the details with us.
           </p>
         </div>
 
@@ -427,7 +466,7 @@
             </div>
 
             <div class="form-group">
-              <label for="custom-weight">Target Gold/Silver Weight (Grams) *</label>
+              <label for="custom-weight">Approximate weight in grams *</label>
               <input type="number" id="custom-weight" required min="1" step="0.5" placeholder="e.g. 35">
             </div>
 
@@ -447,16 +486,16 @@
           </div>
 
           <div class="form-group" style="margin-top: 1.5rem;">
-            <label for="custom-notes">Design Details / Gemstone Preference / Budget Notes</label>
+            <label for="custom-notes">Anything else we should know?</label>
             <textarea id="custom-notes" placeholder="Describe the pattern you desire (e.g. Peacock Nakshi work, Basara pearls, Kemp rubies, or reference to an existing design)..."></textarea>
           </div>
 
           <div style="text-align: center; margin-top: 2rem;">
             <button type="submit" class="btn-primary-gold" style="font-size: 1.05rem; padding: 0.95rem 2.5rem;">
-              <i class="ri-whatsapp-line"></i> Send Custom Order to Jeweller on WhatsApp
+              <i class="ri-whatsapp-line"></i> Send request on WhatsApp
             </button>
             <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.75rem;">
-              You can also attach design photos directly in the WhatsApp chat window that opens.
+              You can add a design photo in the WhatsApp chat that opens.
             </p>
           </div>
         </form>
@@ -471,7 +510,7 @@
     <div class="container">
       <div class="store-grid">
         <div class="store-info-box">
-          <h3><i class="ri-store-3-line" style="color: var(--gold-400);"></i> Visit Our Showroom</h3>
+          <h3><i class="ri-store-3-line" style="color: var(--gold-400);"></i> Visit our shop</h3>
 
           <div class="store-detail-row">
             <i class="ri-map-pin-2-fill store-icon"></i>
@@ -485,7 +524,7 @@
           <div class="store-detail-row">
             <i class="ri-time-fill store-icon"></i>
             <div>
-              <strong>Showroom Timings</strong><br>
+              <strong>Opening hours</strong><br>
               9:00 AM - 9:00 PM (Monday to Sunday, All 7 Days Open)
             </div>
           </div>
@@ -500,30 +539,30 @@
 
           <div class="store-cta-btns">
             <a href="tel:9573199344" class="btn-call-shop">
-              <i class="ri-phone-line"></i> Call Shop Directly
+              <i class="ri-phone-line"></i> Call us
             </a>
-            <a href="https://maps.google.com/?q=Etikoppaka+Andhra+Pradesh" target="_blank" class="btn-outline-gold">
-              <i class="ri-direction-line"></i> Open in Google Maps
+            <a href="https://maps.google.com/?q=Etikoppaka+Andhra+Pradesh" target="_blank" rel="noopener noreferrer" class="btn-outline-gold">
+              <i class="ri-direction-line"></i> Get directions
             </a>
           </div>
         </div>
 
         <div class="store-info-box" style="display: flex; flex-direction: column; justify-content: space-between;">
           <div>
-            <h3><i class="ri-video-on-line" style="color: var(--gold-400);"></i> Book a Live Video Tour</h3>
+            <h3><i class="ri-video-on-line" style="color: var(--gold-400);"></i> See jewellery by video</h3>
             <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
-              Not in Etikoppaka or live outside Andhra Pradesh? Our showroom team can arrange a one-on-one live video call to showcase any necklace, bangle set, or pooja article with true-to-life lighting and scale.
+              Live far away? We can show you a necklace, bangle set, or pooja item on a one-to-one video call before you visit or order.
             </p>
 
             <ul style="list-style: none; color: var(--gold-200); font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem;">
-              <li><i class="ri-check-double-line" style="color: #22c55e;"></i> View jewellery on live mannequin / hands</li>
-              <li><i class="ri-check-double-line" style="color: #22c55e;"></i> Live digital weight scale verification</li>
-              <li><i class="ri-check-double-line" style="color: #22c55e;"></i> Direct discussion with Master Karigar</li>
+              <li><i class="ri-check-double-line" style="color: #22c55e;"></i> See the jewellery up close</li>
+              <li><i class="ri-check-double-line" style="color: #22c55e;"></i> Check the weight live</li>
+              <li><i class="ri-check-double-line" style="color: #22c55e;"></i> Speak directly with our goldsmith</li>
             </ul>
           </div>
 
           <button class="btn-primary-gold" onclick="bookVideoCall()" style="width: 100%;">
-            <i class="ri-whatsapp-line"></i> Schedule Video Call on WhatsApp
+            <i class="ri-whatsapp-line"></i> Book a video call
           </button>
         </div>
       </div>
@@ -533,6 +572,8 @@
   <!-- ==========================================================================
        FOOTER
        ========================================================================== -->
+  </main>
+
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -545,7 +586,7 @@
             Preserving authentic Andhra goldsmithing heritage. Certified 916 BIS Hallmarked Gold Ornaments, 925 Pure Silver Pooja Silverware, and custom bespoke master creations.
           </p>
           <div style="display: flex; gap: 0.75rem;">
-            <a href="https://wa.me/919573199344" target="_blank" style="color: var(--whatsapp-green); font-size: 1.3rem;"><i class="ri-whatsapp-fill"></i></a>
+            <a href="https://wa.me/919573199344" target="_blank" rel="noopener noreferrer" style="color: var(--whatsapp-green); font-size: 1.3rem;"><i class="ri-whatsapp-fill"></i></a>
             <a href="tel:9573199344" style="color: var(--gold-300); font-size: 1.3rem;"><i class="ri-phone-fill"></i></a>
           </div>
         </div>
@@ -565,7 +606,7 @@
         <div class="footer-col">
           <h4>Customer Service</h4>
           <ul>
-            <li><a href="#calculator-section">Live Rate Estimator</a></li>
+            <li><a href="#calculator-section">Today's gold price</a></li>
             <li><a href="#custom-order-section">Order Handmade Jewellery</a></li>
             <li><a href="#store-section">Showroom Video Call</a></li>
             <li><a href="tel:9573199344">Direct Phone Consultation</a></li>
@@ -597,9 +638,9 @@
   <!-- ==========================================================================
        FLOATING SHORTLIST BUTTON (BOTTOM RIGHT)
        ========================================================================== -->
-  <button id="floating-shortlist" class="floating-shortlist-btn btn-open-shortlist-drawer" style="display: none;">
+  <button id="floating-shortlist" class="floating-shortlist-btn btn-open-shortlist-drawer" type="button" aria-label="Open saved designs" style="display: none;">
     <i class="ri-heart-fill" style="color: #ff4d6d; font-size: 1.15rem;"></i>
-    <span style="font-weight: 700; font-size: 0.88rem;">Inquiry Tray</span>
+    <span style="font-weight: 700; font-size: 0.88rem;">Saved designs</span>
     <span class="shortlist-badge shortlist-count">0</span>
   </button>
 
@@ -610,10 +651,10 @@
   <aside class="shortlist-drawer" id="shortlist-drawer">
     <div class="drawer-header">
       <div>
-        <h3><i class="ri-heart-3-line" style="color: #ff4d6d;"></i> Inquiry Tray</h3>
-        <p style="font-size: 0.76rem; color: var(--text-dim);">Selected designs for WhatsApp inquiry</p>
+        <h3><i class="ri-heart-3-line" style="color: #ff4d6d;"></i> Saved designs</h3>
+        <p style="font-size: 0.76rem; color: var(--text-dim);">Designs you saved to ask us about</p>
       </div>
-      <button class="btn-close-drawer" id="btn-close-drawer" title="Close Tray">
+      <button class="btn-close-drawer" id="btn-close-drawer" type="button" title="Close saved designs" aria-label="Close saved designs">
         <i class="ri-close-line"></i>
       </button>
     </div>
@@ -629,7 +670,7 @@
       </div>
 
       <button id="btn-send-drawer-whatsapp" class="btn-send-all-whatsapp" onclick="sendAllShortlistWhatsApp()" style="display: none;">
-        <i class="ri-whatsapp-fill"></i> Inquire About All Designs on WhatsApp
+        <i class="ri-whatsapp-fill"></i> Ask about these designs
       </button>
     </div>
   </aside>
@@ -639,7 +680,7 @@
        ========================================================================== -->
   <div class="modal-backdrop" id="product-modal">
     <div class="modal-content-card">
-      <button class="btn-close-modal" onclick="closeProductModal()" title="Close">
+      <button class="btn-close-modal" onclick="closeProductModal()" title="Close" aria-label="Close design details">
         <i class="ri-close-line"></i>
       </button>
 
@@ -655,15 +696,15 @@
         <table class="modal-specs-table">
           <tbody>
             <tr>
-              <td>Design Code (SKU):</td>
+              <td>Design code:</td>
               <td id="modal-sku" style="font-family: var(--font-royal); color: var(--gold-300);">-</td>
             </tr>
             <tr>
-              <td>Approx Gross Weight:</td>
+              <td>Approx. total weight:</td>
               <td id="modal-gross-weight">-</td>
             </tr>
             <tr>
-              <td>Approx Net Weight:</td>
+              <td>Approx. gold/silver weight:</td>
               <td id="modal-net-weight">-</td>
             </tr>
             <tr>
@@ -671,11 +712,11 @@
               <td id="modal-stones">-</td>
             </tr>
             <tr>
-              <td>Availability / Stock:</td>
+              <td>Can I buy it now?</td>
               <td id="modal-avail" style="color: var(--gold-200);">-</td>
             </tr>
             <tr>
-              <td>Fulfillment / Time:</td>
+              <td>How long will it take?</td>
               <td id="modal-lead-time">-</td>
             </tr>
           </tbody>
@@ -684,11 +725,11 @@
         <p class="modal-description" id="modal-description"></p>
 
         <div class="modal-actions-row">
-          <a href="#" id="modal-whatsapp-btn" target="_blank" class="btn-inquire-whatsapp" style="padding: 0.85rem 1.2rem; font-size: 0.95rem;">
-            <i class="ri-whatsapp-line"></i> Inquire on WhatsApp with Design Code
+          <a href="#" id="modal-whatsapp-btn" target="_blank" rel="noopener noreferrer" class="btn-inquire-whatsapp" style="padding: 0.85rem 1.2rem; font-size: 0.95rem;">
+            <i class="ri-whatsapp-line"></i> Ask about this design
           </a>
-          <button id="modal-shortlist-btn" class="btn-outline-gold" style="border-radius: 8px; justify-content: center; padding: 0.75rem 1rem;">
-            <i class="ri-heart-line"></i> Add to Shortlist Tray
+          <button id="modal-shortlist-btn" class="btn-outline-gold" type="button" style="border-radius: 8px; justify-content: center; padding: 0.75rem 1rem;">
+            <i class="ri-heart-line"></i> Save this design
           </button>
         </div>
       </div>
@@ -780,7 +821,7 @@
 
   <!-- Scripts -->
   <script>
-    window.SSK_API_BASE_URL = 'https://sskjewellers.onrender.com';
+    window.SSK_API_BASE_URL = 'https://ssk-jewellers-api.onrender.com';
   </script>
   <script src="products.js"></script>
   <script src="app.js"></script>
