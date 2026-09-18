@@ -27,16 +27,21 @@ jobs:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Prepare website files
-        run: |
-          mkdir -p _site/assets
-          cp index.html app.js products.js style.css _site/
-          cp -R assets/. _site/assets/
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-      - name: Upload site artifact
+      - name: Build React website
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload website artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment

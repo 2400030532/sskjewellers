@@ -252,3 +252,5 @@ const STORE_CONFIG = {
   timings: "9:00 AM - 9:00 PM (All Days Open)",
   address: "Sai Baba Gudi Center, Etikoppaka, Andhra Pradesh - 531082"
 };
+
+export { PRODUCTS_DATA, DEFAULT_RATES, STORE_CONFIG };

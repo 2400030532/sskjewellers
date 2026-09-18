@@ -4,9 +4,16 @@ Customer-friendly digital showroom for Sai Baba Gudi Center, Etikoppaka, Andhra 
 
 ## Frontend
 
-Open `index.html` directly for the catalogue, enquiry tray, WhatsApp enquiries, live rate estimator, and responsive mobile navigation.
+This is a React + Vite website with a customer catalogue, saved designs, WhatsApp enquiries, a dedicated today's-prices section, and responsive browser support.
 
-The admin dialog intentionally does not accept a browser-only password. Set `window.SSK_API_BASE_URL` before `app.js` to the deployed API URL so it can request a JWT from `/api/auth/login`.
+```bash
+npm install
+npm run dev
+```
+
+Create a production bundle with `npm run build` and preview it with `npm run preview`.
+
+Set `VITE_API_BASE_URL` when the API uses a URL other than `https://ssk-jewellers-api.onrender.com`.
 
 ## Spring Boot API
 
