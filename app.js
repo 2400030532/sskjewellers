@@ -17,6 +17,7 @@ const API_BASE_URL = window.SSK_API_BASE_URL || '';
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
+  loadCustomProducts();
   loadRates();
   loadShortlist();
   renderRatesTicker();
@@ -24,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   setupCalculator();
   setupAdminAccess();
+  setupAdminPortal();
+  loadRemoteProducts();
   
   // Auto-fetch live rates from API on page load
   fetchLiveBullionRates();
@@ -386,6 +389,173 @@ function renderProducts() {
   }).join('');
 }
 
+function loadCustomProducts() {
+  const saved = localStorage.getItem('ssk_custom_products');
+  if (!saved) return;
+  try {
+    const customProducts = JSON.parse(saved);
+    if (Array.isArray(customProducts)) PRODUCTS_DATA.push(...customProducts);
+  } catch (error) {
+    console.warn('Could not load saved catalogue designs:', error);
+  }
+}
+
+function saveCustomProducts() {
+  const customProducts = PRODUCTS_DATA.filter(product => product.customProduct);
+  localStorage.setItem('ssk_custom_products', JSON.stringify(customProducts));
+}
+
+async function loadRemoteProducts() {
+  if (!API_BASE_URL) return;
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/catalogue`, { cache: 'no-store' });
+    if (!response.ok) return;
+    const remoteProducts = await response.json();
+    remoteProducts.forEach(product => {
+      product.customProduct = true;
+      const index = PRODUCTS_DATA.findIndex(item => item.id === product.id);
+      if (index >= 0) PRODUCTS_DATA[index] = product;
+      else PRODUCTS_DATA.unshift(product);
+    });
+    saveCustomProducts();
+    renderProducts();
+    renderAdminProductList();
+  } catch (error) {
+    console.warn('Could not load catalogue from API, using browser catalogue:', error);
+  }
+}
+
+async function persistProduct(product, editingId) {
+  if (!API_BASE_URL || !sessionStorage.getItem('ssk_admin_token')) return product;
+  const payload = { ...product };
+  delete payload.customProduct;
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/catalogue${editingId ? `/${editingId}` : ''}`, {
+      method: editingId ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionStorage.getItem('ssk_admin_token')}` },
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) throw new Error(`Catalogue API responded with ${response.status}`);
+    return { ...(await response.json()), customProduct: true };
+  } catch (error) {
+    console.warn('Could not save catalogue design to API, using browser catalogue:', error);
+    return product;
+  }
+}
+
+function setupAdminPortal() {
+  const portal = document.getElementById('admin-portal-modal');
+  const form = document.getElementById('product-admin-form');
+  if (!portal || !form) return;
+
+  const resetForm = () => {
+    form.reset();
+    document.getElementById('product-edit-id').value = '';
+    document.getElementById('product-form-title').textContent = 'Add a new ornament';
+    document.getElementById('product-submit-label').textContent = 'Publish to catalogue';
+  };
+
+  document.getElementById('btn-reset-product-form')?.addEventListener('click', resetForm);
+  document.getElementById('btn-close-admin-portal')?.addEventListener('click', () => portal.classList.remove('open'));
+  portal.addEventListener('click', event => {
+    if (event.target === portal) portal.classList.remove('open');
+  });
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const id = document.getElementById('product-edit-id').value;
+    const availability = document.getElementById('product-availability').value;
+    const product = {
+      id: id || `ssk-custom-${Date.now()}`,
+      sku: document.getElementById('product-sku').value.trim(),
+      name: document.getElementById('product-name').value.trim(),
+      teluguName: document.getElementById('product-telugu-name').value.trim() || 'Sri Sai Krishna Jewellers Design',
+      category: document.getElementById('product-category').value,
+      metal: document.getElementById('product-metal').value,
+      purity: document.getElementById('product-purity').value.trim(),
+      approxGrossWeight: Number(document.getElementById('product-gross-weight').value),
+      approxNetWeight: Number(document.getElementById('product-net-weight').value),
+      stoneDetails: document.getElementById('product-stones').value.trim(),
+      availability,
+      availabilityText: availability === 'ready' ? 'Ready in Etikoppaka Shop' : 'Handmade to Order by Etikoppaka Karigars',
+      leadTime: document.getElementById('product-lead-time').value.trim(),
+      badge: document.getElementById('product-badge').value.trim(),
+      image: document.getElementById('product-image').value.trim(),
+      description: document.getElementById('product-description').value.trim(),
+      featured: false,
+      customProduct: true
+    };
+    const existingIndex = PRODUCTS_DATA.findIndex(item => item.id === id);
+    const persistedProduct = await persistProduct(product, id);
+    if (existingIndex >= 0) PRODUCTS_DATA[existingIndex] = persistedProduct;
+    else PRODUCTS_DATA.unshift(persistedProduct);
+    saveCustomProducts();
+    renderProducts();
+    renderAdminProductList();
+    resetForm();
+    showToast(existingIndex >= 0 ? 'Ornament updated in the catalogue.' : 'Ornament published to the catalogue.');
+  });
+
+  renderAdminProductList();
+}
+
+function renderAdminProductList() {
+  const list = document.getElementById('admin-product-list');
+  const count = document.getElementById('admin-product-count');
+  if (!list || !count) return;
+  const customProducts = PRODUCTS_DATA.filter(product => product.customProduct);
+  count.textContent = customProducts.length;
+  list.innerHTML = customProducts.length ? customProducts.map(product => `
+    <div class="admin-product-row">
+      <img src="${escapeHtml(product.image)}" alt="" onerror="this.src='assets/hero.jpg'">
+      <div><strong>${escapeHtml(product.name)}</strong><span>${escapeHtml(product.sku)} · ${escapeHtml(product.purity)}</span></div>
+      <div class="admin-product-actions"><button type="button" class="admin-icon-btn" title="Edit design" onclick="editAdminProduct('${product.id}')"><i class="ri-edit-line"></i></button><button type="button" class="admin-icon-btn danger" title="Delete design" onclick="deleteAdminProduct('${product.id}')"><i class="ri-delete-bin-line"></i></button></div>
+    </div>`).join('') : '<div class="admin-empty-state"><i class="ri-inbox-line"></i><p>No custom designs yet.</p><span>Published ornaments will appear here.</span></div>';
+}
+
+function editAdminProduct(productId) {
+  const product = PRODUCTS_DATA.find(item => item.id === productId);
+  if (!product) return;
+  Object.entries({
+    'product-edit-id': product.id, 'product-name': product.name, 'product-sku': product.sku, 'product-telugu-name': product.teluguName,
+    'product-category': product.category, 'product-metal': product.metal, 'product-purity': product.purity, 'product-gross-weight': product.approxGrossWeight,
+    'product-net-weight': product.approxNetWeight, 'product-stones': product.stoneDetails, 'product-availability': product.availability,
+    'product-badge': product.badge, 'product-lead-time': product.leadTime, 'product-image': product.image, 'product-description': product.description
+  }).forEach(([fieldId, value]) => { document.getElementById(fieldId).value = value || ''; });
+  document.getElementById('product-form-title').textContent = 'Edit ornament';
+  document.getElementById('product-submit-label').textContent = 'Save catalogue changes';
+  document.getElementById('product-name').focus();
+}
+
+async function deleteAdminProduct(productId) {
+  const product = PRODUCTS_DATA.find(item => item.id === productId);
+  if (!product || !window.confirm(`Remove ${product.name} from the catalogue?`)) return;
+  if (API_BASE_URL && sessionStorage.getItem('ssk_admin_token')) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/catalogue/${productId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${sessionStorage.getItem('ssk_admin_token')}` }
+      });
+      if (!response.ok && response.status !== 404) throw new Error(`Catalogue API responded with ${response.status}`);
+    } catch (error) {
+      console.warn('Could not delete catalogue design from API, removing from browser catalogue:', error);
+    }
+  }
+  const index = PRODUCTS_DATA.findIndex(item => item.id === productId);
+  PRODUCTS_DATA.splice(index, 1);
+  shortlist = shortlist.filter(item => item.id !== productId);
+  localStorage.setItem('ssk_shortlist', JSON.stringify(shortlist));
+  saveCustomProducts();
+  renderProducts();
+  renderAdminProductList();
+  updateShortlistUI();
+  showToast('Ornament removed from the catalogue.');
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'\"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '\"': '&quot;' }[character]));
+}
+
 function resetFilters() {
   currentCategory = 'all';
   currentTypeFilter = 'all';
@@ -737,12 +907,17 @@ function setupAdminAccess() {
   const closeButton = document.getElementById('btn-close-admin-login');
   const loginForm = document.getElementById('admin-login-form');
   const errorEl = document.getElementById('admin-login-error');
-  const rateEditButton = document.getElementById('btn-edit-rates');
 
   if (!loginModal || !openButton || !loginForm) return;
 
   const closeLogin = () => loginModal.classList.remove('open');
-  openButton.addEventListener('click', () => loginModal.classList.add('open'));
+  openButton.addEventListener('click', () => {
+    if (sessionStorage.getItem('ssk_admin_token')) {
+      document.getElementById('admin-portal-modal')?.classList.add('open');
+    } else {
+      loginModal.classList.add('open');
+    }
+  });
   closeButton?.addEventListener('click', closeLogin);
   loginModal.addEventListener('click', event => {
     if (event.target === loginModal) closeLogin();
@@ -768,7 +943,7 @@ function setupAdminAccess() {
       const data = await response.json();
       sessionStorage.setItem('ssk_admin_token', data.token);
       closeLogin();
-      rateEditButton?.click();
+      document.getElementById('admin-portal-modal')?.classList.add('open');
       showToast('Admin access granted for this session.');
     } catch (error) {
       errorEl.textContent = 'Sign in failed. Check your credentials and try again.';

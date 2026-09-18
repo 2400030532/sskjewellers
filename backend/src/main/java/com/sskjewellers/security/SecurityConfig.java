@@ -26,7 +26,7 @@ public class SecurityConfig {
   @Bean CorsConfigurationSource corsConfigurationSource(@Value("${spring.web.cors.allowed-origins}") String origin) {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowedOrigins(List.of(origin));
-    config.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);

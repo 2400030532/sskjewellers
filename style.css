@@ -1813,6 +1813,52 @@ body {
   margin: 0 !important;
 }
 
+.admin-portal-card {
+  width: min(1180px, calc(100% - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  background: linear-gradient(145deg, rgba(26, 14, 20, 0.98), rgba(12, 7, 10, 0.99));
+  border: 1px solid var(--border-gold-glow);
+  border-radius: 12px;
+  box-shadow: var(--shadow-elevated), var(--glow-gold);
+  padding: 1.5rem;
+}
+
+.admin-portal-header { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.25rem; margin-bottom: 1.25rem; }
+.admin-portal-header h2 { color: var(--gold-100); font-family: var(--font-royal); font-size: clamp(1.2rem, 2vw, 1.7rem); margin: 0.4rem 0; }
+.admin-portal-header p, .admin-catalogue-list p { color: var(--text-dim); font-size: 0.82rem; }
+.admin-portal-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.85fr); gap: 1.5rem; }
+.product-admin-form, .admin-catalogue-list { min-width: 0; }
+.admin-form-heading { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+.admin-form-heading h3 { color: var(--gold-200); font-family: var(--font-royal); font-size: 0.98rem; }
+.admin-form-heading h3 span { color: var(--gold-400); font-family: var(--font-sans); font-size: 0.8rem; margin-left: 0.25rem; }
+.admin-reset-btn, .admin-storage-note { background: transparent; border: 0; color: var(--text-dim); font-size: 0.72rem; }
+.admin-reset-btn { cursor: pointer; text-decoration: underline; }
+.admin-storage-note { white-space: nowrap; }
+.admin-storage-note i { color: var(--gold-400); }
+.admin-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+.admin-field { display: flex; flex-direction: column; gap: 0.3rem; }
+.admin-field-wide { grid-column: 1 / -1; }
+.admin-field label { color: var(--text-muted); font-size: 0.72rem; font-weight: 600; }
+.admin-field input, .admin-field select, .admin-field textarea { width: 100%; border: 1px solid rgba(229, 185, 76, 0.2); border-radius: 5px; background: rgba(0, 0, 0, 0.25); color: var(--text-main); font: inherit; font-size: 0.78rem; padding: 0.62rem 0.7rem; outline: none; }
+.admin-field textarea { resize: vertical; min-height: 5rem; }
+.admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus { border-color: var(--gold-400); box-shadow: 0 0 0 2px rgba(229, 185, 76, 0.1); }
+.admin-field select option { background: var(--bg-secondary); }
+.admin-submit-btn { width: 100%; justify-content: center; margin-top: 1rem; }
+.admin-catalogue-list { border-left: 1px solid var(--border-subtle); padding-left: 1.25rem; }
+.admin-product-row { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 0.65rem; border-top: 1px solid var(--border-subtle); padding: 0.75rem 0; }
+.admin-product-row img { width: 48px; height: 48px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border-gold); }
+.admin-product-row strong, .admin-product-row span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-product-row strong { color: var(--text-main); font-size: 0.76rem; }
+.admin-product-row span { color: var(--text-dim); font-size: 0.68rem; margin-top: 0.2rem; }
+.admin-product-actions { display: flex; gap: 0.3rem; }
+.admin-icon-btn { background: transparent; border: 1px solid var(--border-gold); border-radius: 4px; color: var(--gold-300); cursor: pointer; padding: 0.35rem; }
+.admin-icon-btn:hover { background: rgba(229, 185, 76, 0.15); }
+.admin-icon-btn.danger { color: #fb7185; border-color: rgba(251, 113, 133, 0.35); }
+.admin-empty-state { border: 1px dashed var(--border-gold); border-radius: 7px; color: var(--text-dim); padding: 2rem 1rem; text-align: center; }
+.admin-empty-state i { color: var(--gold-400); display: block; font-size: 2rem; margin-bottom: 0.5rem; }
+.admin-empty-state span { display: block; font-size: 0.72rem; margin-top: 0.25rem; }
+
 /* ==========================================================================
    FOOTER
    ========================================================================== */
@@ -1951,4 +1997,9 @@ body {
     bottom: 1.25rem;
     right: 1.25rem;
   }
+  .admin-portal-card { width: calc(100% - 1rem); padding: 1rem; }
+  .admin-portal-layout { grid-template-columns: 1fr; }
+  .admin-catalogue-list { border-left: 0; border-top: 1px solid var(--border-subtle); padding-left: 0; padding-top: 1.25rem; }
+  .admin-form-grid { grid-template-columns: 1fr; }
+  .admin-field-wide { grid-column: auto; }
 }

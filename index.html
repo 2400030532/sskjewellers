@@ -724,7 +724,7 @@
       <div class="admin-login-icon"><i class="ri-shield-keyhole-line"></i></div>
       <span class="section-tag">Private access</span>
       <h2 id="admin-login-title">Admin sign in</h2>
-      <p>Manage showroom rates securely from the admin dashboard.</p>
+      <p>Manage showroom rates and catalogue designs securely from the admin portal.</p>
       <form id="admin-login-form">
         <label for="admin-username">Username</label>
         <input id="admin-username" name="username" autocomplete="username" required>
@@ -734,6 +734,54 @@
         <button type="submit" class="btn-primary-gold"><i class="ri-lock-line"></i> Sign in securely</button>
       </form>
       <small>Protected by the Spring Boot API when connected.</small>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="admin-portal-modal" role="dialog" aria-modal="true" aria-labelledby="admin-portal-title">
+    <div class="admin-portal-card">
+      <div class="admin-portal-header">
+        <div>
+          <span class="section-tag">Showroom workspace</span>
+          <h2 id="admin-portal-title">Catalogue Admin Portal</h2>
+          <p>Add complete ornament details and publish them to the digital showroom.</p>
+        </div>
+        <button class="btn-close-modal" id="btn-close-admin-portal" title="Close admin portal"><i class="ri-close-line"></i></button>
+      </div>
+
+      <div class="admin-portal-layout">
+        <form id="product-admin-form" class="product-admin-form">
+          <input type="hidden" id="product-edit-id">
+          <div class="admin-form-heading">
+            <h3 id="product-form-title">Add a new ornament</h3>
+            <button type="button" class="admin-reset-btn" id="btn-reset-product-form">Clear form</button>
+          </div>
+
+          <div class="admin-form-grid">
+            <div class="admin-field admin-field-wide"><label for="product-name">Ornament name *</label><input id="product-name" required placeholder="e.g. Nakshi Lakshmi Haram"></div>
+            <div class="admin-field"><label for="product-sku">Design code / SKU *</label><input id="product-sku" required placeholder="SSK-GLD-109"></div>
+            <div class="admin-field"><label for="product-telugu-name">Telugu name</label><input id="product-telugu-name" placeholder="తెలుగు పేరు"></div>
+            <div class="admin-field"><label for="product-category">Catalogue category *</label><select id="product-category" required>
+              <option value="gold-bridal">Bridal &amp; Temple Gold</option><option value="gold-daily">Daily Wear &amp; Chains</option><option value="silver-pooja">Silver Pooja Articles</option><option value="silver-jewellery">925 Silver Jewellery</option><option value="gold-coins">Gold Coins &amp; Bars</option>
+            </select></div>
+            <div class="admin-field"><label for="product-metal">Metal *</label><select id="product-metal" required><option value="gold">Gold</option><option value="silver">Silver</option></select></div>
+            <div class="admin-field"><label for="product-purity">Purity / hallmark *</label><input id="product-purity" required placeholder="22K (916 BIS Hallmark)"></div>
+            <div class="admin-field"><label for="product-gross-weight">Gross weight (g) *</label><input id="product-gross-weight" type="number" min="0" step="0.01" required></div>
+            <div class="admin-field"><label for="product-net-weight">Net weight (g) *</label><input id="product-net-weight" type="number" min="0" step="0.01" required></div>
+            <div class="admin-field admin-field-wide"><label for="product-stones">Stones / finish *</label><input id="product-stones" required placeholder="Kemp stones, pearls, plain finish..."></div>
+            <div class="admin-field"><label for="product-availability">Availability *</label><select id="product-availability" required><option value="ready">Ready in shop</option><option value="custom">Handmade to order</option></select></div>
+            <div class="admin-field"><label for="product-badge">Badge</label><input id="product-badge" placeholder="Bestseller, New..." maxlength="30"></div>
+            <div class="admin-field admin-field-wide"><label for="product-lead-time">Fulfillment / lead time *</label><input id="product-lead-time" required placeholder="Instant walk-in / 7-10 days crafting"></div>
+            <div class="admin-field admin-field-wide"><label for="product-image">Image URL *</label><input id="product-image" type="text" required placeholder="https://... or assets/design.jpg"></div>
+            <div class="admin-field admin-field-wide"><label for="product-description">Description *</label><textarea id="product-description" rows="4" required placeholder="Describe the ornament, craft, and ideal occasion..."></textarea></div>
+          </div>
+          <button type="submit" class="btn-primary-gold admin-submit-btn"><i class="ri-add-line"></i> <span id="product-submit-label">Publish to catalogue</span></button>
+        </form>
+
+        <div class="admin-catalogue-list">
+          <div class="admin-form-heading"><h3>Published designs <span id="admin-product-count">0</span></h3><span class="admin-storage-note"><i class="ri-hard-drive-2-line"></i> This browser</span></div>
+          <div id="admin-product-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 
