@@ -1858,6 +1858,16 @@ body {
 .admin-empty-state { border: 1px dashed var(--border-gold); border-radius: 7px; color: var(--text-dim); padding: 2rem 1rem; text-align: center; }
 .admin-empty-state i { color: var(--gold-400); display: block; font-size: 2rem; margin-bottom: 0.5rem; }
 .admin-empty-state span { display: block; font-size: 0.72rem; margin-top: 0.25rem; }
+.card-price { color: var(--gold-200); font-family: var(--font-royal); font-size: 1rem; font-weight: 700; margin: 0.45rem 0; }
+.admin-rates-panel { border-top: 1px solid var(--border-subtle); margin-top: 1.5rem; padding-top: 1.25rem; }
+.admin-rates-panel p { color: var(--text-dim); font-size: 0.72rem; margin-top: 0.25rem; }
+.admin-rate-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; align-items: end; gap: 0.8rem; }
+.admin-rate-grid .btn-primary-gold { min-height: 2.55rem; justify-content: center; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .admin-rate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-rate-grid .btn-primary-gold { grid-column: 1 / -1; }
+}
 
 /* ==========================================================================
    FOOTER

@@ -19,6 +19,7 @@ const API_BASE_URL = window.SSK_API_BASE_URL || '';
 document.addEventListener('DOMContentLoaded', () => {
   loadCustomProducts();
   loadRates();
+  loadRemoteShowroomRates();
   loadShortlist();
   renderRatesTicker();
   renderProducts();
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCalculator();
   setupAdminAccess();
   setupAdminPortal();
+  setupAdminRates();
   loadRemoteProducts();
   
   // Auto-fetch live rates from API on page load
@@ -70,6 +72,43 @@ function saveRates(rates, source = 'Manual') {
 
   renderRatesTicker();
   updateCalculatorResult();
+  const adminRateFields = {
+    'admin-rate-22k': rates.gold22k,
+    'admin-rate-24k': rates.gold24k,
+    'admin-rate-18k': rates.gold18k,
+    'admin-rate-silver': rates.silver
+  };
+  Object.entries(adminRateFields).forEach(([fieldId, value]) => {
+    const field = document.getElementById(fieldId);
+    if (field) field.value = value;
+  });
+  if (source === 'Manual Showroom' && sessionStorage.getItem('ssk_admin_token')) {
+    persistShowroomRates(rates);
+  }
+}
+
+async function loadRemoteShowroomRates() {
+  if (!API_BASE_URL) return;
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/rates`, { cache: 'no-store' });
+    if (!response.ok) return;
+    const rates = await response.json();
+    saveRates(rates, 'Remote Showroom');
+  } catch (error) {
+    console.warn('Could not load saved showroom rates:', error);
+  }
+}
+
+async function persistShowroomRates(rates) {
+  try {
+    await fetch(`${API_BASE_URL}/api/rates`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionStorage.getItem('ssk_admin_token')}` },
+      body: JSON.stringify(rates)
+    });
+  } catch (error) {
+    console.warn('Could not persist showroom rates:', error);
+  }
 }
 
 /**
@@ -330,6 +369,7 @@ function renderProducts() {
             <span class="card-purity">${item.purity}</span>
             <span class="card-weight">Approx ${item.approxGrossWeight}g</span>
           </div>
+          ${item.price ? `<div class="card-price">₹${Number(item.price).toLocaleString('en-IN')}</div>` : ''}
 
           <h3 class="card-title" onclick="openProductModal('${item.id}')" style="cursor: pointer;">${item.name}</h3>
           <h4 class="card-telugu-name">${item.teluguName}</h4>
@@ -429,6 +469,14 @@ function setupAdminPortal() {
     event.preventDefault();
     const id = document.getElementById('product-edit-id').value;
     const availability = document.getElementById('product-availability').value;
+    const imageFile = document.getElementById('product-image-file').files[0];
+    const imageUrl = document.getElementById('product-image').value.trim();
+    if (!id && !imageFile && !imageUrl) {
+      showToast('Upload a product photo or provide an image URL.');
+      return;
+    }
+    const existingProduct = PRODUCTS_DATA.find(item => item.id === id);
+    const image = imageFile ? await readImageFile(imageFile) : (imageUrl || existingProduct?.image || 'assets/hero.jpg');
     const product = {
       id: id || `ssk-custom-${Date.now()}`,
       sku: document.getElementById('product-sku').value.trim(),
@@ -439,12 +487,13 @@ function setupAdminPortal() {
       purity: document.getElementById('product-purity').value.trim(),
       approxGrossWeight: Number(document.getElementById('product-gross-weight').value),
       approxNetWeight: Number(document.getElementById('product-net-weight').value),
+      price: Number(document.getElementById('product-price').value),
       stoneDetails: document.getElementById('product-stones').value.trim(),
       availability,
       availabilityText: availability === 'ready' ? 'Ready in Etikoppaka Shop' : 'Handmade to Order by Etikoppaka Karigars',
       leadTime: document.getElementById('product-lead-time').value.trim(),
       badge: document.getElementById('product-badge').value.trim(),
-      image: document.getElementById('product-image').value.trim(),
+      image,
       description: document.getElementById('product-description').value.trim(),
       featured: false,
       customProduct: true
@@ -457,10 +506,48 @@ function setupAdminPortal() {
     renderProducts();
     renderAdminProductList();
     resetForm();
+    document.getElementById('product-image-file').required = true;
     showToast(existingIndex >= 0 ? 'Ornament updated in the catalogue.' : 'Ornament published to the catalogue.');
   });
 
   renderAdminProductList();
+}
+
+function readImageFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('Could not read product photo'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function setupAdminRates() {
+  const form = document.getElementById('admin-rate-form');
+  if (!form) return;
+  const fillRates = () => {
+    document.getElementById('admin-rate-22k').value = currentRates.gold22k;
+    document.getElementById('admin-rate-24k').value = currentRates.gold24k;
+    document.getElementById('admin-rate-18k').value = currentRates.gold18k;
+    document.getElementById('admin-rate-silver').value = currentRates.silver;
+  };
+  fillRates();
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!sessionStorage.getItem('ssk_admin_token')) return;
+    saveRates({
+      gold22k: Number(document.getElementById('admin-rate-22k').value),
+      gold24k: Number(document.getElementById('admin-rate-24k').value),
+      gold18k: Number(document.getElementById('admin-rate-18k').value),
+      silver: Number(document.getElementById('admin-rate-silver').value)
+    }, 'Manual Showroom');
+    showToast('Showroom prices updated.');
+  });
+  document.getElementById('btn-admin-fetch-live')?.addEventListener('click', async () => {
+    if (!sessionStorage.getItem('ssk_admin_token')) return;
+    await fetchLiveBullionRates(true);
+    fillRates();
+  });
 }
 
 function renderAdminProductList() {
@@ -484,8 +571,9 @@ function editAdminProduct(productId) {
     'product-edit-id': product.id, 'product-name': product.name, 'product-sku': product.sku, 'product-telugu-name': product.teluguName,
     'product-category': product.category, 'product-metal': product.metal, 'product-purity': product.purity, 'product-gross-weight': product.approxGrossWeight,
     'product-net-weight': product.approxNetWeight, 'product-stones': product.stoneDetails, 'product-availability': product.availability,
-    'product-badge': product.badge, 'product-lead-time': product.leadTime, 'product-image': product.image, 'product-description': product.description
+    'product-price': product.price, 'product-badge': product.badge, 'product-lead-time': product.leadTime, 'product-image': product.image, 'product-description': product.description
   }).forEach(([fieldId, value]) => { document.getElementById(fieldId).value = value || ''; });
+  document.getElementById('product-image-file').required = false;
   document.getElementById('product-form-title').textContent = 'Edit ornament';
   document.getElementById('product-submit-label').textContent = 'Save catalogue changes';
   document.getElementById('product-name').focus();
@@ -790,13 +878,7 @@ function setupEventListeners() {
     });
   }
 
-  // Rate Edit Modal
-  const editRateBtn = document.getElementById('btn-edit-rates');
-  const rateModal = document.getElementById('rate-edit-modal');
-  const closeRateModalBtn = document.getElementById('btn-close-rate-modal');
-  const rateForm = document.getElementById('rate-edit-form');
   const refreshRatesBtn = document.getElementById('btn-refresh-rates');
-  const modalFetchLiveBtn = document.getElementById('btn-modal-fetch-live');
   const mobileMenuBtn = document.getElementById('btn-mobile-menu');
   const navLinks = document.querySelector('.nav-links');
 
@@ -819,50 +901,6 @@ function setupEventListeners() {
     });
   }
 
-  if (modalFetchLiveBtn) {
-    modalFetchLiveBtn.addEventListener('click', async () => {
-      await fetchLiveBullionRates(true);
-      document.getElementById('input-rate-22k').value = currentRates.gold22k;
-      document.getElementById('input-rate-24k').value = currentRates.gold24k;
-      document.getElementById('input-rate-18k').value = currentRates.gold18k;
-      document.getElementById('input-rate-silver').value = currentRates.silver;
-    });
-  }
-
-  if (editRateBtn && rateModal) {
-    editRateBtn.addEventListener('click', () => {
-      if (!sessionStorage.getItem('ssk_admin_token')) {
-        document.getElementById('admin-login-modal')?.classList.add('open');
-        return;
-      }
-      document.getElementById('input-rate-22k').value = currentRates.gold22k;
-      document.getElementById('input-rate-24k').value = currentRates.gold24k;
-      document.getElementById('input-rate-18k').value = currentRates.gold18k;
-      document.getElementById('input-rate-silver').value = currentRates.silver;
-      rateModal.classList.add('open');
-    });
-  }
-
-  if (closeRateModalBtn && rateModal) {
-    closeRateModalBtn.addEventListener('click', () => {
-      rateModal.classList.remove('open');
-    });
-  }
-
-  if (rateForm) {
-    rateForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const updated = {
-        gold22k: parseFloat(document.getElementById('input-rate-22k').value) || currentRates.gold22k,
-        gold24k: parseFloat(document.getElementById('input-rate-24k').value) || currentRates.gold24k,
-        gold18k: parseFloat(document.getElementById('input-rate-18k').value) || currentRates.gold18k,
-        silver: parseFloat(document.getElementById('input-rate-silver').value) || currentRates.silver
-      };
-      saveRates(updated, 'Manual Showroom');
-      showToast('Showroom rates saved and updated across catalog!');
-      rateModal.classList.remove('open');
-    });
-  }
 }
 
 function setupAdminAccess() {
@@ -891,9 +929,8 @@ function setupAdminAccess() {
     event.preventDefault();
     errorEl.textContent = '';
     const formData = new FormData(loginForm);
-
     if (!API_BASE_URL) {
-      errorEl.textContent = 'Admin API is not connected yet. Deploy the Spring Boot service to enable sign in.';
+      errorEl.textContent = 'Admin API is not connected yet.';
       return;
     }
 

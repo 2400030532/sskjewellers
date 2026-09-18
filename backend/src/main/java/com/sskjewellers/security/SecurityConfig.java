@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,7 +48,7 @@ public class SecurityConfig {
 
   @Bean SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
     return http.csrf(csrf -> csrf.disable()).cors(cors -> {}).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/login", "/actuator/health").permitAll().requestMatchers("/api/admin/**").hasRole("ADMIN").anyRequest().permitAll())
+      .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/login", "/actuator/health").permitAll().requestMatchers(HttpMethod.GET, "/api/rates").permitAll().requestMatchers(HttpMethod.PUT, "/api/rates").hasRole("ADMIN").requestMatchers("/api/admin/**").hasRole("ADMIN").anyRequest().permitAll())
       .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
   }
 }

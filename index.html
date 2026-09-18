@@ -53,9 +53,6 @@
         <button id="btn-admin-login" class="admin-login-btn" title="Admin sign in">
           <i class="ri-shield-keyhole-line"></i> Admin
         </button>
-        <button id="btn-edit-rates" class="rate-edit-btn" title="Showroom Rate Controls">
-          <i class="ri-settings-4-line"></i> Showroom Rates
-        </button>
       </div>
     </div>
   </div>
@@ -664,60 +661,6 @@
   <!-- ==========================================================================
        RATE UPDATE MODAL (FOR SHOP OWNER)
        ========================================================================== -->
-  <div class="modal-backdrop" id="rate-edit-modal">
-    <div class="rate-modal-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <h3 style="font-family: var(--font-royal); color: var(--gold-200); font-size: 1.15rem;">
-          <i class="ri-shield-user-line" style="color: var(--gold-400);"></i> Gold &amp; Silver Rate Controls
-        </h3>
-        <button id="btn-close-rate-modal" style="background: transparent; border: none; color: var(--text-dim); font-size: 1.25rem; cursor: pointer;">
-          <i class="ri-close-line"></i>
-        </button>
-      </div>
-
-      <div style="background: rgba(229, 185, 76, 0.08); border: 1px solid var(--border-gold); padding: 0.85rem; border-radius: 8px; margin-bottom: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <strong style="color: var(--gold-200); font-size: 0.85rem; display: block;">Live API Auto-Sync</strong>
-            <span style="font-size: 0.75rem; color: var(--text-dim);">Real-time spot price in INR per gram</span>
-          </div>
-          <button type="button" id="btn-modal-fetch-live" class="rate-refresh-btn" style="padding: 0.35rem 0.85rem;">
-            <i class="ri-refresh-line rate-refresh-icon"></i> Fetch Fresh API Rates
-          </button>
-        </div>
-      </div>
-
-      <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        You can also manually set custom local showroom rates for Sri Sai Krishna Jewellers (Etikoppaka) if fixed by your local jewellery association.
-      </p>
-
-      <form id="rate-edit-form">
-        <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.5rem;">
-          <div class="calc-input-group">
-            <label for="input-rate-22k">22K Gold (916) Rate / gram (₹)</label>
-            <input type="number" id="input-rate-22k" step="any" required>
-          </div>
-          <div class="calc-input-group">
-            <label for="input-rate-24k">24K Fine Gold Rate / gram (₹)</label>
-            <input type="number" id="input-rate-24k" step="any" required>
-          </div>
-          <div class="calc-input-group">
-            <label for="input-rate-18k">18K Gold Rate / gram (₹)</label>
-            <input type="number" id="input-rate-18k" step="any" required>
-          </div>
-          <div class="calc-input-group">
-            <label for="input-rate-silver">Pure Silver Rate / gram (₹)</label>
-            <input type="number" id="input-rate-silver" step="any" required>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary-gold" style="width: 100%; justify-content: center;">
-          <i class="ri-save-line"></i> Save &amp; Apply Showroom Rates
-        </button>
-      </form>
-    </div>
-  </div>
-
   <div class="modal-backdrop" id="admin-login-modal" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
     <div class="admin-login-card">
       <button class="btn-close-modal" id="btn-close-admin-login" title="Close admin sign in"><i class="ri-close-line"></i></button>
@@ -767,11 +710,13 @@
             <div class="admin-field"><label for="product-purity">Purity / hallmark *</label><input id="product-purity" required placeholder="22K (916 BIS Hallmark)"></div>
             <div class="admin-field"><label for="product-gross-weight">Gross weight (g) *</label><input id="product-gross-weight" type="number" min="0" step="0.01" required></div>
             <div class="admin-field"><label for="product-net-weight">Net weight (g) *</label><input id="product-net-weight" type="number" min="0" step="0.01" required></div>
+            <div class="admin-field"><label for="product-price">Selling price (₹) *</label><input id="product-price" type="number" min="0" step="0.01" required placeholder="e.g. 125000"></div>
             <div class="admin-field admin-field-wide"><label for="product-stones">Stones / finish *</label><input id="product-stones" required placeholder="Kemp stones, pearls, plain finish..."></div>
             <div class="admin-field"><label for="product-availability">Availability *</label><select id="product-availability" required><option value="ready">Ready in shop</option><option value="custom">Handmade to order</option></select></div>
             <div class="admin-field"><label for="product-badge">Badge</label><input id="product-badge" placeholder="Bestseller, New..." maxlength="30"></div>
             <div class="admin-field admin-field-wide"><label for="product-lead-time">Fulfillment / lead time *</label><input id="product-lead-time" required placeholder="Instant walk-in / 7-10 days crafting"></div>
-            <div class="admin-field admin-field-wide"><label for="product-image">Image URL *</label><input id="product-image" type="text" required placeholder="https://... or assets/design.jpg"></div>
+            <div class="admin-field"><label for="product-image-file">Upload product photo *</label><input id="product-image-file" type="file" accept="image/jpeg,image/png,image/webp" required></div>
+            <div class="admin-field"><label for="product-image">Image URL (optional)</label><input id="product-image" type="text" placeholder="Use an existing hosted image instead"></div>
             <div class="admin-field admin-field-wide"><label for="product-description">Description *</label><textarea id="product-description" rows="4" required placeholder="Describe the ornament, craft, and ideal occasion..."></textarea></div>
           </div>
           <button type="submit" class="btn-primary-gold admin-submit-btn"><i class="ri-add-line"></i> <span id="product-submit-label">Publish to catalogue</span></button>
@@ -782,6 +727,17 @@
           <div id="admin-product-list"></div>
         </div>
       </div>
+
+      <section class="admin-rates-panel">
+        <div class="admin-form-heading"><div><h3>Showroom prices</h3><p>Only the signed-in admin can update these rates.</p></div><button type="button" id="btn-admin-fetch-live" class="rate-refresh-btn"><i class="ri-refresh-line rate-refresh-icon"></i> Fetch live rates</button></div>
+        <form id="admin-rate-form" class="admin-rate-grid">
+          <div class="admin-field"><label for="admin-rate-22k">22K Gold (916) / gram</label><input id="admin-rate-22k" type="number" min="0" step="any" required></div>
+          <div class="admin-field"><label for="admin-rate-24k">24K Gold / gram</label><input id="admin-rate-24k" type="number" min="0" step="any" required></div>
+          <div class="admin-field"><label for="admin-rate-18k">18K Gold / gram</label><input id="admin-rate-18k" type="number" min="0" step="any" required></div>
+          <div class="admin-field"><label for="admin-rate-silver">925 Silver / gram</label><input id="admin-rate-silver" type="number" min="0" step="any" required></div>
+          <button type="submit" class="btn-primary-gold"><i class="ri-save-line"></i> Save prices</button>
+        </form>
+      </section>
     </div>
   </div>
 

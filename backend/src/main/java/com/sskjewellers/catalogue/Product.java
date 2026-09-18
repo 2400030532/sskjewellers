@@ -17,6 +17,7 @@ public class Product {
   private String purity;
   private double approxGrossWeight;
   private double approxNetWeight;
+  private double price;
   private String stoneDetails;
   private String availability;
   private String availabilityText;
@@ -30,7 +31,7 @@ public class Product {
 
   public Product(String id, String sku, String name, String teluguName, String category, String metal, String purity,
       double approxGrossWeight, double approxNetWeight, String stoneDetails, String availability, String availabilityText,
-      String leadTime, String badge, String image, String description, boolean featured) {
+      String leadTime, String badge, String image, String description, boolean featured, double price) {
     this.id = id;
     this.sku = sku;
     this.name = name;
@@ -40,6 +41,7 @@ public class Product {
     this.purity = purity;
     this.approxGrossWeight = approxGrossWeight;
     this.approxNetWeight = approxNetWeight;
+    this.price = price;
     this.stoneDetails = stoneDetails;
     this.availability = availability;
     this.availabilityText = availabilityText;
@@ -68,6 +70,8 @@ public class Product {
   public void setApproxGrossWeight(double value) { this.approxGrossWeight = value; }
   public double getApproxNetWeight() { return approxNetWeight; }
   public void setApproxNetWeight(double value) { this.approxNetWeight = value; }
+  public double getPrice() { return price; }
+  public void setPrice(double price) { this.price = price; }
   public String getStoneDetails() { return stoneDetails; }
   public void setStoneDetails(String stoneDetails) { this.stoneDetails = stoneDetails; }
   public String getAvailability() { return availability; }
