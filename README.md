@@ -35,3 +35,15 @@ Required production variables:
 6. Add the MetalpriceAPI key in Render as `METALPRICE_API_KEY`. The frontend calls `/api/rates/live` on the backend, so never place this key in `app.js` or expose it in GitHub Pages. If a key has been shared publicly, rotate it before deployment.
 
 The public GitHub and Render URLs are created by the account owner during those steps; this workspace has no GitHub or hosting credentials to publish them on your behalf.
+
+## Android / Google Play
+
+The project includes a Capacitor Android wrapper with application id `com.sskjewellers.showroom`. Install Android Studio with the Android SDK, then run:
+
+```bash
+npm install
+npm run mobile:sync
+npm run mobile:open
+```
+
+In Android Studio, create a release keystore, configure signing for the `release` build, and generate an Android App Bundle (`.aab`). Upload the signed bundle in Google Play Console. The mobile app uses the same GitHub Pages frontend, Render API, MetalpriceAPI proxy, and Supabase database. Never commit the keystore or passwords.

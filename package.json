@@ -4,7 +4,12 @@
   "description": "Customer-friendly digital showroom for Sai Baba Gudi Center, Etikoppaka, Andhra Pradesh - 531082.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mobile:prepare": "node scripts/prepare-mobile.js",
+    "mobile:sync": "node scripts/prepare-mobile.js && cap sync android",
+    "mobile:open": "cap open android",
+    "mobile:run": "cap run android",
+    "mobile:build": "cap copy android"
   },
   "repository": {
     "type": "git",
@@ -15,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/2400030532/sskjewellers/issues"
   },
-  "homepage": "https://github.com/2400030532/sskjewellers#readme"
+  "homepage": "https://github.com/2400030532/sskjewellers#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
 }
