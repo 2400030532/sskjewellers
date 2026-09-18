@@ -2221,3 +2221,131 @@ body::before {
   .promo-image-card, .promo-image-card-large { height: 135px; }
   .promo-video-meta { flex-direction: column; gap: 0.35rem; }
 }
+
+/* ==========================================================================\n+   MODERN LUXURY STOREFRONT OVERRIDES
+   ========================================================================== */
+:root {
+  --bg-primary: #090909;
+  --bg-secondary: #10100f;
+  --bg-tertiary: #171613;
+  --bg-card: rgba(22, 21, 18, 0.82);
+  --bg-card-hover: rgba(31, 29, 24, 0.96);
+  --bg-glass: rgba(14, 14, 13, 0.78);
+  --border-gold: rgba(208, 163, 62, 0.3);
+  --border-gold-glow: rgba(235, 195, 96, 0.7);
+  --shadow-card: 0 18px 42px -22px rgba(0, 0, 0, 0.92);
+  --shadow-elevated: 0 28px 65px -28px rgba(0, 0, 0, 0.98);
+}
+
+body {
+  background-image: radial-gradient(circle at 75% 0%, rgba(193, 143, 42, 0.08), transparent 30%), linear-gradient(180deg, #090909 0%, #0d0d0c 55%, #090909 100%);
+}
+
+.top-bar {
+  background: #0b0b0a;
+  border-bottom-color: rgba(208, 163, 62, 0.2);
+  padding: 0.38rem 0;
+}
+
+.rate-ticker-wrap { gap: 1.25rem; }
+.rate-item { color: #a6a39a; font-size: 0.75rem; }
+.rate-item strong { color: #e7c874; }
+.rate-refresh-btn { border-radius: 3px; }
+.top-link { font-size: 0.74rem; color: #9e9b93; }
+
+.navbar {
+  background: rgba(10, 10, 9, 0.86);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  position: sticky;
+  top: 0;
+  z-index: 45;
+}
+
+.nav-inner { min-height: 78px; }
+.brand-title { font-size: 1.18rem; letter-spacing: 0.14em; }
+.brand-subtitle { color: #b8a980; font-size: 0.76rem; }
+.nav-links { gap: 1.45rem; }
+.nav-link { color: #b2afa6; font-size: 0.77rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.nav-actions { gap: 0.55rem; }
+.btn-shortlist-nav, .btn-whatsapp-nav, .admin-login-btn { border-radius: 3px; }
+.btn-shortlist-nav { background: transparent; padding: 0.52rem 0.72rem; font-size: 0.76rem; }
+.btn-whatsapp-nav { padding: 0.55rem 0.82rem; font-size: 0.76rem; }
+
+.hero-section {
+  min-height: min(760px, 78vh);
+  padding: 5.8rem 0;
+  background: linear-gradient(90deg, #090909 0%, rgba(9, 9, 9, 0.76) 43%, rgba(9, 9, 9, 0.28) 100%);
+}
+
+.hero-bg-visual { width: 67%; opacity: 0.58; }
+.hero-content { max-width: 720px; }
+.hero-pill { border-radius: 2px; background: rgba(184, 143, 49, 0.1); font-size: 0.67rem; letter-spacing: 0.14em; }
+.hero-title { font-size: clamp(2.7rem, 5.6vw, 5rem); letter-spacing: -0.02em; line-height: 1.08; }
+.hero-description { max-width: 560px; color: #c5c1b7; font-size: 1.15rem; }
+.pill-badge { border-radius: 2px; background: rgba(255, 255, 255, 0.035); color: #d1c7a8; }
+.btn-primary-gold, .btn-outline-gold { border-radius: 3px; }
+.btn-primary-gold { padding: 0.82rem 1.35rem; box-shadow: 0 12px 28px rgba(180, 133, 30, 0.2); }
+.btn-outline-gold { padding: 0.82rem 1.3rem; }
+
+.trust-strip { background: #10100f; border-color: rgba(208, 163, 62, 0.2); padding: 1.6rem 0; }
+.trust-grid { gap: 0; grid-template-columns: repeat(4, 1fr); }
+.trust-card { min-height: 82px; border-right: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0; padding: 0.55rem 1.3rem; }
+.trust-card:last-child { border-right: 0; }
+.trust-icon-box { width: 38px; height: 38px; border-radius: 3px; background: transparent; font-size: 1.1rem; }
+.trust-info h4 { font-size: 0.73rem; letter-spacing: 0.03em; }
+.trust-info p { font-size: 0.7rem; line-height: 1.45; }
+
+.calculator-section { padding: 4.2rem 0 1.5rem; }
+.calculator-card { border-radius: 4px; background: #121210; border-color: rgba(208, 163, 62, 0.22); padding: 1.55rem 1.7rem; }
+.calc-title-box h3 { font-size: 1.05rem; }
+.calc-title-box p { font-size: 0.76rem; }
+.calc-input-group input, .calc-input-group select { border-radius: 3px; background: #0b0b0a; border-color: rgba(255, 255, 255, 0.12); }
+.calc-result-box { border-radius: 3px; background: rgba(184, 143, 49, 0.08); }
+
+.catalog-section { padding: 5rem 0 6.5rem; }
+.section-head { margin-bottom: 3rem; }
+.section-title { font-size: clamp(1.9rem, 3.5vw, 3rem); letter-spacing: -0.02em; }
+.section-subtitle { color: #aaa69d; font-size: 1rem; }
+.filter-control-panel { border-radius: 4px; background: rgba(18, 18, 16, 0.74); border-color: rgba(255, 255, 255, 0.09); padding: 1rem; }
+.filter-btn { border-radius: 2px; font-size: 0.75rem; padding: 0.48rem 0.82rem; }
+.search-box-wrap input { border-radius: 3px; background: #0b0b0a; }
+.product-grid { gap: 1.15rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.product-card { border-radius: 3px; background: #151512; border-color: rgba(255, 255, 255, 0.1); }
+.product-card:hover { border-color: rgba(229, 185, 76, 0.72); transform: translateY(-5px); }
+.card-body { padding: 1rem; }
+.card-title { font-size: 0.98rem; line-height: 1.35; }
+.card-telugu-name { font-size: 0.8rem; color: #a69a7b; }
+.card-specs-mini { font-size: 0.72rem; color: #97948c; }
+.badge-pill, .badge-sku { border-radius: 2px; }
+
+.promo-media-section { padding: 6.5rem 0 5.5rem; background: linear-gradient(180deg, #0e0e0d 0%, #13120f 50%, #0b0b0a 100%); }
+.promo-video-frame { border-radius: 3px; box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55); }
+.promo-copy-panel h2 { font-size: clamp(2rem, 3.4vw, 3.4rem); letter-spacing: -0.025em; }
+.promo-copy-panel > p { color: #b7b2a7; }
+.promo-image-card { border-radius: 2px; }
+
+.store-section { background: #10100f; }
+.store-info-box, .custom-card { border-radius: 4px; background: #151512; border-color: rgba(255, 255, 255, 0.09); }
+.modal-content-card, .rate-modal-card, .admin-login-card, .admin-portal-card { border-radius: 4px; }
+
+@media (max-width: 992px) {
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+  .trust-card:nth-child(2) { border-right: 0; }
+  .trust-card:nth-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+}
+
+@media (max-width: 768px) {
+  .nav-inner { min-height: 68px; }
+  .brand-title { font-size: 0.98rem; }
+  .brand-subtitle { font-size: 0.68rem; }
+  .nav-actions .btn-whatsapp-nav span, .nav-actions .btn-shortlist-nav span:not(.shortlist-badge) { display: none; }
+  .nav-actions { gap: 0.25rem; }
+  .trust-grid { grid-template-columns: 1fr; }
+  .trust-card, .trust-card:nth-child(2) { border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+  .trust-card:last-child { border-bottom: 0; }
+  .hero-section { min-height: 690px; padding: 4.2rem 0; }
+  .hero-bg-visual { width: 100%; opacity: 0.3; }
+  .hero-title { font-size: clamp(2.25rem, 12vw, 3.5rem); }
+  .hero-description { font-size: 1.08rem; }
+}
