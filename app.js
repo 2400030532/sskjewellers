@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAdminPortal();
   setupAdminRates();
   setupPromoMedia();
+  setupThemeToggle();
   loadRemoteProducts();
   
   // Auto-fetch live rates from API on page load
@@ -39,6 +40,28 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchLiveBullionRates(false);
   }, 5 * 60 * 1000);
 });
+
+function setupThemeToggle() {
+  const toggle = document.getElementById('btn-theme-toggle');
+  if (!toggle) return;
+
+  const applyTheme = theme => {
+    const isLight = theme === 'light';
+    document.body.classList.toggle('light-theme', isLight);
+    toggle.innerHTML = isLight ? '<i class="ri-moon-line"></i><span>Dark</span>' : '<i class="ri-sun-line"></i><span>Light</span>';
+    const label = isLight ? 'Switch to dark theme' : 'Switch to light theme';
+    toggle.title = label;
+    toggle.setAttribute('aria-label', label);
+  };
+
+  const savedTheme = localStorage.getItem('ssk_theme') || 'dark';
+  applyTheme(savedTheme);
+  toggle.addEventListener('click', () => {
+    const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+    localStorage.setItem('ssk_theme', nextTheme);
+    applyTheme(nextTheme);
+  });
+}
 
 function setupPromoMedia() {
   const video = document.getElementById('showroom-promo-video');
