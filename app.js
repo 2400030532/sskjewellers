@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAdminAccess();
   setupAdminPortal();
   setupAdminRates();
+  setupPromoMedia();
   loadRemoteProducts();
   
   // Auto-fetch live rates from API on page load
@@ -38,6 +39,26 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchLiveBullionRates(false);
   }, 5 * 60 * 1000);
 });
+
+function setupPromoMedia() {
+  const video = document.getElementById('showroom-promo-video');
+  const control = document.getElementById('btn-promo-video');
+  if (!video || !control) return;
+
+  control.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+      control.innerHTML = '<i class="ri-pause-line"></i>';
+      control.setAttribute('aria-label', 'Pause showroom film');
+      control.title = 'Pause showroom film';
+    } else {
+      video.pause();
+      control.innerHTML = '<i class="ri-play-line"></i>';
+      control.setAttribute('aria-label', 'Play showroom film');
+      control.title = 'Play showroom film';
+    }
+  });
+}
 
 /* ==========================================================================
    RATES MANAGEMENT & LIVE API FETCHING

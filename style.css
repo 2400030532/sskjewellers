@@ -685,6 +685,59 @@ body::before {
 
 .trust-card:hover .trust-icon-box { transform: translateY(-5px) rotate(-4deg); box-shadow: var(--glow-gold); }
 
+/* ==========================================================================\n+   CINEMATIC JEWELLERY PROMOTION
+   ========================================================================== */
+.promo-media-section {
+  position: relative;
+  overflow: hidden;
+  padding: 5.5rem 0 4.5rem;
+  background: linear-gradient(135deg, #0b0608 0%, #1d0c13 48%, #090507 100%);
+  border-bottom: 1px solid var(--border-gold);
+}
+
+.promo-media-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 0%, rgba(229, 185, 76, 0.07) 48%, transparent 72%);
+  animation: goldSweep 8s ease-in-out infinite;
+}
+
+.promo-media-grid { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr); gap: 4rem; align-items: center; }
+.promo-video-stage { min-width: 0; }
+.promo-video-frame { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--border-gold-glow); border-radius: 4px; background: #050304; box-shadow: 0 22px 70px rgba(0, 0, 0, 0.6), 0 0 0 8px rgba(229, 185, 76, 0.04); }
+.promo-video-frame::before, .promo-video-frame::after { content: ''; position: absolute; z-index: 3; width: 42px; height: 42px; border-color: var(--gold-300); border-style: solid; pointer-events: none; }
+.promo-video-frame::before { top: 14px; left: 14px; border-width: 1px 0 0 1px; }
+.promo-video-frame::after { right: 14px; bottom: 14px; border-width: 0 1px 1px 0; }
+.promo-video { width: 100%; height: 100%; display: block; object-fit: cover; filter: saturate(0.9) contrast(1.06); transition: transform 1.2s var(--ease-reveal), filter 0.7s ease; }
+.promo-video-frame:hover .promo-video { transform: scale(1.035); filter: saturate(1.08) contrast(1.08); }
+.promo-video-vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(5, 3, 4, 0.08), transparent 45%, rgba(5, 3, 4, 0.72)); }
+.promo-video-caption { position: absolute; z-index: 4; left: 1.25rem; bottom: 1.1rem; display: flex; align-items: center; gap: 0.45rem; color: var(--gold-100); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.promo-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #edb84b; box-shadow: 0 0 12px #edb84b; animation: pulseGreen 1.8s infinite; }
+.promo-video-control { position: absolute; z-index: 5; right: 1rem; bottom: 0.8rem; width: 43px; height: 43px; border: 1px solid rgba(255, 249, 230, 0.65); border-radius: 50%; background: rgba(10, 5, 7, 0.58); backdrop-filter: blur(10px); color: var(--gold-100); cursor: pointer; font-size: 1.05rem; transition: var(--transition-bounce); }
+.promo-video-control:hover { background: var(--gold-gradient); color: #180c0f; transform: scale(1.12); box-shadow: var(--glow-gold); }
+.promo-video-meta { display: flex; justify-content: space-between; gap: 1rem; padding-top: 0.8rem; color: var(--text-dim); font-size: 0.72rem; }
+.promo-video-meta i { color: var(--gold-400); margin-right: 0.25rem; }
+.promo-copy-panel { position: relative; max-width: 520px; }
+.promo-copy-panel h2 { margin: 0.75rem 0 1rem; color: var(--gold-100); font-family: var(--font-royal); font-size: clamp(1.8rem, 3vw, 3.1rem); line-height: 1.17; }
+.promo-copy-panel > p { max-width: 480px; color: var(--text-muted); font-family: var(--font-serif); font-size: 1.18rem; line-height: 1.65; }
+.promo-stat-row { display: flex; gap: 2rem; margin: 1.8rem 0 2rem; }
+.promo-stat-row div { display: flex; flex-direction: column; gap: 0.1rem; }
+.promo-stat-row strong { color: var(--gold-300); font-family: var(--font-royal); font-size: 1.2rem; }
+.promo-stat-row span { color: var(--text-dim); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.promo-cta { border-radius: 4px; }
+.promo-image-rail { position: relative; z-index: 2; display: grid; grid-template-columns: 1.35fr repeat(3, 1fr); gap: 0.8rem; margin-top: 2.4rem; }
+.promo-image-card { position: relative; height: 145px; overflow: hidden; border: 1px solid var(--border-gold); background: #12080c; }
+.promo-image-card-large { height: 185px; }
+.promo-image-card img { width: 100%; height: 100%; display: block; object-fit: cover; filter: saturate(0.8); transition: transform 0.8s var(--ease-reveal), filter 0.8s ease; }
+.promo-image-card:hover img { transform: scale(1.1); filter: saturate(1.15); }
+.promo-image-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 42%, rgba(5, 3, 4, 0.9)); pointer-events: none; }
+.promo-image-card figcaption { position: absolute; z-index: 2; left: 0.7rem; bottom: 0.6rem; color: var(--gold-100); font-family: var(--font-royal); font-size: 0.68rem; letter-spacing: 0.05em; }
+.promo-gold-orbit { position: absolute; border: 1px solid rgba(229, 185, 76, 0.1); border-radius: 50%; pointer-events: none; animation: orbitFloat 12s ease-in-out infinite; }
+.promo-orbit-one { width: 520px; height: 520px; right: -260px; top: -180px; }
+.promo-orbit-two { width: 300px; height: 300px; left: -170px; bottom: -160px; animation-delay: -4s; }
+
 .trust-info h4 {
   font-family: var(--font-royal);
   font-size: 0.96rem;
@@ -2085,6 +2138,11 @@ body::before {
   50% { opacity: 1; transform: scaleX(1); transform-origin: left; }
 }
 
+@keyframes orbitFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.45; }
+  50% { transform: translate3d(18px, 12px, 0) rotate(12deg); opacity: 0.9; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -2125,6 +2183,8 @@ body::before {
   .nav-links.mobile-open .nav-link {
     padding: 0.7rem 0;
   }
+  .promo-media-grid { grid-template-columns: 1fr; gap: 2.2rem; }
+  .promo-copy-panel { max-width: 680px; }
 }
 
 @media (max-width: 768px) {
@@ -2156,4 +2216,8 @@ body::before {
   .admin-catalogue-list { border-left: 0; border-top: 1px solid var(--border-subtle); padding-left: 0; padding-top: 1.25rem; }
   .admin-form-grid { grid-template-columns: 1fr; }
   .admin-field-wide { grid-column: auto; }
+  .promo-media-section { padding: 3.5rem 0 3rem; }
+  .promo-image-rail { grid-template-columns: repeat(2, 1fr); }
+  .promo-image-card, .promo-image-card-large { height: 135px; }
+  .promo-video-meta { flex-direction: column; gap: 0.35rem; }
 }
