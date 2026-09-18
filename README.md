@@ -6,6 +6,8 @@ Customer-friendly digital showroom for Sai Baba Gudi Center, Etikoppaka, Andhra 
 
 This is a React + Vite website with a customer catalogue, saved designs, WhatsApp enquiries, a dedicated today's-prices section, and responsive browser support.
 
+The frontend is organized into `src/App.jsx`, shared components in `src/components/`, and customer pages in `src/pages/`: Home, Catalogue, Rates, CustomDesign, and VisitShop. The shop address is maintained in `products.js` under `STORE_CONFIG`.
+
 ```bash
 npm install
 npm run dev
