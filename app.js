@@ -44,23 +44,25 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupThemeToggle() {
   const toggle = document.getElementById('btn-theme-toggle');
   if (!toggle) return;
-
-  const applyTheme = theme => {
-    const isLight = theme === 'light';
-    document.body.classList.toggle('light-theme', isLight);
-    toggle.innerHTML = isLight ? '<i class="ri-moon-line"></i><span>Dark</span>' : '<i class="ri-sun-line"></i><span>Light</span>';
-    const label = isLight ? 'Switch to dark theme' : 'Switch to light theme';
-    toggle.title = label;
-    toggle.setAttribute('aria-label', label);
-  };
-
   const savedTheme = localStorage.getItem('ssk_theme') || 'dark';
   applyTheme(savedTheme);
-  toggle.addEventListener('click', () => {
-    const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
-    localStorage.setItem('ssk_theme', nextTheme);
-    applyTheme(nextTheme);
-  });
+}
+
+function applyTheme(theme) {
+  const toggle = document.getElementById('btn-theme-toggle');
+  const isLight = theme === 'light';
+  document.body.classList.toggle('light-theme', isLight);
+  if (!toggle) return;
+  toggle.innerHTML = isLight ? '<i class="ri-moon-line"></i><span>Dark</span>' : '<i class="ri-sun-line"></i><span>Light</span>';
+  const label = isLight ? 'Switch to dark theme' : 'Switch to light theme';
+  toggle.title = label;
+  toggle.setAttribute('aria-label', label);
+}
+
+function toggleTheme() {
+  const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+  localStorage.setItem('ssk_theme', nextTheme);
+  applyTheme(nextTheme);
 }
 
 function setupPromoMedia() {
