@@ -3,7 +3,7 @@ services:
     name: ssk-jewellers-api
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
+    dockerContext: .
     healthCheckPath: /actuator/health
     envVars:
       - key: JDBC_DATABASE_URL
