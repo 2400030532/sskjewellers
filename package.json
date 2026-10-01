@@ -4,6 +4,9 @@
   "description": "Customer-friendly digital showroom for Sai Baba Gudi Center, Etikoppaka, Andhra Pradesh - 531082.",
   "main": "app.js",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,6 +19,12 @@
     "url": "https://github.com/2400030532/sskjewellers/issues"
   },
   "homepage": "https://github.com/2400030532/sskjewellers#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^8.3.0"
+  }
 }

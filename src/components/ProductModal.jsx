@@ -1,0 +1,6 @@
+import { assetUrl, whatsappUrl } from '../bootstrap.js';
+
+export default function ProductModal({ product, saved, onSave, onClose }) {
+  const message = `Namaste Sri Sai Krishna Jewellers, I would like to ask about ${product.name} (${product.sku}). Please share today's price and availability.`;
+  return <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Design details" onClick={event => event.target === event.currentTarget && onClose()}><div className="modal"><button className="close-button" onClick={onClose} aria-label="Close design details">×</button><img src={assetUrl(product.image)} alt={product.name} /><div><span className="eyebrow">{product.purity}</span><h2>{product.name}</h2><p>{product.description}</p><dl><div><dt>About this piece</dt><dd>{product.approxGrossWeight}g total, {product.approxNetWeight}g gold or silver</dd></div><div><dt>Availability</dt><dd>{product.availabilityText}</dd></div><div><dt>Details</dt><dd>{product.stoneDetails}</dd></div></dl><div className="modal-actions"><a className="whatsapp-button" href={whatsappUrl(message)} target="_blank" rel="noopener noreferrer">Ask about this design</a><button className="button secondary" onClick={onSave}>{saved ? 'Saved' : 'Save this design'}</button></div></div></div></div>;
+}
