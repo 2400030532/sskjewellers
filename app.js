@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadShortlist();
   renderRatesTicker();
   renderProducts();
+  renderHeroProductRail();
   setupEventListeners();
   setupCalculator();
   setupAdminAccess();
@@ -30,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAdminRates();
   setupPromoMedia();
   setupThemeToggle();
+  setupLanguagePrompt();
+  setupHeroSearch();
   setupShowroomNavigation();
   keepBackendAwake();
   loadRemoteProducts();
@@ -47,6 +50,94 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.visibilityState === 'visible') keepBackendAwake();
   });
 });
+
+function setupLanguagePrompt() {
+  const modal = document.getElementById('language-modal');
+  const choices = document.querySelectorAll('[data-language-choice]');
+  if (!modal || !choices.length) return;
+
+  const savedLanguage = localStorage.getItem('ssk_language');
+  if (savedLanguage === 'en' || savedLanguage === 'te') {
+    applyLanguage(savedLanguage);
+  } else {
+    localStorage.removeItem('ssk_language');
+    modal.classList.add('open');
+  }
+
+  choices.forEach(choice => {
+    choice.addEventListener('click', () => {
+      const language = choice.dataset.languageChoice || 'en';
+      localStorage.setItem('ssk_language', language);
+      applyLanguage(language);
+      modal.classList.remove('open');
+    });
+  });
+}
+
+function applyLanguage(language) {
+  const telugu = language === 'te';
+  const translations = {
+    '.nav-link[href="#catalog-section"]': telugu ? 'నగలు' : 'Browse',
+    '.nav-link[href="#calculator-section"]': telugu ? 'ధర' : 'Price',
+    '.nav-link[href="#artisan-section"]': telugu ? 'కళ' : 'Craft',
+    '.nav-link[href="#custom-order-section"]': telugu ? 'కస్టమ్' : 'Custom',
+    '.nav-link[href="#store-section"]': telugu ? 'దుకాణం' : 'Shop',
+    '.side-nav-link[data-section="catalog-section"] span': telugu ? 'నగలు' : 'Browse',
+    '.side-nav-link[data-section="calculator-section"] span': telugu ? 'ధర' : 'Price',
+    '.side-nav-link[data-section="artisan-section"] span': telugu ? 'కళ' : 'Craft',
+    '.side-nav-link[data-section="custom-order-section"] span': telugu ? 'కస్టమ్' : 'Custom',
+    '.side-nav-link[data-section="store-section"] span': telugu ? 'దుకాణం' : 'Shop',
+    '.mobile-quick-actions a[href="#hero-section"] span': telugu ? 'హోమ్' : 'Home',
+    '.mobile-quick-actions a[href="#catalog-section"] span': telugu ? 'నగలు' : 'Browse',
+    '.mobile-quick-actions a[href="#calculator-section"] span': telugu ? 'ధర' : 'Price',
+    '.mobile-quick-actions button span:not(.mobile-tab-badge)': telugu ? 'సేవ్' : 'Saved',
+    '.mobile-quick-actions a[href*="wa.me"] span': telugu ? 'సహాయం' : 'Ask',
+    '.hero-description': telugu ? 'చూడండి. పోల్చండి. ఎంచుకోండి.' : 'Browse. Compare. Choose.',
+    '.hero-cta-group a:first-child': telugu ? 'నగలు చూడండి' : 'Browse jewellery',
+    '.hero-cta-group a:last-child': telugu ? 'కస్టమ్ డిజైన్' : 'Custom design',
+    '#rates-title': telugu ? 'లోహ ధర' : 'Metal rates',
+    '#catalog-section .section-title': telugu ? 'మీ నగలను ఎంచుకోండి' : 'Choose your piece',
+    '#catalog-section .section-subtitle': telugu ? 'సిద్ధంగా ఉన్న మరియు కస్టమ్ డిజైన్లు.' : 'Ready pieces and custom designs. Tap a piece for details.'
+  };
+
+  Object.entries(translations).forEach(([selector, text]) => {
+    const element = document.querySelector(selector);
+    if (!element) return;
+    const icon = element.querySelector('i');
+    element.textContent = '';
+    if (icon) element.appendChild(icon);
+    element.appendChild(document.createTextNode(` ${text}`));
+  });
+  const heroSearch = document.getElementById('hero-search');
+  const catalogueSearch = document.getElementById('search-catalog');
+  if (heroSearch) heroSearch.placeholder = telugu ? 'నగలు వెతకండి...' : 'Search jewellery...';
+  if (catalogueSearch) catalogueSearch.placeholder = telugu ? 'నగలు వెతకండి...' : 'Search jewellery...';
+  document.documentElement.lang = telugu ? 'te' : 'en';
+}
+
+function setupHeroSearch() {
+  const heroSearch = document.getElementById('hero-search');
+  const catalogueSearch = document.getElementById('search-catalog');
+  const submitButton = document.getElementById('hero-search-submit');
+  if (!heroSearch || !catalogueSearch) return;
+
+  const runSearch = () => {
+    catalogueSearch.value = heroSearch.value;
+    searchQuery = heroSearch.value;
+    renderProducts();
+    document.getElementById('catalog-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  heroSearch.addEventListener('input', () => {
+    catalogueSearch.value = heroSearch.value;
+    searchQuery = heroSearch.value;
+    renderProducts();
+  });
+  heroSearch.addEventListener('keydown', event => {
+    if (event.key === 'Enter') runSearch();
+  });
+  submitButton?.addEventListener('click', runSearch);
+}
 
 function keepBackendAwake() {
   const controller = new AbortController();
@@ -111,6 +202,7 @@ function setupShowroomNavigation() {
   const backdrop = document.getElementById('sidebar-backdrop');
   const menuButton = document.getElementById('btn-mobile-menu');
   const navLinks = document.querySelectorAll('.side-nav-link');
+  const mobileLinks = document.querySelectorAll('.mobile-quick-actions a[href^="#"]');
   const sections = [...document.querySelectorAll('.side-nav-link[data-section]')]
     .map(link => document.getElementById(link.dataset.section))
     .filter(Boolean);
@@ -133,6 +225,7 @@ function setupShowroomNavigation() {
     const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
     if (!visible) return;
     navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === visible.target.id));
+    mobileLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${visible.target.id}`));
   }, { rootMargin: '-18% 0px -62% 0px', threshold: [0.05, 0.2, 0.5] });
   sections.forEach(section => observer.observe(section));
 }
@@ -491,6 +584,27 @@ function renderProducts() {
   }).join('');
 }
 
+function renderHeroProductRail() {
+  const rail = document.getElementById('hero-product-rail');
+  if (!rail || !Array.isArray(PRODUCTS_DATA) || PRODUCTS_DATA.length === 0) return;
+
+  const featured = PRODUCTS_DATA.slice(0, 8);
+  const renderCard = product => `
+    <button class="hero-product-card" type="button" onclick="openProductModal('${product.id}')" aria-label="View ${escapeHtml(product.name)}">
+      <img src="${escapeHtml(product.image)}" alt="" loading="lazy" onerror="this.src='assets/hero.jpg'">
+      <span>${escapeHtml(product.name)}</span>
+      <small>${escapeHtml(product.approxGrossWeight)}g · ${product.metal === 'silver' ? '925 silver' : '916 gold'}</small>
+    </button>
+  `;
+
+  rail.innerHTML = `
+    <div class="hero-product-track-group">${featured.map(renderCard).join('')}</div>
+    <div class="hero-product-track-group" aria-hidden="true">${featured.map(renderCard).join('')}</div>
+  `;
+
+  window.setTimeout(() => rail.classList.add('is-moving'), 15000);
+}
+
 function loadCustomProducts() {
   const saved = localStorage.getItem('ssk_custom_products');
   if (!saved) return;
@@ -521,6 +635,7 @@ async function loadRemoteProducts() {
     });
     saveCustomProducts();
     renderProducts();
+    renderHeroProductRail();
     renderAdminProductList();
   } catch (error) {
     console.warn('Could not load catalogue from API, using browser catalogue:', error);
@@ -765,6 +880,15 @@ function sendAllShortlistWhatsApp() {
 /* ==========================================================================
    PRODUCT DETAILS MODAL
    ========================================================================== */
+function calculateProductEstimate(product) {
+  if (product.price && Number(product.price) > 0) return Number(product.price);
+  const weight = Number(product.approxNetWeight || product.approxGrossWeight || 0);
+  if (!weight) return 0;
+  if (product.metal === 'silver') return Math.round(weight * currentRates.silver);
+  const rate = product.purity?.includes('18K') ? currentRates.gold18k : product.purity?.includes('24K') ? currentRates.gold24k : currentRates.gold22k;
+  return Math.round(weight * rate);
+}
+
 function openProductModal(productId) {
   const product = PRODUCTS_DATA.find(p => p.id === productId);
   if (!product) return;
@@ -783,6 +907,17 @@ function openProductModal(productId) {
   const leadEl = document.getElementById('modal-lead-time');
   const whatsappBtn = document.getElementById('modal-whatsapp-btn');
   const shortlistBtn = document.getElementById('modal-shortlist-btn');
+  const imageSaveBtn = document.getElementById('modal-image-save-btn');
+  const shareBtn = document.getElementById('modal-share-btn');
+  const priceEl = document.getElementById('modal-price');
+  const badgeEl = document.getElementById('modal-badge-label');
+  const highlightPurity = document.getElementById('modal-highlight-purity');
+  const highlightWeight = document.getElementById('modal-highlight-weight');
+  const highlightStones = document.getElementById('modal-highlight-stones');
+  const highlightStock = document.getElementById('modal-highlight-stock');
+  const reviewCount = document.getElementById('modal-review-count');
+  const purityChoice = document.getElementById('modal-purity-choice');
+  const customChoice = document.getElementById('modal-custom-choice');
 
   if (imgEl) imgEl.src = product.image;
   if (purityEl) purityEl.textContent = product.purity;
@@ -795,6 +930,25 @@ function openProductModal(productId) {
   if (stonesEl) stonesEl.textContent = product.stoneDetails;
   if (availEl) availEl.textContent = product.availabilityText;
   if (leadEl) leadEl.textContent = product.leadTime;
+  if (priceEl) {
+    const estimate = calculateProductEstimate(product);
+    priceEl.textContent = estimate ? `₹${estimate.toLocaleString('en-IN')}` : "Ask for today's price";
+  }
+  if (badgeEl) badgeEl.textContent = product.badge || (product.availability === 'ready' ? 'Available now' : 'Made to order');
+  if (reviewCount) reviewCount.textContent = `${Math.max(8, Math.round((product.approxGrossWeight || 10) / 2))} reviews`;
+  if (highlightPurity) highlightPurity.textContent = product.purity.includes('Silver') ? '925 pure silver' : '916 BIS hallmarked';
+  if (highlightWeight) highlightWeight.textContent = `${product.approxGrossWeight}g approx.`;
+  if (highlightStones) highlightStones.textContent = product.stoneDetails;
+  if (highlightStock) highlightStock.textContent = product.availabilityText;
+  if (purityChoice) purityChoice.textContent = product.metal === 'silver' ? '925 silver' : '22K / 916';
+
+  [purityChoice, customChoice].forEach(choice => {
+    if (!choice) return;
+    choice.onclick = () => {
+      [purityChoice, customChoice].forEach(item => item?.classList.remove('active'));
+      choice.classList.add('active');
+    };
+  });
 
   if (whatsappBtn) {
     whatsappBtn.href = getWhatsAppProductUrl(product);
@@ -802,11 +956,27 @@ function openProductModal(productId) {
 
   if (shortlistBtn) {
     const isSaved = shortlist.some(s => s.id === product.id);
-    shortlistBtn.innerHTML = isSaved ? `<i class="ri-heart-fill"></i> Saved` : `<i class="ri-heart-line"></i> Save this design`;
+    const updateSaveButtons = saved => {
+      shortlistBtn.innerHTML = saved ? `<i class="ri-heart-fill"></i> Saved` : `<i class="ri-heart-line"></i> Save`;
+      if (imageSaveBtn) imageSaveBtn.innerHTML = `<i class="${saved ? 'ri-heart-fill' : 'ri-heart-line'}"></i>`;
+    };
+    updateSaveButtons(isSaved);
     shortlistBtn.onclick = () => {
       toggleShortlist(product.id);
       const nowSaved = shortlist.some(s => s.id === product.id);
-      shortlistBtn.innerHTML = nowSaved ? `<i class="ri-heart-fill"></i> Saved` : `<i class="ri-heart-line"></i> Save this design`;
+      updateSaveButtons(nowSaved);
+    };
+    if (imageSaveBtn) imageSaveBtn.onclick = shortlistBtn.onclick;
+  }
+
+  if (shareBtn) {
+    shareBtn.onclick = async () => {
+      const shareData = { title: product.name, text: `See this design at Sri Sai Krishna Jewellers: ${product.name}`, url: window.location.href };
+      if (navigator.share) await navigator.share(shareData).catch(() => {});
+      else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast('Design link copied.');
+      }
     };
   }
 
