@@ -1177,6 +1177,8 @@ function setupAdminAccess() {
   const closeButton = document.getElementById('btn-close-admin-login');
   const loginForm = document.getElementById('admin-login-form');
   const errorEl = document.getElementById('admin-login-error');
+  const passwordInput = document.getElementById('admin-password');
+  const passwordToggle = document.getElementById('btn-toggle-admin-password');
 
   if (!loginModal || !openButton || !loginForm) return;
 
@@ -1189,6 +1191,13 @@ function setupAdminAccess() {
     }
   });
   closeButton?.addEventListener('click', closeLogin);
+  passwordToggle?.addEventListener('click', () => {
+    const showing = passwordInput.type === 'text';
+    passwordInput.type = showing ? 'password' : 'text';
+    passwordToggle.innerHTML = `<i class="${showing ? 'ri-eye-line' : 'ri-eye-off-line'}"></i>`;
+    passwordToggle.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+    passwordToggle.title = showing ? 'Show password' : 'Hide password';
+  });
   loginModal.addEventListener('click', event => {
     if (event.target === loginModal) closeLogin();
   });
@@ -1215,7 +1224,9 @@ function setupAdminAccess() {
       document.getElementById('admin-portal-modal')?.classList.add('open');
       showToast('Admin access granted for this session.');
     } catch (error) {
-      errorEl.textContent = 'Sign in failed. Check your credentials and try again.';
+      errorEl.textContent = error instanceof TypeError
+        ? 'Admin service is unavailable. Please try again after the backend is online.'
+        : 'Sign in failed. Check your username and password.';
     }
   });
 }

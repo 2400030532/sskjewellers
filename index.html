@@ -826,7 +826,12 @@
         <label for="admin-username">Username</label>
         <input id="admin-username" name="username" autocomplete="username" required>
         <label for="admin-password">Password</label>
-        <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+        <div class="password-field-wrap">
+          <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+          <button type="button" id="btn-toggle-admin-password" class="password-toggle-btn" aria-label="Show password" title="Show password">
+            <i class="ri-eye-line"></i>
+          </button>
+        </div>
         <p id="admin-login-error" class="admin-login-error" role="alert"></p>
         <button type="submit" class="btn-primary-gold"><i class="ri-lock-line"></i> Sign in securely</button>
       </form>

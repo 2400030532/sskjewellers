@@ -428,6 +428,11 @@ body::before {
   background: rgba(229, 185, 76, 0.14);
 }
 
+.password-field-wrap { position: relative; }
+.password-field-wrap input { width: 100%; padding-right: 3rem; }
+.password-toggle-btn { position: absolute; top: 50%; right: 0.65rem; display: grid; width: 34px; height: 34px; place-items: center; color: var(--text-dim); background: transparent; border: 0; border-radius: 5px; cursor: pointer; transform: translateY(-50%); }
+.password-toggle-btn:hover, .password-toggle-btn:focus-visible { color: var(--gold-300); background: rgba(229, 185, 76, 0.1); }
+
 .nav-link {
   color: var(--text-muted);
   text-decoration: none;
