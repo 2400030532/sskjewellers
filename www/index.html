@@ -15,10 +15,26 @@
   <!-- Remix Icon CDN -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 
+  <!-- Theme Pre-Hydration: Default Royal White & Gold, restore user preference instantly -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('ssk_theme') || 'light';
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.classList.add('theme-dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.classList.add('light-theme');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="light-theme">
 
   <!-- ==========================================================================
        CINEMATIC 1.5s ENTRY VEIL & HORIZONTAL GOLD BEAM REVEAL (Section 2)
@@ -186,8 +202,11 @@
       <a href="#artisan-section" class="side-nav-link" data-section="artisan-section"><i class="ri-hammer-line"></i><span>Craft</span></a>
       <a href="#custom-order-section" class="side-nav-link" data-section="custom-order-section"><i class="ri-draft-line"></i><span>Custom</span></a>
       <a href="#store-section" class="side-nav-link" data-section="store-section"><i class="ri-map-pin-line"></i><span>Shop</span></a>
-      <button type="button" class="side-nav-link" id="btn-sidebar-replay-intro" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; color: var(--gold-300);">
+      <button type="button" class="side-nav-link" id="btn-sidebar-replay-intro" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; color: var(--gold-500);">
         <i class="ri-sparkling-fill"></i><span>Cinematic Intro 🎬</span>
+      </button>
+      <button type="button" class="side-nav-link" id="btn-sidebar-theme-toggle" onclick="toggleTheme()" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; color: var(--gold-500);">
+        <i class="ri-moon-line" id="sidebar-theme-icon"></i><span id="sidebar-theme-text">Dark Mode</span>
       </button>
       <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08);">
         <button type="button" class="side-nav-link" id="btn-sidebar-owner-login" style="background: none; border: none; width: 100%; text-align: left; opacity: 0.75; font-size: 0.82rem; cursor: pointer; color: var(--gold-300);">
@@ -240,6 +259,11 @@
         <button id="btn-change-language" class="btn-lang-switcher" type="button" title="Change language / భాష మార్చండి" aria-label="Change language">
           <i class="ri-translate-2"></i>
           <span class="lang-btn-text">EN/తె</span>
+        </button>
+
+        <button id="btn-theme-toggle" class="btn-theme-toggle" type="button" onclick="toggleTheme()" title="Switch to Dark Mode / డార్క్ మోడ్" aria-label="Toggle Dark Mode">
+          <i class="ri-moon-line"></i>
+          <span class="theme-btn-text">Dark</span>
         </button>
 
         <button id="btn-nav-shortlist" class="btn-shortlist-nav btn-open-shortlist-drawer" type="button" aria-label="Open saved designs">
@@ -504,8 +528,8 @@
             <button id="btn-admin-login" class="admin-login-btn" title="Admin sign in" style="display: none !important;">
               <i class="ri-shield-keyhole-line"></i> Admin
             </button>
-            <button id="btn-theme-toggle" class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch theme">
-              <i class="ri-sun-line"></i><span>Theme</span>
+            <button id="btn-theme-toggle-secondary" class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch theme">
+              <i class="ri-moon-line"></i><span>Dark</span>
             </button>
           </div>
         </div>

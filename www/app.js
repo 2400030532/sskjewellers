@@ -415,27 +415,69 @@ function keepBackendAwake() {
 }
 
 function setupThemeToggle() {
-  const toggle = document.getElementById('btn-theme-toggle');
-  if (!toggle) return;
-  const savedTheme = localStorage.getItem('ssk_theme') || 'dark';
+  const savedTheme = localStorage.getItem('ssk_theme') || 'light';
   applyTheme(savedTheme);
+
+  // Wire up theme toggles (navbar, sidebar, secondary)
+  const toggles = document.querySelectorAll('.btn-theme-toggle, .theme-toggle-btn, #btn-sidebar-theme-toggle');
+  toggles.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleTheme();
+    });
+  });
 }
 
 function applyTheme(theme) {
-  const toggle = document.getElementById('btn-theme-toggle');
-  const isLight = theme === 'light';
-  document.body.classList.toggle('light-theme', isLight);
-  if (!toggle) return;
-  toggle.innerHTML = isLight ? '<i class="ri-moon-line"></i><span>Dark</span>' : '<i class="ri-sun-line"></i><span>Light</span>';
-  const label = isLight ? 'Switch to dark theme' : 'Switch to light theme';
-  toggle.title = label;
-  toggle.setAttribute('aria-label', label);
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('theme-dark', isDark);
+  document.body.classList.toggle('light-theme', !isDark);
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
+  // 1. Update Main Navbar Toggle (#btn-theme-toggle)
+  const navToggle = document.getElementById('btn-theme-toggle');
+  if (navToggle) {
+    navToggle.innerHTML = isDark
+      ? '<i class="ri-sun-line" style="color: var(--gold-300);"></i><span class="theme-btn-text">Light</span>'
+      : '<i class="ri-moon-line" style="color: var(--gold-500);"></i><span class="theme-btn-text">Dark</span>';
+    const label = isDark ? 'Switch to Royal White & Gold / వైట్ & గోల్డ్' : 'Switch to Obsidian Dark Mode / డార్క్ మోడ్';
+    navToggle.title = label;
+    navToggle.setAttribute('aria-label', label);
+  }
+
+  // 2. Update Sidebar Toggle (#btn-sidebar-theme-toggle)
+  const sidebarIcon = document.getElementById('sidebar-theme-icon');
+  const sidebarText = document.getElementById('sidebar-theme-text');
+  if (sidebarIcon && sidebarText) {
+    sidebarIcon.className = isDark ? 'ri-sun-line' : 'ri-moon-line';
+    sidebarText.textContent = isDark ? 'Light / Ivory' : 'Dark Mode';
+  }
+
+  // 3. Update Secondary Showroom Controls Toggle (#btn-theme-toggle-secondary)
+  const secondaryToggle = document.getElementById('btn-theme-toggle-secondary');
+  if (secondaryToggle) {
+    secondaryToggle.innerHTML = isDark
+      ? '<i class="ri-sun-line"></i><span>Light</span>'
+      : '<i class="ri-moon-line"></i><span>Dark</span>';
+    const label = isDark ? 'Switch to White & Gold' : 'Switch to Dark Mode';
+    secondaryToggle.title = label;
+    secondaryToggle.setAttribute('aria-label', label);
+  }
 }
 
 function toggleTheme() {
-  const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+  const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
+  const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
   localStorage.setItem('ssk_theme', nextTheme);
   applyTheme(nextTheme);
+
+  if (typeof showToast === 'function') {
+    const isTelugu = (localStorage.getItem('ssk_language') || 'en') === 'te';
+    const msg = nextTheme === 'dark'
+      ? (isTelugu ? 'డార్క్ మోడ్ ప్రారంభించబడింది 🌙' : 'Obsidian Dark Mode Activated 🌙')
+      : (isTelugu ? 'రాయల్ వైట్ & గోల్డ్ థీమ్ ☀️' : 'Royal White & Gold Theme Activated ☀️');
+    showToast(msg);
+  }
 }
 
 function setupPromoMedia() {
