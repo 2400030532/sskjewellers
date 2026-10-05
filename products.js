@@ -235,9 +235,9 @@ const PRODUCTS_DATA = [
 // Default Bullion Rates (Shop owner can update daily in UI or here)
 const DEFAULT_RATES = {
   gold22k: 13675, // Rs per gram for 22K 916
-  gold24k: 14920, // Rs per gram for 24K pure
-  gold18k: 11190, // Rs per gram for 18K
-  silver: 245     // Rs per gram for 92.5 Silver
+  gold24k: 14918, // Rs per gram for 24K pure fine gold (matching Visakhapatnam Groww rate)
+  gold18k: 11189, // Rs per gram for 18K (750 hallmark)
+  silver: 245     // Rs per gram for pure 925/999 Silver
 };
 
 // Store Information

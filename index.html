@@ -356,39 +356,93 @@
       <div class="calculator-card">
         <div class="calc-header">
           <div class="calc-title-box">
-            <h3><i class="ri-calculator-line" style="color: var(--gold-400);"></i> Price check</h3>
-            <p>Get a quick estimate.</p>
+            <h3><i class="ri-calculator-line" style="color: var(--gold-400);"></i> Live Jewellery Price Calculator</h3>
+            <p>Real-time calculation based on today's official Visakhapatnam showroom bullion rates.</p>
           </div>
-          <div style="font-size: 0.8rem; color: var(--gold-300); background: rgba(229,185,76,0.1); padding: 0.35rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-gold);">
-            <i class="ri-information-line"></i> Before making charges + GST
+          <div id="calc-live-rate-tag" class="calc-live-tag">
+            <span class="live-pulse"></span> <span id="calc-active-rate-text">Today's 22K Rate: ₹13,675 / g</span>
           </div>
         </div>
 
-        <div class="calc-body">
-          <div class="calc-input-group">
-            <label for="calc-weight">Weight (grams)</label>
-            <input type="number" id="calc-weight" value="20" min="0.5" step="0.5" placeholder="Enter grams">
+        <div class="calc-body-grid">
+          <!-- Left: Inputs -->
+          <div class="calc-inputs-column">
+            <!-- Metal Selection -->
+            <div class="calc-input-group">
+              <label for="calc-metal"><i class="ri-medal-line"></i> Metal &amp; Purity</label>
+              <select id="calc-metal">
+                <option value="22k" selected>22K Gold (916 BIS Hallmark) - Showroom Standard</option>
+                <option value="24k">24K Fine Gold (999) - Pure Bullion / Coins</option>
+                <option value="18k">18K Gold (750 Hallmark) - Contemporary Jewellery</option>
+                <option value="silver">Pure 925 Sterling Silver - Ornaments &amp; Pooja</option>
+              </select>
+            </div>
+
+            <!-- Weight Input & Quick Chips -->
+            <div class="calc-input-group">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;">
+                <label for="calc-weight" style="margin-bottom:0;"><i class="ri-scales-3-line"></i> Weight (Grams)</label>
+                <span id="calc-pavan-hint" style="font-size:0.75rem;color:var(--gold-300);font-weight:600;">2.5 Pavans</span>
+              </div>
+              <input type="number" id="calc-weight" value="20" min="0.1" step="0.5" placeholder="Enter weight in grams">
+              
+              <div class="calc-quick-chips">
+                <button type="button" class="calc-chip" data-weight="1">1g</button>
+                <button type="button" class="calc-chip" data-weight="8">8g (1 Pavan)</button>
+                <button type="button" class="calc-chip" data-weight="10">10g</button>
+                <button type="button" class="calc-chip active" data-weight="20">20g</button>
+                <button type="button" class="calc-chip" data-weight="50">50g</button>
+                <button type="button" class="calc-chip" data-weight="100">100g</button>
+              </div>
+            </div>
+
+            <!-- Making Charge / Type -->
+            <div class="calc-input-group">
+              <label for="calc-making"><i class="ri-hammer-line"></i> Making Charges (VA / Karigar)</label>
+              <select id="calc-making">
+                <option value="10" selected>Standard Jewellery (10% Making Charges)</option>
+                <option value="8">Lightweight / Daily Wear (8% Making Charges)</option>
+                <option value="14">Intricate Bridal / Temple Antique (14% Making)</option>
+                <option value="2">Gold Coin / Bar Bullion (2% Minting Charges)</option>
+                <option value="0">Pure Metal Only (0% - No Making Charges)</option>
+              </select>
+            </div>
           </div>
 
-          <div class="calc-input-group">
-            <label for="calc-metal">Metal</label>
-            <select id="calc-metal">
-              <option value="22k" selected>22K Gold (916 BIS Hallmark)</option>
-              <option value="24k">24K Pure Fine Gold (999)</option>
-              <option value="18k">18K Gold</option>
-              <option value="silver">Pure 925 Sterling Silver</option>
-            </select>
-          </div>
+          <!-- Right: Breakdown & Total -->
+          <div class="calc-summary-column">
+            <div class="calc-breakdown-card">
+              <span class="breakdown-kicker"><i class="ri-file-list-3-line"></i> Estimated Price Breakdown</span>
+              
+              <div class="calc-breakdown-row">
+                <span>Base Metal Cost (<span id="calc-breakdown-wt">20g</span> &times; <span id="calc-breakdown-rate">₹13,675</span>)</span>
+                <strong id="calc-breakdown-metal">₹2,73,500</strong>
+              </div>
 
-          <div class="calc-result-box">
-            <span>Estimated metal cost</span>
-            <div class="calc-result-value" id="calc-result">₹1,37,000</div>
-          </div>
+              <div class="calc-breakdown-row">
+                <span>Making Charges (<span id="calc-breakdown-making-pct">10%</span>)</span>
+                <strong id="calc-breakdown-making">₹27,350</strong>
+              </div>
 
-          <div>
-            <button class="btn-primary-gold" style="width: 100%; padding: 0.72rem 1rem;" onclick="bookVideoCall()">
-              <i class="ri-chat-voice-line"></i> Ask us
-            </button>
+              <div class="calc-breakdown-row">
+                <span>GST (3% on Jewellery)</span>
+                <strong id="calc-breakdown-gst">₹9,026</strong>
+              </div>
+
+              <div class="calc-breakdown-divider"></div>
+
+              <div class="calc-total-box">
+                <div>
+                  <span class="calc-total-label">Estimated Total</span>
+                  <small style="display:block;font-size:0.68rem;color:#8f8b81;">With GST &amp; Making</small>
+                </div>
+                <div class="calc-total-value" id="calc-result">₹3,09,876</div>
+              </div>
+            </div>
+
+            <a id="calc-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary-gold calc-inquire-btn">
+              <i class="ri-whatsapp-line" style="font-size:1.15rem;color:#25d366;"></i> Inquire this estimate on WhatsApp
+            </a>
           </div>
         </div>
       </div>
