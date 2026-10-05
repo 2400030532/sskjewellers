@@ -4538,3 +4538,384 @@ body.light-theme .mob-nav-item.active {
   gap: 0.3rem;
 }
 
+/* ==========================================================================
+   VISUAL-FIRST TOP BULLION TICKER BAR
+   ========================================================================== */
+.top-bullion-ticker-bar {
+  background: rgba(14, 10, 8, 0.96);
+  border-bottom: 1px solid rgba(208, 163, 62, 0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: sticky;
+  top: 60px;
+  z-index: 45;
+  padding: 0.35rem 0.75rem;
+}
+
+.ticker-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ticker-inner::-webkit-scrollbar { display: none; }
+
+.ticker-live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #22c55e;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ticker-rates-scroll {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.ticker-rates-scroll::-webkit-scrollbar { display: none; }
+
+.ticker-pill {
+  font-size: 0.76rem;
+  color: #c9c3b6;
+  white-space: nowrap;
+}
+.ticker-pill strong {
+  color: var(--gold-300);
+}
+.ticker-pill span {
+  font-weight: 700;
+  color: #fff;
+}
+
+.ticker-calc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(208, 163, 62, 0.15);
+  border: 1px solid rgba(208, 163, 62, 0.35);
+  color: var(--gold-200);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+.ticker-calc-btn:hover {
+  background: var(--gold-400);
+  color: #120a05;
+}
+
+/* ==========================================================================
+   INSTAGRAM-STYLE COLLECTION STORY CIRCLES
+   ========================================================================== */
+.collection-stories-section {
+  padding: 0.85rem 0 0.5rem;
+  background: linear-gradient(180deg, rgba(14, 10, 8, 0.95) 0%, rgba(10, 5, 7, 1) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stories-container {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.stories-container::-webkit-scrollbar { display: none; }
+
+.stories-track {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  padding: 0.25rem 0.5rem;
+  min-width: min-content;
+}
+
+.story-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.story-bubble:hover {
+  transform: translateY(-2px);
+}
+
+.story-ring {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, rgba(208, 163, 62, 0.4), rgba(255, 255, 255, 0.1));
+  border: 1px solid rgba(208, 163, 62, 0.3);
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.story-bubble.active .story-ring {
+  background: linear-gradient(135deg, #ffd56b, #d4a024, #b8861b);
+  box-shadow: 0 0 14px rgba(229, 185, 76, 0.45);
+  transform: scale(1.05);
+}
+
+.story-ring img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.story-bubble span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #a6a095;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.story-bubble.active span {
+  color: var(--gold-200);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   VISUAL-FIRST SPOTLIGHT HERO
+   ========================================================================== */
+.visual-first-hero {
+  padding: 1.25rem 0 2rem;
+  background: transparent;
+}
+
+.spotlight-card {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 2rem;
+  background: linear-gradient(145deg, rgba(26, 17, 12, 0.9), rgba(16, 10, 8, 0.95));
+  border: 1px solid rgba(208, 163, 62, 0.35);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.spotlight-media {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  background: #000;
+}
+
+.spotlight-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-reveal);
+}
+.spotlight-card:hover .spotlight-img {
+  transform: scale(1.03);
+}
+
+.spotlight-badges {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.spotlight-tag-gold {
+  background: linear-gradient(135deg, rgba(208, 163, 62, 0.95), rgba(175, 128, 30, 0.95));
+  color: #0d0805;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.spotlight-tag-purity {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.spotlight-info {
+  padding: 2rem 2rem 2rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.spotlight-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  margin-bottom: 0.5rem;
+}
+
+.spotlight-title {
+  font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+  font-family: var(--font-royal);
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 0.35rem;
+}
+
+.spotlight-telugu {
+  font-size: 0.95rem;
+  color: #c4b998;
+  margin-bottom: 1.25rem;
+}
+
+.spotlight-pricing {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(208, 163, 62, 0.25);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-top: auto;
+}
+
+.spotlight-price-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8c867b;
+}
+
+.spotlight-price-val {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #ffd56b;
+  font-family: var(--font-royal);
+  margin: 0.15rem 0;
+}
+
+.spotlight-price-note {
+  display: block;
+  font-size: 0.72rem;
+  color: #aba496;
+  margin-bottom: 1rem;
+}
+
+.spotlight-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.spotlight-view-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.75rem 1rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.btn-whatsapp-spotlight {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: #25d366;
+  color: #0b0704;
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 0.75rem 1.1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-whatsapp-spotlight:hover {
+  background: #20ba59;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 860px) {
+  .spotlight-card {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .spotlight-media {
+    min-height: 280px;
+  }
+  .spotlight-info {
+    padding: 1.4rem;
+  }
+  .top-bullion-ticker-bar {
+    top: 52px;
+    padding: 0.35rem 0.5rem;
+  }
+  .story-ring {
+    width: 56px;
+    height: 56px;
+  }
+  .stories-track {
+    gap: 0.9rem;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  .product-card .card-body {
+    padding: 0.75rem 0.65rem !important;
+  }
+  .product-card .card-title {
+    font-size: 0.84rem !important;
+    line-height: 1.3 !important;
+  }
+  .product-card .card-price {
+    font-size: 0.96rem !important;
+  }
+  .product-card .badge-sku {
+    display: none !important;
+  }
+  .product-card .badge-pill {
+    font-size: 0.56rem !important;
+    padding: 0.15rem 0.35rem !important;
+  }
+  .product-card .card-specs-mini {
+    font-size: 0.66rem !important;
+    margin: 0.3rem 0 !important;
+  }
+  .card-actions .btn-view-details {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.66rem !important;
+  }
+  .card-actions .btn-inquire-whatsapp {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.66rem !important;
+  }
+}
+

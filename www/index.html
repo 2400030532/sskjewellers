@@ -138,219 +138,174 @@
        HERO BANNER
        ========================================================================== */ -->
   <main id="main-content">
-  <header class="hero-section" id="hero-section">
-    <div class="hero-bg-visual">
-      <img src="assets/hero.jpg" alt="Exquisite Indian Bridal Gold Jewellery" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1200&q=80'">
-    </div>
 
+  <!-- 1. TOP SLEEK BULLION TICKER BAR -->
+  <div class="top-bullion-ticker-bar" id="top-bullion-ticker">
+    <div class="ticker-inner">
+      <div class="ticker-live-status">
+        <span class="live-pulse"></span>
+        <span class="ticker-badge-text">LIVE RATES</span>
+      </div>
+      <div class="ticker-rates-scroll">
+        <div class="ticker-pill"><strong>22K Gold:</strong> <span id="ticker-rate-22k">₹13,675</span>/g</div>
+        <div class="ticker-pill"><strong>24K Gold:</strong> <span id="ticker-rate-24k">₹14,918</span>/g</div>
+        <div class="ticker-pill"><strong>18K Gold:</strong> <span id="ticker-rate-18k">₹11,189</span>/g</div>
+        <div class="ticker-pill"><strong>Silver:</strong> <span id="ticker-rate-silver">₹245</span>/g</div>
+      </div>
+      <a href="#calculator-section" class="ticker-calc-btn" title="Open price calculator">
+        <i class="ri-calculator-line"></i> <span>Calculator</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 2. INSTAGRAM-STYLE COLLECTION STORY CIRCLES -->
+  <section class="collection-stories-section" aria-label="Featured jewellery collections">
+    <div class="container stories-container">
+      <div class="stories-track">
+        <button type="button" class="story-bubble active" data-category="all" title="View all designs">
+          <div class="story-ring"><img src="assets/hero.jpg" alt="All jewellery designs"></div>
+          <span>All Designs</span>
+        </button>
+        <button type="button" class="story-bubble" data-category="necklace" title="Bridal Harams & Chokers">
+          <div class="story-ring"><img src="assets/kasu_mala.jpg" alt="Bridal Harams"></div>
+          <span>Bridal Sets</span>
+        </button>
+        <button type="button" class="story-bubble" data-category="bangles" title="Nakshi Bangles & Kadas">
+          <div class="story-ring"><img src="assets/gold_bangles.jpg" alt="Handcrafted Gold Bangles"></div>
+          <span>Bangles</span>
+        </button>
+        <button type="button" class="story-bubble" data-category="gold-daily" title="Daily Wear Gold">
+          <div class="story-ring"><img src="assets/hero_jewellery_1789398524527.jpg" alt="Daily wear gold jewellery"></div>
+          <span>Daily Wear</span>
+        </button>
+        <button type="button" class="story-bubble" data-category="silver-pooja" title="Pure Silver Pooja Articles">
+          <div class="story-ring"><img src="assets/silver_pooja.jpg" alt="Pure silver pooja articles"></div>
+          <span>Silver Pooja</span>
+        </button>
+        <button type="button" class="story-bubble" data-category="gold-coins" title="24K Gold Coins & Bars">
+          <div class="story-ring"><img src="assets/artisan_craft_1789398541455.jpg" alt="Gold Coins & Bars"></div>
+          <span>Coins &amp; Bars</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. VISUAL SHOWROOM HERO WITH MASTERPIECE SPOTLIGHT -->
+  <header class="hero-section visual-first-hero" id="hero-section">
     <div class="container">
-      <div class="hero-content">
-        <div class="hero-pill">
-          <i class="ri-sparkling-2-line"></i> Sri Sai Krishna Jewellers
-        </div>
-
-        <h1 class="hero-title">
-          Find jewellery <br>
-          <span class="gold-text">you will love.</span>
-        </h1>
-
-        <p class="hero-description">
-          Browse. Compare. Choose.
-        </p>
-
-        <div class="hero-badges-row">
-          <div class="pill-badge">
-            <i class="ri-shield-check-fill" style="color: var(--gold-400);"></i> 916 BIS hallmarked gold
-          </div>
-          <div class="pill-badge">
-            <i class="ri-hammer-fill" style="color: var(--gold-400);"></i> Ready to buy or made for you
-          </div>
-          <div class="pill-badge">
-            <i class="ri-sparkling-fill" style="color: var(--silver-accent);"></i> 925 pure silver
+      <div class="spotlight-card">
+        <div class="spotlight-media">
+          <img src="assets/kasu_mala.jpg" alt="22K Traditional Lakshmi Kasu Mala Long Haram" class="spotlight-img">
+          <div class="spotlight-badges">
+            <span class="spotlight-tag-gold"><i class="ri-sparkling-fill"></i> Showroom Masterpiece</span>
+            <span class="spotlight-tag-purity">22K 916 BIS Hallmark • 48.5g</span>
           </div>
         </div>
 
-        <div class="hero-cta-group">
-          <a href="#catalog-section" class="btn-primary-gold">
-            <i class="ri-store-2-line"></i> Browse jewellery
-          </a>
-          <a href="#custom-order-section" class="btn-outline-gold">
-            <i class="ri-draft-line"></i> Custom design
-          </a>
-        </div>
-
-        <div class="hero-start-here" aria-label="Quick start">
-          <span>Start here</span>
-          <a href="#catalog-section"><i class="ri-layout-grid-line"></i> Browse</a>
-          <a href="#calculator-section"><i class="ri-calculator-line"></i> Price</a>
-          <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20please%20help%20me%20choose%20a%20design." target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-line"></i> Ask</a>
-        </div>
-
-        <div class="hero-search-bar">
-          <i class="ri-search-line"></i>
-          <input type="search" id="hero-search" placeholder="Search jewellery..." aria-label="Search jewellery from the home page">
-          <button type="button" id="hero-search-submit" aria-label="Search jewellery" title="Search jewellery">
-            <i class="ri-arrow-right-line"></i>
-          </button>
+        <div class="spotlight-info">
+          <div class="spotlight-kicker">Handcrafted in Etikoppaka • Ready in Showroom</div>
+          <h1 class="spotlight-title">22K Traditional Lakshmi Kasu Mala Long Haram</h1>
+          <p class="spotlight-telugu">శ్రీ లక్ష్మీ కాసుల పేరు (లాంగ్ హారం)</p>
+          
+          <div class="spotlight-pricing">
+            <div class="spotlight-price-box">
+              <span class="spotlight-price-label">Today's Live Estimate</span>
+              <div class="spotlight-price-val" id="spotlight-price">₹7,11,800</div>
+              <small class="spotlight-price-note">Approx 48.5g • Making &amp; 3% GST included</small>
+            </div>
+            
+            <div class="spotlight-actions">
+              <button type="button" class="btn-primary-gold spotlight-view-btn" onclick="openProductModal('ssk-gld-101')">
+                <i class="ri-eye-line"></i> View details &amp; compare
+              </button>
+              <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20I%20am%20interested%20in%20the%2022K%20Lakshmi%20Kasu%20Mala%20Long%20Haram." target="_blank" rel="noopener noreferrer" class="btn-whatsapp-spotlight">
+                <i class="ri-whatsapp-line"></i> Ask on WhatsApp
+              </a>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- Quick Search Bar right under spotlight -->
+      <div class="hero-search-bar" style="margin-top: 1.25rem;">
+        <i class="ri-search-line"></i>
+        <input type="search" id="hero-search" placeholder="Search harams, bangles, chokers, silver pooja..." aria-label="Search jewellery">
+        <button type="button" id="hero-search-submit" aria-label="Search jewellery" title="Search jewellery">
+          <i class="ri-arrow-right-line"></i>
+        </button>
+      </div>
+
+      <!-- Popular Designs Discover Rail -->
+      <section class="hero-discover-rail" aria-label="Featured jewellery designs" style="margin-top: 1.5rem;">
+        <div class="hero-discover-heading">
+          <span><i class="ri-fire-line" style="color: #ef4444;"></i> Trending Right Now</span>
+          <a href="#catalog-section">View all designs <i class="ri-arrow-right-line"></i></a>
+        </div>
+        <div class="hero-product-track" id="hero-product-rail"></div>
+      </section>
     </div>
-
-    <section class="hero-discover-rail" aria-label="Featured jewellery designs">
-      <div class="hero-discover-heading">
-        <span>Popular designs</span>
-        <a href="#catalog-section">View all <i class="ri-arrow-right-line"></i></a>
-      </div>
-      <div class="hero-product-track" id="hero-product-rail"></div>
-    </section>
-
-    <section class="rates-section" id="rates-section" aria-labelledby="rates-title">
-      <div class="container">
-        <div class="rates-section-heading">
-          <div>
-            <span class="section-tag">Today's showroom rates</span>
-            <h2 id="rates-title">Start with the current metal price</h2>
-            <p>Use these rates to compare designs and plan your budget. Final quotes include making charges and GST.</p>
-          </div>
-          <div class="rates-status-panel">
-            <span class="rate-badge-title" id="rate-sync-label"><span class="live-pulse"></span> Live API</span>
-            <span class="rate-timestamp-badge"><i class="ri-time-line"></i> <span id="rate-time-label">Just now</span></span>
-            <button id="btn-refresh-rates" class="rate-refresh-btn" title="Refresh Live Gold & Silver Rates from API">
-              <i class="ri-refresh-line rate-refresh-icon"></i>
-              <span>Refresh rates</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="rates-grid">
-          <div class="rate-card rate-card-featured">
-            <span>22K Gold</span>
-            <strong id="rate-22k">₹6,850</strong>
-            <small>916 BIS hallmark / gram</small>
-          </div>
-          <div class="rate-card">
-            <span>24K Gold</span>
-            <strong id="rate-24k">₹7,475</strong>
-            <small>Fine gold / gram</small>
-          </div>
-          <div class="rate-card">
-            <span>18K Gold</span>
-            <strong id="rate-18k">₹5,605</strong>
-            <small>Everyday gold / gram</small>
-          </div>
-          <div class="rate-card">
-            <span>Pure Silver</span>
-            <strong id="rate-silver">₹92</strong>
-            <small>925 silver / gram</small>
-          </div>
-        </div>
-
-        <div class="showroom-tools-row">
-          <div class="showroom-contact-details">
-            <a href="tel:9573199344" class="top-link">
-              <i class="ri-phone-fill"></i> <strong>+91 9573199344</strong>
-            </a>
-            <span class="showroom-location"><i class="ri-map-pin-2-fill"></i> Sai Baba Gudi Center, Etikoppaka</span>
-          </div>
-          <div class="showroom-controls">
-            <button id="btn-admin-login" class="admin-login-btn" title="Admin sign in">
-              <i class="ri-shield-keyhole-line"></i> Admin
-            </button>
-            <button id="btn-theme-toggle" class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Switch to light theme" aria-label="Switch to light theme">
-              <i class="ri-sun-line"></i><span>Light</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
   </header>
 
   <!-- ==========================================================================
-       TRUST & HERITAGE STRIP
+       PRODUCT CATALOGUE SECTION
        ========================================================================== -->
-  <section class="trust-strip">
+  <section class="catalog-section" id="catalog-section">
     <div class="container">
-      <div class="trust-grid">
-        <div class="trust-card">
-          <div class="trust-icon-box">
-            <i class="ri-award-fill"></i>
+      <div class="section-head">
+        <span class="section-tag">Collection</span>
+        <h2 class="section-title">Choose your piece</h2>
+        <p class="section-subtitle">
+          Ready pieces and custom designs. Tap a piece for details.
+        </p>
+        <div class="browse-search-bar">
+          <i class="ri-search-line"></i>
+          <input type="search" id="search-catalog" placeholder="Search jewellery..." aria-label="Search jewellery">
+          <span>Search</span>
+        </div>
+      </div>
+
+      <!-- Filters & Search Bar -->
+      <div class="filter-control-panel">
+        <div class="filter-top-row">
+          <div class="category-pills">
+            <button class="filter-btn active" data-category="all">All Designs</button>
+            <button class="filter-btn" data-category="gold-bridal">👑 Bridal &amp; Temple Gold</button>
+            <button class="filter-btn" data-category="gold-daily">✨ Daily Wear &amp; Chains</button>
+            <button class="filter-btn" data-category="silver-pooja">🪔 Silver Pooja Articles</button>
+            <button class="filter-btn" data-category="silver-jewellery">💎 925 Silver Jewellery</button>
+            <button class="filter-btn" data-category="gold-coins">🪙 Gold Coins &amp; Bars</button>
           </div>
-          <div class="trust-info">
-            <h4>916 BIS gold</h4>
-            <p>Hallmarked for purity.</p>
-          </div>
+
         </div>
 
-        <div class="trust-card">
-          <div class="trust-icon-box">
-            <i class="ri-tools-fill"></i>
+        <div class="filter-sub-row">
+          <div class="type-filter-group">
+            <span style="color: var(--text-dim); font-weight: 600;">Stock:</span>
+            <button class="chip-filter active" data-type="all">All Stock</button>
+            <button class="chip-filter" data-type="ready">
+              <i class="ri-checkbox-circle-fill" style="color: #22c55e;"></i> Ready in Shop (Etikoppaka)
+            </button>
+            <button class="chip-filter" data-type="custom">
+              <i class="ri-hammer-fill" style="color: var(--gold-300);"></i> Handmade to Order
+            </button>
           </div>
-          <div class="trust-info">
-            <h4>Local karigars</h4>
-            <p>Made in Etikoppaka.</p>
-          </div>
-        </div>
 
-        <div class="trust-card">
-          <div class="trust-icon-box">
-            <i class="ri-shopping-bag-3-fill"></i>
-          </div>
-          <div class="trust-info">
-            <h4>Ready or custom</h4>
-            <p>Choose what suits you.</p>
+          <div class="product-count-display" id="product-count">
+            Showing all designs
           </div>
         </div>
+      </div>
 
-        <div class="trust-card">
-          <div class="trust-icon-box">
-            <i class="ri-video-chat-fill"></i>
-          </div>
-          <div class="trust-info">
-            <h4>Video shopping</h4>
-            <p>See pieces from home.</p>
-          </div>
-        </div>
+      <!-- Dynamic Product Cards Grid -->
+      <div class="product-grid" id="product-grid">
+        <!-- Injected via app.js -->
       </div>
     </div>
   </section>
 
   <!-- ==========================================================================
-       LIVE RATE ESTIMATOR CALCULATOR
+       LIVE RATE ESTIMATOR & SHOWROOM CALCULATOR
        ========================================================================== -->
-  <section class="promo-media-section" id="promo-media-section">
-    <div class="promo-gold-orbit promo-orbit-one"></div>
-    <div class="promo-gold-orbit promo-orbit-two"></div>
-    <div class="container">
-      <div class="promo-media-grid">
-        <div class="promo-video-stage">
-          <div class="promo-video-frame">
-            <video id="showroom-promo-video" class="promo-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero_jewellery_1789398524527.jpg">
-              <source src="assets/WhatsApp Video 2026-09-18 at 3.00.51 PM.mp4" type="video/mp4">
-              Your browser does not support promotional video playback.
-            </video>
-            <div class="promo-video-vignette"></div>
-            <div class="promo-video-caption"><span class="promo-live-dot"></span> From our showroom</div>
-            <button type="button" class="promo-video-control" id="btn-promo-video" title="Pause showroom film" aria-label="Pause showroom film"><i class="ri-pause-line"></i></button>
-          </div>
-          <div class="promo-video-meta"><span><i class="ri-camera-lens-line"></i> Crafted in Etikoppaka</span><span><i class="ri-sparkling-2-line"></i> A closer look at the detail</span></div>
-        </div>
-        <div class="promo-copy-panel">
-          <span class="section-tag">The SSK signature</span>
-          <h2>Made with <span class="gold-text">care.</span></h2>
-          <p>See real pieces made by our local karigars.</p>
-          <div class="promo-stat-row"><div><strong>916</strong><span>BIS gold</span></div><div><strong>925</strong><span>pure silver</span></div><div><strong>1:1</strong><span>consultation</span></div></div>
-          <a href="#catalog-section" class="btn-primary-gold promo-cta"><i class="ri-arrow-right-up-line"></i> Browse pieces</a>
-        </div>
-      </div>
-      <div class="promo-image-rail" aria-label="Featured jewellery photographs">
-        <figure class="promo-image-card promo-image-card-large"><img src="assets/kasu_mala_1789398607013.jpg" alt="Traditional gold kasu mala jewellery"><figcaption>Temple heritage</figcaption></figure>
-        <figure class="promo-image-card"><img src="assets/gold_bangles_1789398584810.jpg" alt="Handcrafted gold bangles"><figcaption>Hand-finished gold</figcaption></figure>
-        <figure class="promo-image-card"><img src="assets/silver_pooja_1789398568634.jpg" alt="Pure silver pooja articles"><figcaption>Silver ritual craft</figcaption></figure>
-        <figure class="promo-image-card"><img src="assets/artisan_craft_1789398541455.jpg" alt="Artisan jewellery craftsmanship"><figcaption>Made by karigars</figcaption></figure>
-      </div>
-    </div>
-  </section>
-
   <section class="calculator-section" id="calculator-section">
     <div class="container">
       <div class="calculator-card">
@@ -445,63 +400,117 @@
             </a>
           </div>
         </div>
+
+        <!-- Showroom Tools & Live Rate Badges Strip -->
+        <div class="showroom-tools-row" style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+          <div class="showroom-contact-details">
+            <span class="rate-badge-title" id="rate-sync-label"><span class="live-pulse"></span> Live Rate Engine</span>
+            <span class="rate-timestamp-badge" style="margin-left: 0.5rem;"><i class="ri-time-line"></i> <span id="rate-time-label">Just now</span></span>
+            <button id="btn-refresh-rates" class="rate-refresh-btn" title="Refresh Live Gold &amp; Silver Rates from API" style="margin-left: 0.5rem;">
+              <i class="ri-refresh-line rate-refresh-icon"></i>
+              <span>Sync</span>
+            </button>
+            <!-- Hidden legacy rate holders to keep all JS queries valid -->
+            <span style="display:none;" id="rate-22k">₹13,675</span>
+            <span style="display:none;" id="rate-24k">₹14,918</span>
+            <span style="display:none;" id="rate-18k">₹11,189</span>
+            <span style="display:none;" id="rate-silver">₹245</span>
+          </div>
+          <div class="showroom-controls">
+            <button id="btn-admin-login" class="admin-login-btn" title="Admin sign in">
+              <i class="ri-shield-keyhole-line"></i> Admin
+            </button>
+            <button id="btn-theme-toggle" class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch theme">
+              <i class="ri-sun-line"></i><span>Theme</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ==========================================================================
-       PRODUCT CATALOGUE SECTION
+       SHOWROOM PROMOTIONAL MEDIA & VIDEO SECTION
        ========================================================================== -->
-  <section class="catalog-section" id="catalog-section">
+  <section class="promo-media-section" id="promo-media-section">
+    <div class="promo-gold-orbit promo-orbit-one"></div>
+    <div class="promo-gold-orbit promo-orbit-two"></div>
     <div class="container">
-      <div class="section-head">
-        <span class="section-tag">Collection</span>
-        <h2 class="section-title">Choose your piece</h2>
-        <p class="section-subtitle">
-          Ready pieces and custom designs. Tap a piece for details.
-        </p>
-        <div class="browse-search-bar">
-          <i class="ri-search-line"></i>
-          <input type="search" id="search-catalog" placeholder="Search jewellery..." aria-label="Search jewellery">
-          <span>Search</span>
+      <div class="promo-media-grid">
+        <div class="promo-video-stage">
+          <div class="promo-video-frame">
+            <video id="showroom-promo-video" class="promo-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero_jewellery_1789398524527.jpg">
+              <source src="assets/WhatsApp Video 2026-09-18 at 3.00.51 PM.mp4" type="video/mp4">
+              Your browser does not support promotional video playback.
+            </video>
+            <div class="promo-video-vignette"></div>
+            <div class="promo-video-caption"><span class="promo-live-dot"></span> From our showroom</div>
+            <button type="button" class="promo-video-control" id="btn-promo-video" title="Pause showroom film" aria-label="Pause showroom film"><i class="ri-pause-line"></i></button>
+          </div>
+          <div class="promo-video-meta"><span><i class="ri-camera-lens-line"></i> Crafted in Etikoppaka</span><span><i class="ri-sparkling-2-line"></i> A closer look at the detail</span></div>
+        </div>
+        <div class="promo-copy-panel">
+          <span class="section-tag">The SSK signature</span>
+          <h2>Made with <span class="gold-text">care.</span></h2>
+          <p>See real pieces made by our local karigars in Etikoppaka.</p>
+          <div class="promo-stat-row"><div><strong>916</strong><span>BIS gold</span></div><div><strong>925</strong><span>pure silver</span></div><div><strong>1:1</strong><span>consultation</span></div></div>
+          <a href="#catalog-section" class="btn-primary-gold promo-cta"><i class="ri-arrow-right-up-line"></i> Browse pieces</a>
         </div>
       </div>
-
-      <!-- Filters & Search Bar -->
-      <div class="filter-control-panel">
-        <div class="filter-top-row">
-          <div class="category-pills">
-            <button class="filter-btn active" data-category="all">All Designs</button>
-            <button class="filter-btn" data-category="gold-bridal">👑 Bridal &amp; Temple Gold</button>
-            <button class="filter-btn" data-category="gold-daily">✨ Daily Wear &amp; Chains</button>
-            <button class="filter-btn" data-category="silver-pooja">🪔 Silver Pooja Articles</button>
-            <button class="filter-btn" data-category="silver-jewellery">💎 925 Silver Jewellery</button>
-            <button class="filter-btn" data-category="gold-coins">🪙 Gold Coins &amp; Bars</button>
-          </div>
-
-        </div>
-
-        <div class="filter-sub-row">
-          <div class="type-filter-group">
-            <span style="color: var(--text-dim); font-weight: 600;">Stock:</span>
-            <button class="chip-filter active" data-type="all">All Stock</button>
-            <button class="chip-filter" data-type="ready">
-              <i class="ri-checkbox-circle-fill" style="color: #22c55e;"></i> Ready in Shop (Etikoppaka)
-            </button>
-            <button class="chip-filter" data-type="custom">
-              <i class="ri-hammer-fill" style="color: var(--gold-300);"></i> Handmade to Order
-            </button>
-          </div>
-
-          <div class="product-count-display" id="product-count">
-            Showing all designs
-          </div>
-        </div>
+      <div class="promo-image-rail" aria-label="Featured jewellery photographs">
+        <figure class="promo-image-card promo-image-card-large"><img src="assets/kasu_mala_1789398607013.jpg" alt="Traditional gold kasu mala jewellery"><figcaption>Temple heritage</figcaption></figure>
+        <figure class="promo-image-card"><img src="assets/gold_bangles_1789398584810.jpg" alt="Handcrafted gold bangles"><figcaption>Hand-finished gold</figcaption></figure>
+        <figure class="promo-image-card"><img src="assets/silver_pooja_1789398568634.jpg" alt="Pure silver pooja articles"><figcaption>Silver ritual craft</figcaption></figure>
+        <figure class="promo-image-card"><img src="assets/artisan_craft_1789398541455.jpg" alt="Artisan jewellery craftsmanship"><figcaption>Made by karigars</figcaption></figure>
       </div>
+    </div>
+  </section>
 
-      <!-- Dynamic Product Cards Grid -->
-      <div class="product-grid" id="product-grid">
-        <!-- Injected via app.js -->
+  <!-- ==========================================================================
+       TRUST & HERITAGE STRIP
+       ========================================================================== -->
+  <section class="trust-strip">
+    <div class="container">
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon-box">
+            <i class="ri-award-fill"></i>
+          </div>
+          <div class="trust-info">
+            <h4>916 BIS gold</h4>
+            <p>Hallmarked for purity.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-box">
+            <i class="ri-tools-fill"></i>
+          </div>
+          <div class="trust-info">
+            <h4>Local karigars</h4>
+            <p>Made in Etikoppaka.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-box">
+            <i class="ri-shopping-bag-3-fill"></i>
+          </div>
+          <div class="trust-info">
+            <h4>Ready or custom</h4>
+            <p>Choose what suits you.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-box">
+            <i class="ri-video-chat-fill"></i>
+          </div>
+          <div class="trust-info">
+            <h4>Video shopping</h4>
+            <p>See pieces from home.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRatesTicker();
   renderProducts();
   renderHeroProductRail();
+  setupStoryBubbles();
   setupEventListeners();
   setupCalculator();
   setupAdminAccess();
@@ -532,6 +533,23 @@ function renderRatesTicker() {
   if (g18) g18.textContent = `₹${currentRates.gold18k.toLocaleString('en-IN')}`;
   if (slv) slv.textContent = `₹${currentRates.silver.toLocaleString('en-IN')}`;
 
+  // Top Bullion Ticker Bar elements
+  const tg22 = document.getElementById('ticker-rate-22k');
+  const tg24 = document.getElementById('ticker-rate-24k');
+  const tg18 = document.getElementById('ticker-rate-18k');
+  const tslv = document.getElementById('ticker-rate-silver');
+  if (tg22) tg22.textContent = `₹${currentRates.gold22k.toLocaleString('en-IN')}`;
+  if (tg24) tg24.textContent = `₹${currentRates.gold24k.toLocaleString('en-IN')}`;
+  if (tg18) tg18.textContent = `₹${currentRates.gold18k.toLocaleString('en-IN')}`;
+  if (tslv) tslv.textContent = `₹${currentRates.silver.toLocaleString('en-IN')}`;
+
+  // Update hero spotlight price estimate (48.5g 22K gold, 10% making, 3% GST)
+  const spotlightPriceEl = document.getElementById('spotlight-price');
+  if (spotlightPriceEl) {
+    const spotlightTotal = Math.round(48.5 * currentRates.gold22k * 1.10 * 1.03);
+    spotlightPriceEl.textContent = `₹${spotlightTotal.toLocaleString('en-IN')}`;
+  }
+
   if (syncLabel) {
     if (rateSyncStatus.isLive) {
       syncLabel.innerHTML = `<span class="live-pulse"></span> Live API`;
@@ -716,7 +734,9 @@ function renderProducts() {
     // Category match
     const catMatch = currentCategory === 'all' || item.category === currentCategory || 
                      (currentCategory === 'gold' && item.metal === 'gold') ||
-                     (currentCategory === 'silver' && item.metal === 'silver');
+                     (currentCategory === 'silver' && item.metal === 'silver') ||
+                     (currentCategory === 'necklace' && (item.category === 'gold-bridal' || /haram|necklace|choker|mala|chain/i.test(item.name))) ||
+                     (currentCategory === 'bangles' && /bangle|kada|bracelet/i.test(item.name));
 
     // Type match (Ready-Made vs Custom)
     const typeMatch = currentTypeFilter === 'all' || item.availability === currentTypeFilter;
@@ -1645,6 +1665,42 @@ function bookVideoCall() {
     `Namaste, I would like to schedule a 15-minute live video call to view jewellery designs and discuss custom making with your Etikoppaka showroom. Please let me know available time slots today or tomorrow. Thank you!`;
   const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
+}
+
+/* ==========================================================================
+   STORY BUBBLES INTERACTION
+   ========================================================================== */
+function setupStoryBubbles() {
+  const storyBubbles = document.querySelectorAll('.story-bubble');
+  if (!storyBubbles.length) return;
+
+  storyBubbles.forEach(bubble => {
+    bubble.addEventListener('click', () => {
+      storyBubbles.forEach(b => b.classList.remove('active'));
+      bubble.classList.add('active');
+
+      const category = bubble.dataset.category || 'all';
+      currentCategory = category;
+
+      // Sync active state in filter-btn pills if matched
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.category === category || (category === 'all' && btn.dataset.category === 'all')) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      renderProducts();
+
+      // Smooth scroll to catalog section so user immediately sees filtered designs
+      const catalogEl = document.getElementById('catalog-section');
+      if (catalogEl) {
+        const topOffset = catalogEl.getBoundingClientRect().top + window.pageYOffset - 75;
+        window.scrollTo({ top: topOffset, behavior: 'smooth' });
+      }
+    });
+  });
 }
 
 /* ==========================================================================
