@@ -46,11 +46,13 @@ public class SecurityConfig {
     return source;
   }
 
-  @Bean UserDetailsService users(@Value("${app.admin.username:admin}") String username,
-      @Value("${app.admin.password:admin123}") String password,
+  @Bean UserDetailsService users(@Value("${app.admin.username}") String username,
+      @Value("${app.admin.password}") String password,
       PasswordEncoder passwordEncoder) {
-    String effectivePassword = (password == null || password.isBlank()) ? "admin123" : password;
-    return new InMemoryUserDetailsManager(User.withUsername(username).password(passwordEncoder.encode(effectivePassword)).roles("ADMIN").build());
+    if (password == null || password.isBlank()) {
+      throw new IllegalStateException("ADMIN_PASSWORD must be configured in environment variables");
+    }
+    return new InMemoryUserDetailsManager(User.withUsername(username).password(passwordEncoder.encode(password)).roles("ADMIN").build());
   }
 
   @Bean AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { return config.getAuthenticationManager(); }
