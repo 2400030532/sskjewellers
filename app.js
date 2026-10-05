@@ -4,6 +4,7 @@
 // State
 let currentCategory = 'all';
 let currentTypeFilter = 'all';
+let currentMetalFilter = 'all';
 let searchQuery = '';
 let shortlist = [];
 let currentRates = { ...DEFAULT_RATES };
@@ -29,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderHeroProductRail();
   setupStoryBubbles();
   setupEventListeners();
+  setupFilterModal();
+  setupHistoryNavigation();
   setupCalculator();
   setupAdminAccess();
   setupAdminPortal();
@@ -247,6 +250,42 @@ function setupPromoMedia() {
   });
 }
 
+function openSidebar(shouldPushState = true) {
+  const sidebar = document.getElementById('showroom-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const menuButton = document.getElementById('btn-mobile-menu');
+  if (!sidebar) return;
+  sidebar.classList.add('open');
+  backdrop?.classList.add('open');
+  document.body.classList.add('sidebar-drawer-open');
+  menuButton?.setAttribute('aria-expanded', 'true');
+  menuButton?.setAttribute('aria-label', 'Close showroom navigation');
+  if (menuButton) menuButton.innerHTML = '<i class="ri-close-line"></i>';
+  if (shouldPushState) {
+    history.pushState({ modal: 'showroom-sidebar' }, '', '#menu');
+  }
+}
+
+function closeSidebar(triggerHistoryBack = true) {
+  closeSidebarDirect();
+  if (triggerHistoryBack && !isClosingFromPopState && window.location.hash === '#menu') {
+    history.back();
+  }
+}
+
+function closeSidebarDirect() {
+  const sidebar = document.getElementById('showroom-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const menuButton = document.getElementById('btn-mobile-menu');
+  if (!sidebar) return;
+  sidebar.classList.remove('open');
+  backdrop?.classList.remove('open');
+  document.body.classList.remove('sidebar-drawer-open');
+  menuButton?.setAttribute('aria-expanded', 'false');
+  menuButton?.setAttribute('aria-label', 'Open showroom navigation');
+  if (menuButton) menuButton.innerHTML = '<i class="ri-menu-line"></i>';
+}
+
 function setupShowroomNavigation() {
   const sidebar = document.getElementById('showroom-sidebar');
   const backdrop = document.getElementById('sidebar-backdrop');
@@ -261,28 +300,23 @@ function setupShowroomNavigation() {
 
   if (!sidebar || !menuButton) return;
 
-  const setSidebarState = isOpen => {
-    sidebar.classList.toggle('open', isOpen);
-    backdrop?.classList.toggle('open', isOpen);
-    document.body.classList.toggle('sidebar-drawer-open', isOpen);
-    menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.setAttribute('aria-label', isOpen ? 'Close showroom navigation' : 'Open showroom navigation');
-    menuButton.innerHTML = `<i class="${isOpen ? 'ri-close-line' : 'ri-menu-line'}"></i>`;
-  };
-
   menuButton.addEventListener('click', (e) => {
     e.stopPropagation();
-    setSidebarState(!sidebar.classList.contains('open'));
+    if (sidebar.classList.contains('open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
   });
 
-  closeButton?.addEventListener('click', () => setSidebarState(false));
-  backdrop?.addEventListener('click', () => setSidebarState(false));
-  navLinks.forEach(link => link.addEventListener('click', () => setSidebarState(false)));
-  langButtons.forEach(btn => btn.addEventListener('click', () => setSidebarState(false)));
+  closeButton?.addEventListener('click', () => closeSidebar());
+  backdrop?.addEventListener('click', () => closeSidebar());
+  navLinks.forEach(link => link.addEventListener('click', () => closeSidebar()));
+  langButtons.forEach(btn => btn.addEventListener('click', () => closeSidebar()));
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-      setSidebarState(false);
+      closeSidebar();
     }
   });
 
@@ -620,18 +654,36 @@ function updateShortlistUI() {
   renderShortlistDrawer();
 }
 
-function setupShortlistDrawerNav() {
+function openShortlistDrawer(shouldPushState = true) {
   const drawer = document.getElementById('shortlist-drawer');
   const backdrop = document.getElementById('shortlist-backdrop');
+  if (drawer) drawer.classList.add('open');
+  if (backdrop) backdrop.classList.add('open');
+  document.body.classList.add('drawer-open');
+  if (shouldPushState) {
+    history.pushState({ modal: 'shortlist-drawer' }, '', '#saved-designs');
+  }
+}
 
-  const closeDrawer = () => {
-    if (drawer) drawer.classList.remove('open');
-    if (backdrop) backdrop.classList.remove('open');
-  };
+function closeShortlistDrawer(triggerHistoryBack = true) {
+  closeShortlistDrawerDirect();
+  if (triggerHistoryBack && !isClosingFromPopState && window.location.hash === '#saved-designs') {
+    history.back();
+  }
+}
 
+function closeShortlistDrawerDirect() {
+  const drawer = document.getElementById('shortlist-drawer');
+  const backdrop = document.getElementById('shortlist-backdrop');
+  if (drawer) drawer.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('open');
+  document.body.classList.remove('drawer-open');
+}
+
+function setupShortlistDrawerNav() {
   const goHome = (e) => {
     if (e) e.preventDefault();
-    closeDrawer();
+    closeShortlistDrawer();
     const hero = document.getElementById('hero-section');
     if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
     else window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -641,7 +693,7 @@ function setupShortlistDrawerNav() {
 
   const goBrowse = (e) => {
     if (e) e.preventDefault();
-    closeDrawer();
+    closeShortlistDrawer();
     const catalog = document.getElementById('catalog-section');
     if (catalog) catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
     document.querySelectorAll('.mob-nav-item').forEach(item => item.classList.remove('active'));
@@ -654,10 +706,7 @@ function setupShortlistDrawerNav() {
 }
 
 function closeShortlistAndGoHome() {
-  const drawer = document.getElementById('shortlist-drawer');
-  const backdrop = document.getElementById('shortlist-backdrop');
-  if (drawer) drawer.classList.remove('open');
-  if (backdrop) backdrop.classList.remove('open');
+  closeShortlistDrawer();
   const hero = document.getElementById('hero-section');
   if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
   else window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -742,20 +791,33 @@ function renderProducts() {
     // Type match (Ready-Made vs Custom)
     const typeMatch = currentTypeFilter === 'all' || item.availability === currentTypeFilter;
 
+    // Metal purity match
+    let metalMatch = true;
+    if (currentMetalFilter === 'gold-22k') {
+      metalMatch = item.metal === 'gold' && (item.purity?.includes('22K') || item.purity?.includes('916') || !item.purity?.includes('24K'));
+    } else if (currentMetalFilter === 'gold-24k') {
+      metalMatch = item.metal === 'gold' && (item.purity?.includes('24K') || item.purity?.includes('999') || item.category === 'gold-coins');
+    } else if (currentMetalFilter === 'silver') {
+      metalMatch = item.metal === 'silver';
+    }
+
     // Search query match
     const query = searchQuery.trim().toLowerCase();
     const searchMatch = !query || 
       item.name.toLowerCase().includes(query) ||
-      item.teluguName.toLowerCase().includes(query) ||
-      item.sku.toLowerCase().includes(query) ||
-      item.stoneDetails.toLowerCase().includes(query);
+      (item.teluguName && item.teluguName.toLowerCase().includes(query)) ||
+      (item.sku && item.sku.toLowerCase().includes(query)) ||
+      (item.stoneDetails && item.stoneDetails.toLowerCase().includes(query));
 
-    return catMatch && typeMatch && searchMatch;
+    return catMatch && typeMatch && metalMatch && searchMatch;
   });
 
   if (countDisplay) {
     countDisplay.textContent = `Showing ${filtered.length} jewellery design${filtered.length === 1 ? '' : 's'}`;
   }
+
+  // Update active filter tags and badge
+  renderActiveFilterTags();
 
   if (filtered.length === 0) {
     grid.innerHTML = `
@@ -1210,13 +1272,239 @@ function escapeHtml(value) {
 function resetFilters() {
   currentCategory = 'all';
   currentTypeFilter = 'all';
+  currentMetalFilter = 'all';
   searchQuery = '';
   const searchInput = document.getElementById('search-catalog');
+  const heroSearch = document.getElementById('hero-search');
   if (searchInput) searchInput.value = '';
+  if (heroSearch) heroSearch.value = '';
 
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.category === 'all'));
-  document.querySelectorAll('.chip-filter').forEach(c => c.classList.toggle('active', c.dataset.type === 'all'));
+  document.querySelectorAll('.sheet-chip').forEach(c => c.classList.toggle('active', c.dataset.val === 'all'));
+  document.querySelectorAll('.story-bubble').forEach(b => b.classList.toggle('active', b.dataset.category === 'all'));
 
+  renderProducts();
+}
+
+function openFilterModal(shouldPushState = true) {
+  const modal = document.getElementById('filter-modal');
+  if (!modal) return;
+  modal.classList.add('open');
+  document.body.classList.add('modal-open');
+  if (shouldPushState) {
+    history.pushState({ modal: 'filter-modal' }, '', '#filter');
+  }
+}
+
+function closeFilterModal(triggerHistoryBack = true) {
+  closeFilterModalDirect();
+  if (triggerHistoryBack && !isClosingFromPopState && window.location.hash === '#filter') {
+    history.back();
+  }
+}
+
+function closeFilterModalDirect() {
+  const modal = document.getElementById('filter-modal');
+  if (modal) modal.classList.remove('open');
+  document.body.classList.remove('modal-open');
+}
+
+function setupFilterModal() {
+  const modal = document.getElementById('filter-modal');
+  const openBtn = document.getElementById('btn-open-filter-modal');
+  const closeBtn = document.getElementById('btn-close-filter-modal');
+  const applyBtn = document.getElementById('btn-sheet-apply');
+  const resetBtn = document.getElementById('btn-sheet-reset');
+  if (!modal) return;
+
+  let stagedStock = currentTypeFilter;
+  let stagedCategory = currentCategory;
+  let stagedMetal = currentMetalFilter;
+
+  const syncSheetChips = () => {
+    stagedStock = currentTypeFilter;
+    stagedCategory = currentCategory;
+    stagedMetal = currentMetalFilter;
+
+    document.querySelectorAll('.sheet-chip[data-sheet-type="stock"]').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.val === stagedStock);
+    });
+    document.querySelectorAll('.sheet-chip[data-sheet-type="category"]').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.val === stagedCategory);
+    });
+    document.querySelectorAll('.sheet-chip[data-sheet-type="metal"]').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.val === stagedMetal);
+    });
+  };
+
+  openBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    syncSheetChips();
+    openFilterModal();
+  });
+
+  closeBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeFilterModal();
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeFilterModal();
+    }
+  });
+
+  document.querySelectorAll('.sheet-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const type = chip.dataset.sheetType;
+      const val = chip.dataset.val;
+
+      document.querySelectorAll(`.sheet-chip[data-sheet-type="${type}"]`).forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      if (type === 'stock') stagedStock = val;
+      if (type === 'category') stagedCategory = val;
+      if (type === 'metal') stagedMetal = val;
+    });
+  });
+
+  applyBtn?.addEventListener('click', () => {
+    currentTypeFilter = stagedStock;
+    currentCategory = stagedCategory;
+    currentMetalFilter = stagedMetal;
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.category === currentCategory);
+    });
+    document.querySelectorAll('.story-bubble').forEach(b => {
+      b.classList.toggle('active', b.dataset.category === currentCategory);
+    });
+
+    renderProducts();
+    closeFilterModal();
+    showToast('Filters applied');
+  });
+
+  resetBtn?.addEventListener('click', () => {
+    stagedStock = 'all';
+    stagedCategory = 'all';
+    stagedMetal = 'all';
+    syncSheetChips();
+    resetFilters();
+    closeFilterModal();
+    showToast('Filters reset to all designs');
+  });
+}
+
+function renderActiveFilterTags() {
+  const container = document.getElementById('active-filter-chips');
+  const countBadge = document.getElementById('filter-active-count');
+  if (!container) return;
+
+  const tags = [];
+
+  if (currentTypeFilter !== 'all') {
+    const label = currentTypeFilter === 'ready' ? 'Ready in Shop' : 'Made to Order';
+    tags.push({ type: 'stock', label, clear: () => setStockFilter('all') });
+  }
+
+  if (currentCategory !== 'all') {
+    const catMap = {
+      'gold-bridal': 'Bridal & Temple',
+      'bangles': 'Bangles',
+      'gold-daily': 'Daily Wear',
+      'silver-pooja': 'Silver Pooja',
+      'silver-jewellery': '925 Silver',
+      'gold-coins': 'Coins & Bars',
+      'necklace': 'Bridal Sets'
+    };
+    tags.push({ type: 'category', label: catMap[currentCategory] || currentCategory, clear: () => setCategoryFilter('all') });
+  }
+
+  if (currentMetalFilter !== 'all') {
+    const metalMap = {
+      'gold-22k': '22K Gold',
+      'gold-24k': '24K Gold',
+      'silver': '925 Silver'
+    };
+    tags.push({ type: 'metal', label: metalMap[currentMetalFilter] || currentMetalFilter, clear: () => setMetalFilter('all') });
+  }
+
+  if (searchQuery.trim()) {
+    tags.push({
+      type: 'search',
+      label: `"${searchQuery.trim()}"`,
+      clear: () => {
+        searchQuery = '';
+        const sc = document.getElementById('search-catalog');
+        const hs = document.getElementById('hero-search');
+        if (sc) sc.value = '';
+        if (hs) hs.value = '';
+        renderProducts();
+      }
+    });
+  }
+
+  if (countBadge) {
+    const activeFilterCount = (currentTypeFilter !== 'all' ? 1 : 0) + (currentCategory !== 'all' ? 1 : 0) + (currentMetalFilter !== 'all' ? 1 : 0);
+    if (activeFilterCount > 0) {
+      countBadge.textContent = activeFilterCount;
+      countBadge.style.display = 'inline-flex';
+    } else {
+      countBadge.style.display = 'none';
+    }
+  }
+
+  if (tags.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = tags.map((t, idx) => `
+    <span class="active-filter-tag">
+      ${escapeHtml(t.label)}
+      <button type="button" data-tag-idx="${idx}" aria-label="Remove filter ${escapeHtml(t.label)}">&times;</button>
+    </span>
+  `).join('');
+
+  container.querySelectorAll('button[data-tag-idx]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.tagIdx, 10);
+      if (tags[idx] && typeof tags[idx].clear === 'function') {
+        tags[idx].clear();
+      }
+    });
+  });
+}
+
+function setCategoryFilter(category) {
+  currentCategory = category;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.category === category);
+  });
+  document.querySelectorAll('.sheet-chip[data-sheet-type="category"]').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.val === category);
+  });
+  document.querySelectorAll('.story-bubble').forEach(b => {
+    b.classList.toggle('active', b.dataset.category === category);
+  });
+  renderProducts();
+}
+
+function setStockFilter(stock) {
+  currentTypeFilter = stock;
+  document.querySelectorAll('.sheet-chip[data-sheet-type="stock"]').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.val === stock);
+  });
+  renderProducts();
+}
+
+function setMetalFilter(metal) {
+  currentMetalFilter = metal;
+  document.querySelectorAll('.sheet-chip[data-sheet-type="metal"]').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.val === metal);
+  });
   renderProducts();
 }
 
@@ -1369,6 +1657,10 @@ function openProductModal(productId) {
   if (modal) modal.classList.add('open');
   document.body.classList.add('modal-open');
 
+  if (shouldPushState) {
+    history.pushState({ modal: 'product-modal', productId }, '', `#product-${productId}`);
+  }
+
   // Populate product comparison section (Requirement 4)
   renderModalProductComparison(product);
 
@@ -1379,7 +1671,14 @@ function openProductModal(productId) {
   renderModalRelatedProducts(product);
 }
 
-function closeProductModal() {
+function closeProductModal(triggerHistoryBack = true) {
+  closeProductModalDirect();
+  if (triggerHistoryBack && !isClosingFromPopState && window.location.hash.startsWith('#product-')) {
+    history.back();
+  }
+}
+
+function closeProductModalDirect() {
   const modal = document.getElementById('product-modal');
   if (modal) modal.classList.remove('open');
   document.body.classList.remove('modal-open');
@@ -1693,6 +1992,11 @@ function setupStoryBubbles() {
         }
       });
 
+      // Sync active state in filter sheet chips
+      document.querySelectorAll('.sheet-chip[data-sheet-type="category"]').forEach(c => {
+        c.classList.toggle('active', c.dataset.val === category || (category === 'all' && c.dataset.val === 'all'));
+      });
+
       renderProducts();
 
       // Smooth scroll to catalog section so user immediately sees filtered designs
@@ -1715,6 +2019,12 @@ function setupEventListeners() {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentCategory = btn.dataset.category;
+      document.querySelectorAll('.sheet-chip[data-sheet-type="category"]').forEach(c => {
+        c.classList.toggle('active', c.dataset.val === currentCategory);
+      });
+      document.querySelectorAll('.story-bubble').forEach(b => {
+        b.classList.toggle('active', b.dataset.category === currentCategory);
+      });
       renderProducts();
     });
   });
@@ -1725,6 +2035,9 @@ function setupEventListeners() {
       document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       currentTypeFilter = chip.dataset.type;
+      document.querySelectorAll('.sheet-chip[data-sheet-type="stock"]').forEach(c => {
+        c.classList.toggle('active', c.dataset.val === currentTypeFilter);
+      });
       renderProducts();
     });
   });
@@ -1741,28 +2054,21 @@ function setupEventListeners() {
   // Drawer Toggle
   const openDrawerBtns = document.querySelectorAll('.btn-open-shortlist-drawer');
   const closeDrawerBtn = document.getElementById('btn-close-drawer');
-  const drawer = document.getElementById('shortlist-drawer');
   const backdrop = document.getElementById('shortlist-backdrop');
 
   openDrawerBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (drawer) drawer.classList.add('open');
-      if (backdrop) backdrop.classList.add('open');
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openShortlistDrawer();
     });
   });
 
   if (closeDrawerBtn) {
-    closeDrawerBtn.addEventListener('click', () => {
-      if (drawer) drawer.classList.remove('open');
-      if (backdrop) backdrop.classList.remove('open');
-    });
+    closeDrawerBtn.addEventListener('click', () => closeShortlistDrawer());
   }
 
   if (backdrop) {
-    backdrop.addEventListener('click', () => {
-      if (drawer) drawer.classList.remove('open');
-      backdrop.classList.remove('open');
-    });
+    backdrop.addEventListener('click', () => closeShortlistDrawer());
   }
 
   // Modal Backdrop click to close
@@ -2073,4 +2379,129 @@ function updateOwnerPortalIndicator() {
     indicator.remove();
   }
 }
+
+/* ==========================================================================
+   MOBILE BACK GESTURE & BROWSER HISTORY NAVIGATION
+   Prevents mobile edge swipe / Android back button from exiting the website!
+   ========================================================================== */
+let isClosingFromPopState = false;
+
+function setupHistoryNavigation() {
+  // Ensure base home entry exists in browser history
+  if (!history.state || !history.state.page) {
+    history.replaceState({ page: 'home' }, '', window.location.href);
+  }
+
+  // Intercept browser back / Android phone edge swipe gestures
+  window.addEventListener('popstate', (event) => {
+    isClosingFromPopState = true;
+    try {
+      const productModal = document.getElementById('product-modal');
+      const filterModal = document.getElementById('filter-modal');
+      const shortlistDrawer = document.getElementById('shortlist-drawer');
+      const sidebar = document.getElementById('showroom-sidebar');
+      const adminLogin = document.getElementById('admin-login-modal');
+      const adminPortal = document.getElementById('admin-portal-modal');
+      const langModal = document.getElementById('language-modal');
+
+      if (productModal?.classList.contains('open')) {
+        closeProductModalDirect();
+      }
+      if (filterModal?.classList.contains('open')) {
+        closeFilterModalDirect();
+      }
+      if (shortlistDrawer?.classList.contains('open')) {
+        closeShortlistDrawerDirect();
+      }
+      if (sidebar?.classList.contains('open')) {
+        closeSidebarDirect();
+      }
+      if (adminPortal?.classList.contains('open')) {
+        adminPortal.classList.remove('open');
+        document.body.classList.remove('modal-open');
+      }
+      if (adminLogin?.classList.contains('open')) {
+        adminLogin.classList.remove('open');
+        document.body.classList.remove('modal-open');
+      }
+      if (langModal?.classList.contains('open')) {
+        langModal.classList.remove('open');
+      }
+    } finally {
+      isClosingFromPopState = false;
+    }
+  });
+
+  // Support for Capacitor / Cordova hardware back button on Android
+  document.addEventListener('backbutton', (e) => {
+    if (closeAnyOpenModal()) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, false);
+
+  if (window.Capacitor?.Plugins?.App) {
+    window.Capacitor.Plugins.App.addListener('backButton', ({ canGoBack }) => {
+      if (closeAnyOpenModal()) {
+        // Overlay was dismissed smoothly
+      } else if (canGoBack) {
+        window.history.back();
+      }
+    });
+  }
+
+  // Deep-link support on initial load if URL has #product-...
+  const hash = window.location.hash;
+  if (hash.startsWith('#product-')) {
+    const pid = hash.replace('#product-', '');
+    if (pid) {
+      setTimeout(() => {
+        openProductModal(pid, false);
+      }, 150);
+    }
+  }
+}
+
+function closeAnyOpenModal() {
+  const productModal = document.getElementById('product-modal');
+  const filterModal = document.getElementById('filter-modal');
+  const shortlistDrawer = document.getElementById('shortlist-drawer');
+  const sidebar = document.getElementById('showroom-sidebar');
+  const adminLogin = document.getElementById('admin-login-modal');
+  const adminPortal = document.getElementById('admin-portal-modal');
+  const langModal = document.getElementById('language-modal');
+
+  if (productModal?.classList.contains('open')) {
+    closeProductModal();
+    return true;
+  }
+  if (filterModal?.classList.contains('open')) {
+    closeFilterModal();
+    return true;
+  }
+  if (shortlistDrawer?.classList.contains('open')) {
+    closeShortlistDrawer();
+    return true;
+  }
+  if (sidebar?.classList.contains('open')) {
+    closeSidebar();
+    return true;
+  }
+  if (adminPortal?.classList.contains('open')) {
+    adminPortal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    return true;
+  }
+  if (adminLogin?.classList.contains('open')) {
+    adminLogin.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    return true;
+  }
+  if (langModal?.classList.contains('open')) {
+    langModal.classList.remove('open');
+    return true;
+  }
+  return false;
+}
+
 

@@ -200,48 +200,43 @@
        ========================================================================== -->
   <section class="catalog-section" id="catalog-section">
     <div class="container">
-      <div class="section-head" style="margin-bottom: 0.85rem;">
+      <div class="section-head" style="margin-bottom: 0.65rem;">
         <span class="section-tag" style="margin-bottom: 0.25rem;">Showroom Collection</span>
-        <h2 class="section-title" style="margin-bottom: 0.35rem;">Choose your piece</h2>
-        <p class="section-subtitle" style="margin-bottom: 0.6rem;">
+        <h2 class="section-title" style="margin-bottom: 0.25rem;">Choose your piece</h2>
+        <p class="section-subtitle" style="margin-bottom: 0.4rem;">
           Ready pieces &amp; custom designs. Tap any piece for live price &amp; karigar details.
         </p>
-        <div class="browse-search-bar" style="margin-top: 0.5rem;">
-          <i class="ri-search-line"></i>
-          <input type="search" id="search-catalog" placeholder="Search necklace, bangles, haram, coins..." aria-label="Search jewellery">
-          <span>Search</span>
-        </div>
       </div>
 
-      <!-- Filters & Search Bar -->
-      <div class="filter-control-panel">
-        <div class="filter-top-row">
-          <div class="category-pills">
-            <button class="filter-btn active" data-category="all">All Designs</button>
-            <button class="filter-btn" data-category="gold-bridal">👑 Bridal &amp; Temple Gold</button>
-            <button class="filter-btn" data-category="gold-daily">✨ Daily Wear &amp; Chains</button>
-            <button class="filter-btn" data-category="silver-pooja">🪔 Silver Pooja Articles</button>
-            <button class="filter-btn" data-category="silver-jewellery">💎 925 Silver Jewellery</button>
-            <button class="filter-btn" data-category="gold-coins">🪙 Gold Coins &amp; Bars</button>
+      <!-- Clean & Organized Search + Filter Control Panel -->
+      <div class="catalog-clean-controls">
+        <div class="catalog-search-filter-row">
+          <div class="browse-search-bar">
+            <i class="ri-search-line"></i>
+            <input type="search" id="search-catalog" placeholder="Search necklace, bangles, haram, coins..." aria-label="Search jewellery">
           </div>
-
+          <button type="button" id="btn-open-filter-modal" class="btn-filter-trigger" title="Filter by stock, metal, or category">
+            <i class="ri-equalizer-line"></i>
+            <span>Filter</span>
+            <span class="filter-count-badge" id="filter-active-count" style="display:none;">1</span>
+          </button>
         </div>
 
-        <div class="filter-sub-row">
-          <div class="type-filter-group">
-            <span style="color: var(--text-dim); font-weight: 600;">Stock:</span>
-            <button class="chip-filter active" data-type="all">All Stock</button>
-            <button class="chip-filter" data-type="ready">
-              <i class="ri-checkbox-circle-fill" style="color: #22c55e;"></i> Ready in Shop (Etikoppaka)
-            </button>
-            <button class="chip-filter" data-type="custom">
-              <i class="ri-hammer-fill" style="color: var(--gold-300);"></i> Handmade to Order
-            </button>
+        <div class="quick-category-track">
+          <div class="category-pills">
+            <button class="filter-btn active" data-category="all">All Designs</button>
+            <button class="filter-btn" data-category="gold-bridal">👑 Bridal &amp; Temple</button>
+            <button class="filter-btn" data-category="bangles">💫 Bangles</button>
+            <button class="filter-btn" data-category="gold-daily">✨ Daily Wear</button>
+            <button class="filter-btn" data-category="silver-pooja">🪔 Silver Pooja</button>
+            <button class="filter-btn" data-category="silver-jewellery">💎 925 Silver</button>
+            <button class="filter-btn" data-category="gold-coins">🪙 Coins &amp; Bars</button>
           </div>
+        </div>
 
-          <div class="product-count-display" id="product-count">
-            Showing all designs
-          </div>
+        <div class="catalog-status-line">
+          <span class="product-count-display" id="product-count">Showing all designs</span>
+          <div class="active-filter-chips-row" id="active-filter-chips"></div>
         </div>
       </div>
 
@@ -895,6 +890,73 @@
             <!-- Populated dynamically by app.js with touch-friendly horizontal cards -->
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       LUXURY FILTER & SORT MODAL (BOTTOM SHEET)
+       ========================================================================== -->
+  <div class="modal-backdrop filter-modal-backdrop" id="filter-modal" role="dialog" aria-modal="true" aria-labelledby="filter-modal-title">
+    <div class="filter-sheet-card">
+      <div class="filter-sheet-header">
+        <div class="filter-sheet-title-group">
+          <h3 id="filter-modal-title"><i class="ri-equalizer-line" style="color: var(--gold-400);"></i> Filter Jewellery</h3>
+          <p>Organize by showroom stock, category &amp; metal</p>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-filter-modal" title="Close filters">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+
+      <div class="filter-sheet-body">
+        <!-- 1. Stock Availability -->
+        <div class="sheet-filter-group">
+          <label class="sheet-filter-label"><i class="ri-store-2-fill" style="color:var(--gold-400);"></i> Showroom Stock Status</label>
+          <div class="sheet-chips-grid">
+            <button type="button" class="sheet-chip active" data-sheet-type="stock" data-val="all">All Stock</button>
+            <button type="button" class="sheet-chip" data-sheet-type="stock" data-val="ready">
+              <i class="ri-checkbox-circle-fill" style="color: #22c55e;"></i> Ready in Shop (Etikoppaka)
+            </button>
+            <button type="button" class="sheet-chip" data-sheet-type="stock" data-val="custom">
+              <i class="ri-hammer-fill" style="color: var(--gold-300);"></i> Handmade to Order
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Category -->
+        <div class="sheet-filter-group">
+          <label class="sheet-filter-label"><i class="ri-sparkling-fill" style="color:var(--gold-400);"></i> Jewellery Category</label>
+          <div class="sheet-chips-grid">
+            <button type="button" class="sheet-chip active" data-sheet-type="category" data-val="all">All Designs</button>
+            <button type="button" class="sheet-chip" data-sheet-type="category" data-val="gold-bridal">👑 Bridal &amp; Temple</button>
+            <button type="button" class="sheet-chip" data-sheet-type="category" data-val="bangles">💫 Bangles</button>
+            <button type="button" class="sheet-chip" data-sheet-type="category" data-val="gold-daily">✨ Daily Wear</button>
+            <button type="button" class="sheet-chip" data-sheet-type="category" data-val="silver-pooja">🪔 Silver Pooja</button>
+            <button type="button" class="sheet-chip" data-sheet-type="category" data-val="silver-jewellery">💎 925 Silver</button>
+            <button type="button" class="sheet-chip" data-sheet-type="category" data-val="gold-coins">🪙 Coins &amp; Bars</button>
+          </div>
+        </div>
+
+        <!-- 3. Metal Purity -->
+        <div class="sheet-filter-group">
+          <label class="sheet-filter-label"><i class="ri-medal-fill" style="color:var(--gold-400);"></i> Metal Purity</label>
+          <div class="sheet-chips-grid">
+            <button type="button" class="sheet-chip active" data-sheet-type="metal" data-val="all">All Metals</button>
+            <button type="button" class="sheet-chip" data-sheet-type="metal" data-val="gold-22k">22K (916 BIS Hallmark)</button>
+            <button type="button" class="sheet-chip" data-sheet-type="metal" data-val="gold-24k">24K Fine Gold (999)</button>
+            <button type="button" class="sheet-chip" data-sheet-type="metal" data-val="silver">925 Pure Sterling Silver</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-sheet-footer">
+        <button type="button" class="btn-sheet-reset" id="btn-sheet-reset">
+          <i class="ri-refresh-line"></i> Reset All
+        </button>
+        <button type="button" class="btn-primary-gold btn-sheet-apply" id="btn-sheet-apply">
+          Apply Filters
+        </button>
       </div>
     </div>
   </div>
