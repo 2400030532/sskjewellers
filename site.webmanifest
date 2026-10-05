@@ -1,0 +1,17 @@
+{
+  "name": "Sri Sai Krishna Jewellers",
+  "short_name": "SSK Jewellers",
+  "description": "Authentic 22K 916 BIS Hallmarked Gold & Pure Silver Jewellery Showroom in Etikoppaka",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0703",
+  "theme_color": "#b8860b",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

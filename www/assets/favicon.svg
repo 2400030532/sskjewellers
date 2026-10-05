@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1106" />
+      <stop offset="100%" stop-color="#0a0703" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff5cc" />
+      <stop offset="25%" stop-color="#dfb74e" />
+      <stop offset="60%" stop-color="#b8861e" />
+      <stop offset="100%" stop-color="#ffd56b" />
+    </linearGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <!-- Background disc -->
+  <circle cx="64" cy="64" r="62" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="3" />
+  <circle cx="64" cy="64" r="54" fill="none" stroke="url(#goldGrad)" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.8" />
+  <!-- Temple Crown / Kalash Top -->
+  <path d="M54 26 L64 16 L74 26 L69 31 L59 31 Z" fill="url(#goldGrad)" filter="url(#goldGlow)" />
+  <circle cx="64" cy="14" r="2.5" fill="#fff5cc" />
+  <!-- Monogram SSK -->
+  <text x="64" y="74" text-anchor="middle" font-family="'Cinzel Decorative', 'Georgia', serif" font-weight="900" font-size="28" fill="url(#goldGrad)" letter-spacing="1.5" filter="url(#goldGlow)">SSK</text>
+  <text x="64" y="88" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="700" font-size="7.5" fill="#f0c665" letter-spacing="2.8">ETIKOPPAKA</text>
+  <!-- Purity Hallmark star -->
+  <circle cx="64" cy="100" r="2" fill="url(#goldGrad)" />
+  <circle cx="56" cy="100" r="1.2" fill="url(#goldGrad)" opacity="0.6" />
+  <circle cx="72" cy="100" r="1.2" fill="url(#goldGrad)" opacity="0.6" />
+</svg>

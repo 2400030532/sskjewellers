@@ -2940,6 +2940,57 @@ function playSparkleSfx() {
   } catch (e) {}
 }
 
+// Sparkle Burst Particles for Royal Intro & User Interactions
+function spawnGoldenSparkles(originX, originY) {
+  try {
+    const x = typeof originX === 'number' && !isNaN(originX) ? originX : window.innerWidth / 2;
+    const y = typeof originY === 'number' && !isNaN(originY) ? originY : window.innerHeight / 2;
+    const container = document.createElement('div');
+    container.setAttribute('aria-hidden', 'true');
+    container.style.position = 'fixed';
+    container.style.inset = '0';
+    container.style.pointerEvents = 'none';
+    container.style.zIndex = '10000005';
+    container.style.overflow = 'hidden';
+    document.body.appendChild(container);
+
+    const colors = ['#ffd700', '#fff3a8', '#d4af37', '#ffffff', '#e6ca65', '#f3b43f'];
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement('div');
+      const size = Math.random() * 5 + 3;
+      const angle = (Math.PI * 2 / 22) * i + (Math.random() - 0.5) * 0.4;
+      const dist = Math.random() * 110 + 35;
+      const tx = Math.cos(angle) * dist;
+      const ty = Math.sin(angle) * dist;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      p.style.position = 'absolute';
+      p.style.left = `${x}px`;
+      p.style.top = `${y}px`;
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.borderRadius = '50%';
+      p.style.backgroundColor = color;
+      p.style.boxShadow = `0 0 10px ${color}, 0 0 4px #fff`;
+      p.style.pointerEvents = 'none';
+      p.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.65s ease';
+      p.style.transform = 'translate(-50%, -50%) scale(1)';
+      p.style.opacity = '1';
+
+      container.appendChild(p);
+
+      requestAnimationFrame(() => {
+        p.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
+        p.style.opacity = '0';
+      });
+    }
+
+    setTimeout(() => {
+      try { container.remove(); } catch (_) {}
+    }, 700);
+  } catch (_) {}
+}
+
 // ============================================================================
 // CINEMATIC INTRO GATEWAY & PARTICLE CANVAS
 // ============================================================================
@@ -2962,25 +3013,36 @@ function initCinematicIntro() {
     gateway.classList.add('intro-exiting');
     gateway.style.display = 'none';
   } else {
+    // If intro gateway is displaying, dismiss the underneath veil immediately
+    const veil = document.getElementById('cinematic-entry-veil');
+    if (veil) {
+      veil.classList.add('veil-dissolved');
+      setTimeout(() => { try { veil.remove(); } catch (_) {} }, 250);
+    }
     // Play warm opening chime on first gesture or trigger
     setTimeout(() => {
-      playRoyalChime();
+      try { playRoyalChime(); } catch (_) {}
     }, 450);
   }
 
   // Skip Button
   if (skipBtn) {
-    skipBtn.addEventListener('click', () => {
+    skipBtn.addEventListener('click', (e) => {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       exitCinematicIntro(localStorage.getItem('ssk_language') || 'en');
     });
   }
 
   // Language selection cards in intro
   langCards.forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       const lang = card.dataset.introLang || 'en';
-      playRoyalChime();
-      spawnGoldenSparkles(window.innerWidth / 2, window.innerHeight / 2);
+      try { playRoyalChime(); } catch (_) {}
+      try {
+        const rect = card.getBoundingClientRect();
+        spawnGoldenSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      } catch (_) {}
       exitCinematicIntro(lang);
     });
   });
@@ -3080,22 +3142,42 @@ function startIntroParticleCanvas() {
 }
 
 function exitCinematicIntro(language = 'en') {
+  const chosenLang = language === 'te' ? 'te' : 'en';
+
+  try {
+    localStorage.setItem('ssk_language', chosenLang);
+    sessionStorage.setItem('ssk_intro_seen', 'true');
+    sessionStorage.setItem('ssk_entry_veil_seen', 'true');
+    if (typeof applyLanguage === 'function') {
+      applyLanguage(chosenLang);
+    }
+  } catch (err) {
+    console.warn('Error applying language:', err);
+  }
+
+  // Dismiss entry veil if present
+  const veil = document.getElementById('cinematic-entry-veil');
+  if (veil) {
+    veil.classList.add('veil-dissolved');
+    setTimeout(() => {
+      try { veil.remove(); } catch (_) {}
+    }, 400);
+  }
+
   const gateway = document.getElementById('cinematic-intro-gateway');
-  if (!gateway) return;
+  if (gateway) {
+    gateway.classList.add('intro-exiting');
+    setTimeout(() => {
+      gateway.style.display = 'none';
+      if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
+    }, 780);
+  }
 
-  localStorage.setItem('ssk_language', language);
-  sessionStorage.setItem('ssk_intro_seen', 'true');
-  applyLanguage(language);
-
-  gateway.classList.add('intro-exiting');
-  setTimeout(() => {
-    gateway.style.display = 'none';
-    if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
-  }, 780);
-
-  showToast(language === 'te' 
-    ? 'శ్రీ సాయి కృష్ణ జ్యువెలర్స్ షోరూమ్‌కు స్వాగతం!' 
-    : 'Welcome to Sri Sai Krishna Jewellers Showroom!');
+  try {
+    showToast(chosenLang === 'te' 
+      ? 'శ్రీ సాయి కృష్ణ జ్యువెలర్స్ షోరూమ్‌కు స్వాగతం!' 
+      : 'Welcome to Sri Sai Krishna Jewellers Showroom!');
+  } catch (_) {}
 }
 
 function replayCinematicIntro() {
@@ -3105,8 +3187,13 @@ function replayCinematicIntro() {
   gateway.style.display = 'flex';
   gateway.classList.remove('intro-exiting');
   startIntroParticleCanvas();
-  playRoyalChime();
+  try { playRoyalChime(); } catch (_) {}
 }
+
+// Expose globally for inline onclick handlers and console testing
+window.spawnGoldenSparkles = spawnGoldenSparkles;
+window.exitCinematicIntro = exitCinematicIntro;
+window.replayCinematicIntro = replayCinematicIntro;
 
 // ============================================================================
 // SRI SAI KRISHNA JEWELLERS — PREMIUM MOTION EXPERIENCE

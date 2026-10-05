@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://srisaikrishnajewellery.in/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://srisaikrishnajewellery.in/"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://srisaikrishnajewellery.in/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://srisaikrishnajewellery.in/"/>
+    <image:image>
+      <image:loc>https://srisaikrishnajewellery.in/assets/hero.jpg</image:loc>
+      <image:title>Sri Sai Krishna Jewellers - Heritage Gold &amp; Silver Collection</image:title>
+      <image:caption>Authentic 22K 916 BIS Hallmarked bridal harams and jewellery handcrafted in Etikoppaka</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://srisaikrishnajewellery.in/assets/kasu_mala.jpg</image:loc>
+      <image:title>22K Traditional Lakshmi Kasu Mala Long Haram</image:title>
+      <image:caption>Pure 916 gold Lakshmi Kasu mala with kemp rubies and emerald peacock pendant</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://srisaikrishnajewellery.in/assets/gold_bangles.jpg</image:loc>
+      <image:title>22K Antique Nakshi Peacock Gold Bangles Pair</image:title>
+      <image:caption>Handcrafted temple nakshi bangles with dancing peacock motifs and rubies</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://srisaikrishnajewellery.in/assets/silver_pooja.jpg</image:loc>
+      <image:title>Pure 925 Silver Kamakshi Deepam and Pooja Articles</image:title>
+      <image:caption>Sacred handcrafted pure sterling silver pooja items and kamakshi lamps</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://srisaikrishnajewellery.in/assets/artisan.jpg</image:loc>
+      <image:title>Master Karigars at Sri Sai Krishna Jewellers Etikoppaka</image:title>
+      <image:caption>Generations of authentic Andhra goldsmithing and handcrafted jewellery artistry</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://srisaikrishnajewellery.in/#catalog-section</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://srisaikrishnajewellery.in/#calculator-section</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://srisaikrishnajewellery.in/#custom-order-section</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://srisaikrishnajewellery.in/#artisan-section</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://srisaikrishnajewellery.in/#store-section</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://srisaikrishnajewellery.in/#faq-section</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
