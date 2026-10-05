@@ -14,7 +14,7 @@ let rateSyncStatus = {
   source: 'Default'
 };
 function getApiBaseUrl() {
-  return (localStorage.getItem('ssk_api_base_url') || window.SSK_API_BASE_URL || 'https://ssk-jewellers-api.onrender.com').replace(/\/$/, '');
+  return (localStorage.getItem('ssk_api_base_url') || window.SSK_API_BASE_URL || 'https://sskjewellers.onrender.com').replace(/\/$/, '');
 }
 let API_BASE_URL = getApiBaseUrl();
 
@@ -1685,7 +1685,7 @@ function setupAdminAccess() {
   });
 
   setRenderBtn?.addEventListener('click', () => {
-    const url = 'https://ssk-jewellers-api.onrender.com';
+    const url = 'https://sskjewellers.onrender.com';
     localStorage.setItem('ssk_api_base_url', url);
     API_BASE_URL = url;
     if (loginApiInput) loginApiInput.value = url;
