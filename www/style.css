@@ -4072,10 +4072,16 @@ body.light-theme .mob-nav-item.active {
   cursor: pointer;
   font: inherit;
   text-align: left;
-  transition: opacity 0.18s;
+  transition: opacity 0.18s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: relatedStaggerReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
-.modal-related-card:hover { opacity: 0.82; }
+@keyframes relatedStaggerReveal {
+  0% { opacity: 0; transform: translateY(12px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-related-card:hover { opacity: 0.95; transform: translateY(-3px); }
 
 .modal-related-card img {
   width: 100px;
@@ -5902,6 +5908,315 @@ body.light-theme .mob-nav-item.active {
   }
 }
 
+/* ==========================================================================
+   SRI SAI KRISHNA JEWELLERS — PREMIUM MOTION EXPERIENCE
+   Framer-Grade Motion Design System
+   ========================================================================== */
 
+/* 1. CINEMATIC 1.5s ENTRY VEIL & HORIZONTAL GOLD BEAM */
+.cinematic-entry-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  background: radial-gradient(circle at 50% 50%, #150e09 0%, #080503 65%, #020101 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.55s ease;
+  overflow: hidden;
+}
 
+.cinematic-entry-veil.veil-dissolved {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
+.entry-particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.entry-ambient-glow {
+  position: absolute;
+  width: min(500px, 85vw);
+  height: min(500px, 85vw);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, rgba(184, 134, 11, 0.05) 50%, transparent 75%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+/* Horizontal Golden Light Beam (0.3s - 0.8s) */
+.entry-gold-beam-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100vw;
+  height: 2px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  overflow: visible;
+}
+
+.entry-gold-beam {
+  position: absolute;
+  top: 0;
+  left: -40vw;
+  width: 40vw;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.4) 30%, #fff6d6 70%, #ffffff 95%, transparent 100%);
+  box-shadow: 0 0 16px rgba(255, 235, 170, 0.9), 0 0 32px rgba(212, 175, 55, 0.5);
+  animation: entryBeamSweep 0.85s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+.entry-lens-flare {
+  position: absolute;
+  top: -19px;
+  left: -40vw;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 230, 150, 0.6) 30%, transparent 70%);
+  filter: blur(2px);
+  animation: entryBeamSweep 0.85s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes entryBeamSweep {
+  0% { transform: translateX(0); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(140vw); opacity: 0; }
+}
+
+/* Entry Monogram Brand Crest */
+.entry-brand-crest {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(6px);
+  animation: entryCrestReveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.45s;
+}
+
+@keyframes entryCrestReveal {
+  0% { opacity: 0; transform: translateY(14px); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.entry-crest-mark {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
+  background: radial-gradient(circle at 35% 30%, #2a1c12 0%, #120b07 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-royal);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--gold-300);
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.3);
+  margin-bottom: 0.75rem;
+}
+
+.entry-crest-title {
+  font-family: var(--font-royal);
+  font-size: clamp(1.2rem, 3.5vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.entry-crest-sub {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: var(--gold-300);
+  margin-top: 0.3rem;
+  text-transform: uppercase;
+}
+
+/* 2. BACKGROUND DEFOCUS DURING PRODUCT EXTRACTION */
+.page-bg-cinematic-defocus {
+  filter: blur(6px) brightness(0.78);
+  opacity: 0.75;
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+  pointer-events: none;
+}
+
+/* 3. TINY GOLDEN CLICK PULSE (Step 1: 150-250ms) */
+.gold-click-pulse {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, rgba(255, 248, 220, 0.95) 0%, rgba(212, 175, 55, 0.6) 40%, rgba(212, 175, 55, 0) 75%);
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.9);
+  animation: goldPulseKeyframe 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes goldPulseKeyframe {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(7.5); opacity: 0; }
+}
+
+/* 4. PRODUCT EXTRACTION CLONE (Step 2: Card -> Center) */
+.product-flying-clone {
+  position: fixed;
+  z-index: 10000000;
+  pointer-events: none;
+  object-fit: contain;
+  will-change: transform, left, top, width, height;
+  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 28px rgba(212, 175, 55, 0.35));
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 8px;
+}
+
+/* 5. VELOCITY-RESPONSIVE FINE GOLD DUST TRAIL */
+.gold-dust-speck {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999999;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #ffd700 65%, transparent 100%);
+  box-shadow: 0 0 6px #ffd700;
+  animation: goldDustFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes goldDustFade {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.95; }
+  100% { transform: scale(0.2) translate(var(--dust-x, 0), var(--dust-y, 0)); opacity: 0; }
+}
+
+/* 6. REUSABLE LUXURY GOLD LIGHT SWEEP (Section 11) */
+.luxury-gold-sweep-host {
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-gold-sweep {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  pointer-events: none;
+  z-index: 8;
+  background: linear-gradient(
+    105deg,
+    transparent 15%,
+    rgba(255, 245, 210, 0.42) 50%,
+    rgba(212, 175, 55, 0.18) 65%,
+    transparent 85%
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  will-change: transform;
+}
+
+.luxury-gold-sweep.sweep-active {
+  animation: sweepPass 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sweepPass {
+  0% { transform: translateX(-160%) skewX(-20deg); }
+  100% { transform: translateX(360%) skewX(-20deg); }
+}
+
+/* 7. REUSABLE GEMSTONE SPARKLE SYSTEM (Section 10) */
+.gemstone-sparkle-host {
+  position: relative;
+}
+
+.gemstone-micro-sparkle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%) scale(0);
+  animation: gemstoneSparkleAnim 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  filter: drop-shadow(0 0 6px rgba(255, 245, 200, 0.9));
+}
+
+.gemstone-micro-sparkle svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes gemstoneSparkleAnim {
+  0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 0; }
+  35% { transform: translate(-50%, -50%) scale(1.15) rotate(45deg); opacity: 1; }
+  75% { transform: translate(-50%, -50%) scale(0.9) rotate(90deg); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(0) rotate(135deg); opacity: 0; }
+}
+
+/* 8. CINEMATIC SCROLL REVEAL (Section 4) */
+.cinematic-scroll-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(3px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+  will-change: opacity, transform, filter;
+}
+
+.cinematic-scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* 9. PRODUCT DETAIL MODAL HERO ANIMATION & 3D TILT (Section 7, 8, 9) */
+#product-modal.open .modal-media-col img#modal-img {
+  animation: modalHeroReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalHeroReveal {
+  0% { opacity: 0; transform: scale(0.96); filter: blur(4px); }
+  60% { opacity: 1; transform: scale(1.015); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+/* 10. PREFERS-REDUCED-MOTION (Section 15) */
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-entry-veil,
+  .cinematic-intro-gateway,
+  .entry-gold-beam,
+  .gold-click-pulse,
+  .product-flying-clone,
+  .gold-dust-speck,
+  .luxury-gold-sweep,
+  .gemstone-micro-sparkle {
+    animation: none !important;
+    transition: opacity 0.2s ease !important;
+  }
+  .product-card {
+    transform: none !important;
+    transition: none !important;
+  }
+  .cinematic-scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}

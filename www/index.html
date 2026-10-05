@@ -21,6 +21,23 @@
 <body>
 
   <!-- ==========================================================================
+       CINEMATIC 1.5s ENTRY VEIL & HORIZONTAL GOLD BEAM REVEAL (Section 2)
+       ========================================================================== -->
+  <div class="cinematic-entry-veil" id="cinematic-entry-veil" aria-hidden="true">
+    <canvas id="entry-particle-canvas" class="entry-particle-canvas"></canvas>
+    <div class="entry-ambient-glow"></div>
+    <div class="entry-gold-beam-track">
+      <div class="entry-gold-beam"></div>
+      <div class="entry-lens-flare"></div>
+    </div>
+    <div class="entry-brand-crest">
+      <div class="entry-crest-mark">SSK</div>
+      <span class="entry-crest-title">SRI SAI KRISHNA JEWELLERS</span>
+      <span class="entry-crest-sub">ETIKOPPAKA • 916 BIS HALLMARK</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        ROYAL CINEMATIC LOGO INTRO & LANGUAGE GATEWAY
        ========================================================================== -->
   <div class="cinematic-intro-gateway" id="cinematic-intro-gateway" role="dialog" aria-modal="true" aria-label="Royal Intro and Language Selection">
@@ -185,6 +202,11 @@
     </div>
   </aside>
   <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- ==========================================================================
+       MAIN PAGE CONTENT WRAPPER (Cinematic Defocus Target)
+       ========================================================================== -->
+  <div id="page-content-wrapper" class="page-content-wrapper">
 
   <!-- ==========================================================================
        MAIN NAVIGATION
@@ -838,6 +860,7 @@
       </div>
     </div>
   </footer>
+  </div> <!-- end #page-content-wrapper -->
 
   <!-- ==========================================================================
        FLOATING SHORTLIST BUTTON (BOTTOM RIGHT)

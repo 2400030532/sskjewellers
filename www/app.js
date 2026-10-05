@@ -23,6 +23,7 @@ let API_BASE_URL = getApiBaseUrl();
 document.addEventListener('DOMContentLoaded', () => {
   initAudioSystem();
   initCinematicIntro();
+  LuxuryEntrySequence();
   loadCustomProducts();
   loadRates();
   loadRemoteShowroomRates();
@@ -31,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProducts();
   renderHeroProductRail();
   setupProductCard3DMotion();
+  setupCinematicScrollReveal();
+  setupHeroCursorParallax();
   setupStoryBubbles();
   setupEventListeners();
   setupFilterModal();
@@ -1936,6 +1939,8 @@ function closeProductModalDirect() {
   const modal = document.getElementById('product-modal');
   if (modal) modal.classList.remove('open');
   document.body.classList.remove('modal-open');
+  const pageWrapper = document.getElementById('page-content-wrapper');
+  if (pageWrapper) pageWrapper.classList.remove('page-bg-cinematic-defocus');
 }
 
 function renderModalProductComparison(currentProduct) {
@@ -2013,8 +2018,8 @@ function renderModalRelatedProducts(currentProduct) {
   const section = document.getElementById('modal-related-section');
   if (section) section.style.display = '';
 
-  rail.innerHTML = related.map(p => `
-    <button class="modal-related-card" type="button" onclick="openProductModal('${escapeHtml(p.id)}')" aria-label="View ${escapeHtml(p.name)}">
+  rail.innerHTML = related.map((p, idx) => `
+    <button class="modal-related-card" style="animation-delay: ${idx * 80}ms;" type="button" onclick="handleProductCardAction(event, '${escapeHtml(p.id)}')" aria-label="View ${escapeHtml(p.name)}">
       <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.src='assets/hero.jpg'">
       <span>${escapeHtml(p.name)}</span>
       <small>${escapeHtml(String(p.approxGrossWeight))}g · ${p.metal === 'silver' ? '925' : '916'}</small>
@@ -3062,8 +3067,194 @@ function replayCinematicIntro() {
 }
 
 // ============================================================================
-// FRAMER-GRADE 3D PRODUCT CARD PERSPECTIVE TILT & SPECULAR GLARE
+// SRI SAI KRISHNA JEWELLERS — PREMIUM MOTION EXPERIENCE
+// Framer-Grade Motion Design System (Sections 1 to 20)
 // ============================================================================
+
+// 1. REUSABLE LUXURY GOLD LIGHT SWEEP (Section 11)
+function GoldLightSweep(element) {
+  if (!element || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  element.classList.add('luxury-gold-sweep-host');
+  let sweep = element.querySelector('.luxury-gold-sweep');
+  if (!sweep) {
+    sweep = document.createElement('div');
+    sweep.className = 'luxury-gold-sweep';
+    element.appendChild(sweep);
+  }
+  sweep.classList.remove('sweep-active');
+  void sweep.offsetWidth; // trigger reflow
+  sweep.classList.add('sweep-active');
+}
+
+// 2. REUSABLE GEMSTONE SPARKLE SYSTEM (Section 10)
+function GemstoneSparkle(container, posX, posY) {
+  if (!container || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  container.classList.add('gemstone-sparkle-host');
+  
+  const sparkle = document.createElement('div');
+  sparkle.className = 'gemstone-micro-sparkle';
+  sparkle.style.left = `${posX || Math.random() * 60 + 20}%`;
+  sparkle.style.top = `${posY || Math.random() * 50 + 25}%`;
+  sparkle.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0 L13.5 10.5 L24 12 L13.5 13.5 L12 24 L10.5 13.5 L0 12 L10.5 10.5 Z" fill="#ffffff" />
+      <circle cx="12" cy="12" r="2.5" fill="#ffe066" />
+    </svg>
+  `;
+  container.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 500);
+}
+
+// 3. REUSABLE VELOCITY-RESPONSIVE GOLD DUST TRAIL (Section 6, Step 3)
+function GoldParticleTrail(startX, startY, endX, endY) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const count = 10;
+  for (let i = 0; i < count; i++) {
+    const fraction = (i + 1) / count;
+    const x = startX + (endX - startX) * fraction + (Math.random() - 0.5) * 20;
+    const y = startY + (endY - startY) * fraction + (Math.random() - 0.5) * 20;
+
+    const speck = document.createElement('div');
+    speck.className = 'gold-dust-speck';
+    const size = Math.random() * 3 + 2;
+    speck.style.width = `${size}px`;
+    speck.style.height = `${size}px`;
+    speck.style.left = `${x}px`;
+    speck.style.top = `${y}px`;
+    speck.style.setProperty('--dust-x', `${(Math.random() - 0.5) * 30}px`);
+    speck.style.setProperty('--dust-y', `${Math.random() * 25 + 10}px`);
+    document.body.appendChild(speck);
+
+    setTimeout(() => speck.remove(), 550);
+  }
+}
+
+// 4. SIGNATURE PRODUCT CLICK EXPERIENCE (Section 6, Steps 1-5)
+function LuxuryProductReveal(event, productId) {
+  const card = document.getElementById(`card-${productId}`);
+  if (!card) {
+    openProductModal(productId);
+    return;
+  }
+
+  // STEP 1 — CLICK: Tiny golden light pulse at exact click location (150-250ms)
+  const clickX = event?.touches ? event.touches[0].clientX : (event?.clientX || window.innerWidth / 2);
+  const clickY = event?.touches ? event.touches[0].clientY : (event?.clientY || window.innerHeight / 2);
+
+  const pulse = document.createElement('div');
+  pulse.className = 'gold-click-pulse';
+  pulse.style.left = `${clickX}px`;
+  pulse.style.top = `${clickY}px`;
+  document.body.appendChild(pulse);
+  setTimeout(() => pulse.remove(), 260);
+
+  playLuxuryTapSfx();
+
+  // If reduced motion is requested, transition directly
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    openProductModal(productId);
+    return;
+  }
+
+  // STEP 2 — PRODUCT EXTRACTION: Selected product visually separates from card
+  const cardImg = card.querySelector('.card-image-wrap img');
+  if (!cardImg) {
+    openProductModal(productId);
+    return;
+  }
+
+  const rect = cardImg.getBoundingClientRect();
+  const flyingImg = document.createElement('img');
+  flyingImg.className = 'product-flying-clone';
+  flyingImg.src = cardImg.src;
+  flyingImg.alt = cardImg.alt;
+  flyingImg.style.left = `${rect.left}px`;
+  flyingImg.style.top = `${rect.top}px`;
+  flyingImg.style.width = `${rect.width}px`;
+  flyingImg.style.height = `${rect.height}px`;
+  document.body.appendChild(flyingImg);
+
+  // STEP 4 — BACKGROUND TRANSFORMATION: Rest of website subtly defocuses (opacity 75%, blur 6px)
+  const pageWrapper = document.getElementById('page-content-wrapper');
+  if (pageWrapper) pageWrapper.classList.add('page-bg-cinematic-defocus');
+
+  // STEP 3 — GOLD PARTICLE TRAIL along velocity vector
+  const targetX = window.innerWidth / 2;
+  const targetY = window.innerHeight * 0.42;
+  GoldParticleTrail(rect.left + rect.width / 2, rect.top + rect.height / 2, targetX, targetY);
+
+  // Animate lifted product to center
+  requestAnimationFrame(() => {
+    const targetWidth = Math.min(window.innerWidth * 0.75, 340);
+    const targetHeight = targetWidth;
+
+    flyingImg.style.left = `${targetX - targetWidth / 2}px`;
+    flyingImg.style.top = `${targetY - targetHeight / 2}px`;
+    flyingImg.style.width = `${targetWidth}px`;
+    flyingImg.style.height = `${targetHeight}px`;
+    flyingImg.style.transform = 'scale(1.05)';
+  });
+
+  // STEP 5 — CINEMATIC REVEAL: Spotlight, reflection sweep, gemstone sparkle, and open modal
+  setTimeout(() => {
+    flyingImg.style.transform = 'scale(1)';
+    flyingImg.style.opacity = '0';
+    setTimeout(() => flyingImg.remove(), 250);
+
+    // Open actual product detail modal
+    openProductModal(productId);
+
+    // Modal Hero Spotlight Sweep & Micro-sparkle
+    const modalMedia = document.querySelector('.modal-media-col');
+    if (modalMedia) {
+      GoldLightSweep(modalMedia);
+      setTimeout(() => GemstoneSparkle(modalMedia, 45, 35), 400);
+    }
+  }, 480);
+}
+
+// 5. PRODUCT CARD HOVER (Section 5: 5 Layers)
+let lastHoverSound = 0;
+function playSubtleHoverTone() {
+  if (!sfxSoundEnabled || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const nowTime = Date.now();
+  if (nowTime - lastHoverSound < 320) return;
+  lastHoverSound = nowTime;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1760, now);
+    gain.gain.setValueAtTime(0.012, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.14);
+  } catch (e) {}
+}
+
+function LuxuryProductHover(card) {
+  if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const imageWrap = card.querySelector('.card-image-wrap');
+  if (!imageWrap) return;
+
+  playSubtleHoverTone();
+
+  // Layer 3: Gold light sweep
+  GoldLightSweep(imageWrap);
+
+  // Layer 4: 1 to 2 realistic gemstone sparkles near polished gold / stone accents
+  GemstoneSparkle(imageWrap, 35 + Math.random() * 10, 30 + Math.random() * 10);
+  if (Math.random() > 0.45) {
+    setTimeout(() => GemstoneSparkle(imageWrap, 65 + Math.random() * 10, 50 + Math.random() * 10), 180);
+  }
+}
+
+// 6. FRAMER-GRADE 3D PRODUCT CARD PERSPECTIVE TILT
 function setupProductCard3DMotion() {
   const cards = document.querySelectorAll('.product-card');
 
@@ -3079,6 +3270,7 @@ function setupProductCard3DMotion() {
     }
 
     const onPointerMove = (e) => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       const rect = card.getBoundingClientRect();
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -3089,9 +3281,9 @@ function setupProductCard3DMotion() {
       const px = (x / rect.width - 0.5);
       const py = (y / rect.height - 0.5);
 
-      // Max tilt ±8 degrees
-      const rotX = (-py * 16).toFixed(2);
-      const rotY = (px * 16).toFixed(2);
+      // Max tilt ±4 degrees (sophisticated luxury, not excessive)
+      const rotX = (-py * 8).toFixed(2);
+      const rotY = (px * 8).toFixed(2);
 
       card.style.setProperty('--rot-x', `${rotX}deg`);
       card.style.setProperty('--rot-y', `${rotY}deg`);
@@ -3108,79 +3300,163 @@ function setupProductCard3DMotion() {
       card.style.setProperty('--glare-opacity', '0');
     };
 
-    card.addEventListener('pointerenter', () => {});
+    card.addEventListener('pointerenter', () => {
+      LuxuryProductHover(card);
+    });
     card.addEventListener('pointermove', onPointerMove, { passive: true });
     card.addEventListener('pointerleave', onPointerLeave);
   });
 }
 
-// Action Trigger when tapping on a Product Card
+// Action Trigger when tapping on a Product Card (wired to signature reveal)
 function handleProductCardAction(event, productId) {
-  if (event) {
-    const x = event.touches ? event.touches[0].clientX : (event.clientX || window.innerWidth / 2);
-    const y = event.touches ? event.touches[0].clientY : (event.clientY || window.innerHeight / 2);
-    spawnGoldenSparkles(x, y);
-  }
-
-  const card = document.getElementById(`card-${productId}`);
-  if (card) {
-    card.classList.add('card-tapped-spring');
-    setTimeout(() => {
-      card.classList.remove('card-tapped-spring');
-    }, 600);
-  }
-
-  playLuxuryTapSfx();
-  openProductModal(productId);
+  LuxuryProductReveal(event, productId);
 }
 
-// Dynamic Golden Sparkle Particle Burst
-function spawnGoldenSparkles(originX, originY) {
-  let container = document.getElementById('gold-sparkle-burst-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'gold-sparkle-burst-container';
-    container.className = 'gold-sparkle-burst-container';
-    document.body.appendChild(container);
+// 7. CINEMATIC SCROLL REVEAL (Section 4)
+function setupCinematicScrollReveal() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const targets = document.querySelectorAll('.product-card, .collection-stories-section, .calculator-card, .artisan-heritage-strip, .order-desk-card, .store-location-card');
+  targets.forEach(el => el.classList.add('cinematic-scroll-reveal'));
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        // Single subtle gold light reflection sweep
+        const imgWrap = entry.target.querySelector('.card-image-wrap');
+        if (imgWrap) GoldLightSweep(imgWrap);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  targets.forEach(t => observer.observe(t));
+}
+
+// 8. WEBSITE ENTRY SEQUENCE (Section 2: 1.5s total)
+function LuxuryEntrySequence() {
+  const veil = document.getElementById('cinematic-entry-veil');
+  if (!veil) return;
+
+  // Check if user has already entered in this session
+  if (sessionStorage.getItem('ssk_entry_veil_seen') === 'true') {
+    veil.classList.add('veil-dissolved');
+    setTimeout(() => veil.remove(), 400);
+    return;
   }
 
-  const count = 16;
+  startEntryParticleCanvas();
+
+  // 0.0s – 0.3s: Dark ambient with subtle gold particles
+  // 0.3s – 0.8s: Horizontal golden light beam travels across (handled by CSS animation)
+  // 0.8s – 1.2s: Brand title & existing navbar smoothly resolve to sharp
+  setTimeout(() => {
+    playRoyalChime();
+    const navLogo = document.querySelector('.brand-logo');
+    if (navLogo) GoldLightSweep(navLogo);
+  }, 750);
+
+  // 1.2s – 1.6s: Veil smoothly dissolves away completely
+  setTimeout(() => {
+    veil.classList.add('veil-dissolved');
+    sessionStorage.setItem('ssk_entry_veil_seen', 'true');
+    setTimeout(() => veil.remove(), 600);
+  }, 1450);
+}
+
+function startEntryParticleCanvas() {
+  const canvas = document.getElementById('entry-particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  const count = 35;
+  const particles = [];
   for (let i = 0; i < count; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'gold-sparkle-particle';
-
-    const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
-    const distance = Math.random() * 75 + 40;
-    const tx = Math.cos(angle) * distance;
-    const ty = Math.sin(angle) * distance;
-    const size = Math.random() * 5 + 4;
-    const rot = Math.random() * 360;
-
-    particle.style.left = `${originX}px`;
-    particle.style.top = `${originY}px`;
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    particle.style.setProperty('--tx', `${tx}px`);
-    particle.style.setProperty('--ty', `${ty}px`);
-    particle.style.setProperty('--rot', `${rot}deg`);
-
-    container.appendChild(particle);
-
-    setTimeout(() => {
-      particle.remove();
-    }, 680);
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 1.8 + 0.6,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -Math.random() * 0.7 - 0.2,
+      alpha: Math.random() * 0.5 + 0.2
+    });
   }
+
+  let animId;
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < count; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.y < -5) { p.y = height + 5; p.x = Math.random() * width; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffd700';
+      ctx.globalAlpha = p.alpha;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = '#ffe066';
+      ctx.fill();
+    }
+    animId = requestAnimationFrame(draw);
+  }
+  draw();
+  setTimeout(() => cancelAnimationFrame(animId), 2000);
 }
 
-// ============================================================================
-// PRODUCT DETAIL MODAL MACRO INSPECTION LENS & 3D SPOTLIGHT
-// ============================================================================
+// 9. HERO CURSOR PARALLAX (Section 3: 2px - 8px max)
+function setupHeroCursorParallax() {
+  const hero = document.getElementById('hero-section');
+  if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let mouseX = 0, mouseY = 0;
+  let currX = 0, currY = 0;
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX = nx * 8; // max 4px left/right
+    mouseY = ny * 6; // max 3px up/down
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    mouseX = 0;
+    mouseY = 0;
+  });
+
+  function update() {
+    currX += (mouseX - currX) * 0.08;
+    currY += (mouseY - currY) * 0.08;
+    const rail = hero.querySelector('.hero-product-rail-container');
+    if (rail) {
+      rail.style.transform = `translate3d(${currX.toFixed(2)}px, ${currY.toFixed(2)}px, 0)`;
+    }
+    requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// 10. PRODUCT DETAIL MODAL MACRO INSPECTION LENS & 3D SPOTLIGHT (Sections 7, 8, 9)
 function setupModalMacroInspection(product) {
   const viewport = document.getElementById('modal-img-viewport');
   const img = document.getElementById('modal-img');
   const lens = document.getElementById('modal-zoom-lens');
   const glare = document.getElementById('modal-specular-glare');
   if (!viewport || !img || !lens) return;
+
+  // Single sweep on open
+  GoldLightSweep(viewport);
+
+  // Gemstone micro-sparkles on open, then STOP (Section 7)
+  setTimeout(() => GemstoneSparkle(viewport, 38, 40), 600);
+  setTimeout(() => GemstoneSparkle(viewport, 62, 48), 1200);
 
   const updateInspection = (clientX, clientY) => {
     const rect = viewport.getBoundingClientRect();
@@ -3205,15 +3481,17 @@ function setupModalMacroInspection(product) {
     lens.style.backgroundSize = `${rect.width * 2.2}px ${rect.height * 2.2}px`;
     lens.style.backgroundPosition = `${bgX}% ${bgY}%`;
 
-    // Subtle 3D tilt on modal image
+    // Subtle ±2° to ±3° rotation (Section 9: physical object presentation)
     const px = (x / rect.width - 0.5);
     const py = (y / rect.height - 0.5);
-    img.style.transform = `perspective(800px) rotateX(${-py * 12}deg) rotateY(${px * 12}deg) scale(1.02)`;
+    const rotX = (-py * 5).toFixed(2);
+    const rotY = (px * 5).toFixed(2);
+    img.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.015)`;
 
     if (glare) {
       glare.style.setProperty('--modal-glare-x', `${bgX}%`);
       glare.style.setProperty('--modal-glare-y', `${bgY}%`);
-      glare.style.setProperty('--modal-glare-opacity', '1');
+      glare.style.setProperty('--modal-glare-opacity', '0.75');
     }
   };
 
@@ -3235,5 +3513,19 @@ function setupModalMacroInspection(product) {
     img.style.transform = 'translate3d(0, 0, 0) scale(1)';
   };
 }
+
+// Expose Reusable Motion Namespace (Section 16)
+window.LuxuryMotionSystem = {
+  LuxuryEntrySequence,
+  LuxuryProductHover,
+  LuxuryProductReveal,
+  GoldLightSweep,
+  GemstoneSparkle,
+  GoldParticleTrail,
+  setupHeroCursorParallax,
+  setupCinematicScrollReveal,
+  setupModalMacroInspection
+};
+
 
 
