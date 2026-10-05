@@ -73,6 +73,11 @@
       <a href="#artisan-section" class="side-nav-link" data-section="artisan-section"><i class="ri-hammer-line"></i><span>Craft</span></a>
       <a href="#custom-order-section" class="side-nav-link" data-section="custom-order-section"><i class="ri-draft-line"></i><span>Custom</span></a>
       <a href="#store-section" class="side-nav-link" data-section="store-section"><i class="ri-map-pin-line"></i><span>Shop</span></a>
+      <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08);">
+        <button type="button" class="side-nav-link" id="btn-sidebar-owner-login" style="background: none; border: none; width: 100%; text-align: left; opacity: 0.75; font-size: 0.82rem; cursor: pointer; color: var(--gold-300);">
+          <i class="ri-shield-keyhole-line"></i><span>Owner / Admin Sign In</span>
+        </button>
+      </div>
     </nav>
     <div class="sidebar-help-card">
       <span class="sidebar-help-kicker"><i class="ri-customer-service-2-line"></i> Have a question?</span>
@@ -195,15 +200,15 @@
        ========================================================================== -->
   <section class="catalog-section" id="catalog-section">
     <div class="container">
-      <div class="section-head">
-        <span class="section-tag">Collection</span>
-        <h2 class="section-title">Choose your piece</h2>
-        <p class="section-subtitle">
-          Ready pieces and custom designs. Tap a piece for details.
+      <div class="section-head" style="margin-bottom: 0.85rem;">
+        <span class="section-tag" style="margin-bottom: 0.25rem;">Showroom Collection</span>
+        <h2 class="section-title" style="margin-bottom: 0.35rem;">Choose your piece</h2>
+        <p class="section-subtitle" style="margin-bottom: 0.6rem;">
+          Ready pieces &amp; custom designs. Tap any piece for live price &amp; karigar details.
         </p>
-        <div class="browse-search-bar">
+        <div class="browse-search-bar" style="margin-top: 0.5rem;">
           <i class="ri-search-line"></i>
-          <input type="search" id="search-catalog" placeholder="Search jewellery..." aria-label="Search jewellery">
+          <input type="search" id="search-catalog" placeholder="Search necklace, bangles, haram, coins..." aria-label="Search jewellery">
           <span>Search</span>
         </div>
       </div>
@@ -716,7 +721,7 @@
       </div>
 
       <div class="footer-bottom-bar">
-        <p id="footer-copyright">&copy; 2026 Sri Sai Krishna Jewellers, Etikoppaka. All rights reserved. 100% BIS Hallmarked 916 Guarantee. <span id="owner-secret-trigger" title="Owner Access" style="display: inline-block; opacity: 0.15; cursor: pointer; user-select: none; font-size: 0.8rem; margin-left: 0.4rem; vertical-align: middle;" aria-label="Owner Access"><i class="ri-lock-line"></i></span></p>
+        <p id="footer-copyright">&copy; 2026 Sri Sai Krishna Jewellers, Etikoppaka. All rights reserved. 100% BIS Hallmarked 916 Guarantee. &bull; <button type="button" id="owner-secret-trigger" style="background: none; border: none; color: inherit; font: inherit; opacity: 0.5; cursor: pointer; text-decoration: underline; margin-left: 0.25rem;" title="Shop Owner Sign In"><i class="ri-shield-keyhole-line"></i> Owner Login</button></p>
       </div>
     </div>
   </footer>

@@ -1872,9 +1872,16 @@ function setupAdminAccess() {
     }
   });
 
-  // 3. Secret click on footer lock
+  // 3. Secret click on footer lock or sidebar owner button
   const secretTrigger = document.getElementById('owner-secret-trigger');
   secretTrigger?.addEventListener('click', openAdminModal);
+
+  const sidebarOwnerBtn = document.getElementById('btn-sidebar-owner-login');
+  sidebarOwnerBtn?.addEventListener('click', () => {
+    document.getElementById('showroom-sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-backdrop')?.classList.remove('open');
+    openAdminModal();
+  });
 
   // 4. Triple tap on footer copyright
   const footerCopyright = document.getElementById('footer-copyright');
