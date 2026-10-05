@@ -159,7 +159,7 @@
   </div>
 
   <!-- 2. INSTAGRAM-STYLE COLLECTION STORY CIRCLES -->
-  <section class="collection-stories-section" aria-label="Featured jewellery collections">
+  <section class="collection-stories-section" id="hero-section" aria-label="Featured jewellery collections">
     <div class="container stories-container">
       <div class="stories-track">
         <button type="button" class="story-bubble active" data-category="all" title="View all designs">
@@ -189,62 +189,6 @@
       </div>
     </div>
   </section>
-
-  <!-- 3. VISUAL SHOWROOM HERO WITH MASTERPIECE SPOTLIGHT -->
-  <header class="hero-section visual-first-hero" id="hero-section">
-    <div class="container">
-      <div class="spotlight-card">
-        <div class="spotlight-media">
-          <img src="assets/kasu_mala.jpg" alt="22K Traditional Lakshmi Kasu Mala Long Haram" class="spotlight-img">
-          <div class="spotlight-badges">
-            <span class="spotlight-tag-gold"><i class="ri-sparkling-fill"></i> Showroom Masterpiece</span>
-            <span class="spotlight-tag-purity">22K 916 BIS Hallmark • 48.5g</span>
-          </div>
-        </div>
-
-        <div class="spotlight-info">
-          <div class="spotlight-kicker">Handcrafted in Etikoppaka • Ready in Showroom</div>
-          <h1 class="spotlight-title">22K Traditional Lakshmi Kasu Mala Long Haram</h1>
-          <p class="spotlight-telugu">శ్రీ లక్ష్మీ కాసుల పేరు (లాంగ్ హారం)</p>
-          
-          <div class="spotlight-pricing">
-            <div class="spotlight-price-box">
-              <span class="spotlight-price-label">Today's Live Estimate</span>
-              <div class="spotlight-price-val" id="spotlight-price">₹7,11,800</div>
-              <small class="spotlight-price-note">Approx 48.5g • Making &amp; 3% GST included</small>
-            </div>
-            
-            <div class="spotlight-actions">
-              <button type="button" class="btn-primary-gold spotlight-view-btn" onclick="openProductModal('ssk-gld-101')">
-                <i class="ri-eye-line"></i> View details &amp; compare
-              </button>
-              <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20I%20am%20interested%20in%20the%2022K%20Lakshmi%20Kasu%20Mala%20Long%20Haram." target="_blank" rel="noopener noreferrer" class="btn-whatsapp-spotlight">
-                <i class="ri-whatsapp-line"></i> Ask on WhatsApp
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Search Bar right under spotlight -->
-      <div class="hero-search-bar" style="margin-top: 1.25rem;">
-        <i class="ri-search-line"></i>
-        <input type="search" id="hero-search" placeholder="Search harams, bangles, chokers, silver pooja..." aria-label="Search jewellery">
-        <button type="button" id="hero-search-submit" aria-label="Search jewellery" title="Search jewellery">
-          <i class="ri-arrow-right-line"></i>
-        </button>
-      </div>
-
-      <!-- Popular Designs Discover Rail -->
-      <section class="hero-discover-rail" aria-label="Featured jewellery designs" style="margin-top: 1.5rem;">
-        <div class="hero-discover-heading">
-          <span><i class="ri-fire-line" style="color: #ef4444;"></i> Trending Right Now</span>
-          <a href="#catalog-section">View all designs <i class="ri-arrow-right-line"></i></a>
-        </div>
-        <div class="hero-product-track" id="hero-product-rail"></div>
-      </section>
-    </div>
-  </header>
 
   <!-- ==========================================================================
        PRODUCT CATALOGUE SECTION
@@ -417,7 +361,7 @@
             <span style="display:none;" id="rate-silver">₹245</span>
           </div>
           <div class="showroom-controls">
-            <button id="btn-admin-login" class="admin-login-btn" title="Admin sign in">
+            <button id="btn-admin-login" class="admin-login-btn" title="Admin sign in" style="display: none !important;">
               <i class="ri-shield-keyhole-line"></i> Admin
             </button>
             <button id="btn-theme-toggle" class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch theme">
@@ -772,7 +716,7 @@
       </div>
 
       <div class="footer-bottom-bar">
-        <p>&copy; 2026 Sri Sai Krishna Jewellers, Etikoppaka. All rights reserved. 100% BIS Hallmarked 916 Guarantee.</p>
+        <p id="footer-copyright">&copy; 2026 Sri Sai Krishna Jewellers, Etikoppaka. All rights reserved. 100% BIS Hallmarked 916 Guarantee. <span id="owner-secret-trigger" title="Owner Access" style="display: inline-block; opacity: 0.15; cursor: pointer; user-select: none; font-size: 0.8rem; margin-left: 0.4rem; vertical-align: middle;" aria-label="Owner Access"><i class="ri-lock-line"></i></span></p>
       </div>
     </div>
   </footer>

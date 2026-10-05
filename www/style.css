@@ -1508,9 +1508,10 @@ body::before {
 }
 
 .btn-view-details {
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(229, 185, 76, 0.22), rgba(184, 138, 34, 0.4));
   border: 1px solid var(--border-gold);
-  color: var(--gold-200);
+  color: #fff;
+  font-weight: 700;
   padding: 0.65rem 0.85rem;
   border-radius: 8px;
   font-size: 0.82rem;
@@ -1518,18 +1519,23 @@ body::before {
   transition: var(--transition-smooth);
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .btn-view-label {
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .btn-view-details:hover {
-  background: rgba(229, 185, 76, 0.2);
-  color: #fff;
+  background: var(--gold-gradient);
+  color: #1a0f12;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(212, 160, 36, 0.45);
 }
 
 /* ==========================================================================
@@ -4909,13 +4915,96 @@ body.light-theme .mob-nav-item.active {
     font-size: 0.66rem !important;
     margin: 0.3rem 0 !important;
   }
+  .card-actions {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.35rem !important;
+    margin-top: auto !important;
+  }
   .card-actions .btn-view-details {
-    padding: 0.35rem 0.5rem !important;
-    font-size: 0.66rem !important;
+    padding: 0.5rem 0.3rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    justify-content: center !important;
+    text-align: center !important;
   }
   .card-actions .btn-inquire-whatsapp {
-    padding: 0.35rem 0.5rem !important;
-    font-size: 0.66rem !important;
+    padding: 0.5rem 0.3rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    justify-content: center !important;
+    text-align: center !important;
   }
 }
+
+/* ==========================================================================
+   HIDDEN OWNER FLOATING BADGE (Visible only when authenticated)
+   ========================================================================== */
+.owner-floating-badge {
+  position: fixed;
+  bottom: 74px;
+  left: 16px;
+  z-index: 9999;
+  background: rgba(18, 10, 14, 0.95);
+  border: 1px solid var(--border-gold);
+  border-radius: 30px;
+  padding: 0.35rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(212, 175, 55, 0.3);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease;
+  font-family: var(--font-royal);
+  color: var(--gold-200);
+}
+
+.owner-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.btn-owner-pill-action {
+  background: var(--gold-gradient);
+  color: #11080b;
+  border: none;
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-owner-pill-action:hover {
+  filter: brightness(1.15);
+  transform: scale(1.04);
+}
+
+.btn-owner-pill-logout {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-owner-pill-logout:hover {
+  background: rgba(239, 68, 68, 0.4);
+  color: #ff4d6d;
+}
+
 

@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupHeroSearch();
   setupShowroomNavigation();
   setupShortlistDrawerNav();
+  updateOwnerPortalIndicator();
   keepBackendAwake();
   loadRemoteProducts();
   
@@ -807,12 +808,12 @@ function renderProducts() {
           </p>
 
           <div class="card-actions">
-            <a href="${getWhatsAppProductUrl(item)}" target="_blank" rel="noopener noreferrer" class="btn-inquire-whatsapp">
-              <i class="ri-whatsapp-line"></i> Ask about this design
-            </a>
-            <button class="btn-view-details" onclick="openProductModal('${item.id}')" title="View Details" aria-label="View Details of ${escapeHtml(item.name)}">
-              <span class="btn-view-label">Details</span> <i class="ri-arrow-right-s-line"></i>
+            <button class="btn-view-details" onclick="openProductModal('${item.id}')" title="View details and live price" aria-label="View Details and Price for ${escapeHtml(item.name)}">
+              <i class="ri-eye-line"></i> <span class="btn-view-label">View Price</span>
             </button>
+            <a href="${getWhatsAppProductUrl(item)}" target="_blank" rel="noopener noreferrer" class="btn-inquire-whatsapp" title="Ask about this design on WhatsApp">
+              <i class="ri-whatsapp-line"></i> <span>WhatsApp</span>
+            </a>
           </div>
         </div>
       </div>
@@ -927,6 +928,7 @@ function setupAdminPortal() {
     sessionStorage.removeItem('ssk_admin_token');
     sessionStorage.removeItem('ssk_admin_is_offline');
     portal.classList.remove('open');
+    updateOwnerPortalIndicator();
     showToast('Signed out of showroom management.');
   });
 
@@ -1837,7 +1839,7 @@ function setupAdminAccess() {
   });
 
   const closeLogin = () => loginModal.classList.remove('open');
-  openButton.addEventListener('click', () => {
+  const openAdminModal = () => {
     if (sessionStorage.getItem('ssk_admin_token')) {
       document.getElementById('admin-portal-modal')?.classList.add('open');
     } else {
@@ -1845,6 +1847,48 @@ function setupAdminAccess() {
       if (errorEl) errorEl.textContent = '';
       if (offlineNote) offlineNote.style.display = 'none';
       if (loginApiInput) loginApiInput.value = API_BASE_URL;
+    }
+  };
+
+  openButton?.addEventListener('click', openAdminModal);
+
+  // Hidden Owner Triggers (customers never see admin, but owner can easily access)
+  // 1. URL Hash #admin
+  if (window.location.hash === '#admin') {
+    openAdminModal();
+  }
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#admin') {
+      openAdminModal();
+    }
+  });
+
+  // 2. Keyboard shortcut: Ctrl + Shift + A or Alt + A
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey || e.altKey) && e.key.toLowerCase() === 'a') {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+      e.preventDefault();
+      openAdminModal();
+    }
+  });
+
+  // 3. Secret click on footer lock
+  const secretTrigger = document.getElementById('owner-secret-trigger');
+  secretTrigger?.addEventListener('click', openAdminModal);
+
+  // 4. Triple tap on footer copyright
+  const footerCopyright = document.getElementById('footer-copyright');
+  let tapCount = 0;
+  let tapTimer = null;
+  footerCopyright?.addEventListener('click', () => {
+    tapCount++;
+    clearTimeout(tapTimer);
+    if (tapCount >= 3) {
+      tapCount = 0;
+      openAdminModal();
+      showToast('Showroom Owner authentication activated.');
+    } else {
+      tapTimer = setTimeout(() => { tapCount = 0; }, 800);
     }
   });
   closeButton?.addEventListener('click', closeLogin);
@@ -1902,6 +1946,7 @@ function setupAdminAccess() {
       document.getElementById('admin-portal-modal')?.classList.add('open');
       const pill = document.getElementById('admin-server-status-pill');
       if (pill) pill.innerHTML = '<span class="status-dot" style="background:#eab308;box-shadow:0 0 6px #eab308;"></span> Showroom (Offline)';
+      updateOwnerPortalIndicator();
       showToast(reasonMsg || 'Signed in with Showroom Master credentials.');
     };
 
@@ -1930,6 +1975,7 @@ function setupAdminAccess() {
           document.getElementById('admin-portal-modal')?.classList.add('open');
           const pill = document.getElementById('admin-server-status-pill');
           if (pill) pill.innerHTML = '<span class="status-dot"></span> Active';
+          updateOwnerPortalIndicator();
           showToast('Admin access granted.');
           return;
         }
@@ -1987,3 +2033,37 @@ function showToast(message) {
     toast.classList.remove('show');
   }, 3200);
 }
+
+/* ==========================================================================
+   HIDDEN OWNER BADGE (Appears ONLY when shop owner is logged in)
+   ========================================================================== */
+function updateOwnerPortalIndicator() {
+  let indicator = document.getElementById('owner-floating-badge');
+  const token = sessionStorage.getItem('ssk_admin_token');
+  if (token) {
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.id = 'owner-floating-badge';
+      indicator.className = 'owner-floating-badge';
+      indicator.innerHTML = `
+        <span class="owner-badge-dot"></span>
+        <span style="font-weight:700;font-size:0.75rem;letter-spacing:0.5px;">OWNER MODE</span>
+        <button type="button" id="btn-owner-open-portal" class="btn-owner-pill-action" title="Open Admin Portal"><i class="ri-dashboard-line"></i> Portal</button>
+        <button type="button" id="btn-owner-logout-badge" class="btn-owner-pill-logout" title="Sign out of Admin"><i class="ri-logout-box-r-line"></i></button>
+      `;
+      document.body.appendChild(indicator);
+      document.getElementById('btn-owner-open-portal')?.addEventListener('click', () => {
+        document.getElementById('admin-portal-modal')?.classList.add('open');
+      });
+      document.getElementById('btn-owner-logout-badge')?.addEventListener('click', () => {
+        sessionStorage.removeItem('ssk_admin_token');
+        sessionStorage.removeItem('ssk_admin_is_offline');
+        indicator?.remove();
+        showToast('Signed out of showroom management.');
+      });
+    }
+  } else if (indicator) {
+    indicator.remove();
+  }
+}
+
