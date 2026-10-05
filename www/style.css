@@ -139,7 +139,8 @@ body {
 .sidebar-help-card strong { display: block; color: #e9e2d2; font: 600 0.84rem var(--font-serif); margin: 0.45rem 0 0.7rem; }
 .sidebar-help-card a { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--whatsapp-green); font-size: 0.72rem; font-weight: 700; text-decoration: none; }
 .sidebar-backdrop { display: none; }
-.mobile-quick-actions { display: none; }
+.sidebar-backdrop { display: none; }
+/* Mobile nav is shown via the bottom section media query */
 
 body::before {
   content: '';
@@ -1341,6 +1342,15 @@ body::before {
   font-size: 0.82rem;
   cursor: pointer;
   transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.btn-view-label {
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
 .btn-view-details:hover {
@@ -2283,9 +2293,19 @@ body.light-theme .modal-highlight-grid div { background: rgba(157, 112, 22, 0.06
 }
 
 @media (max-width: 768px) {
-  .mobile-quick-actions { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(3, 1fr); padding: 0.45rem 0.55rem calc(0.45rem + env(safe-area-inset-bottom)); background: rgba(15, 15, 14, 0.96); border-top: 1px solid rgba(208, 163, 62, 0.25); backdrop-filter: blur(14px); }
-  .mobile-quick-actions a { display: flex; flex-direction: column; align-items: center; gap: 0.12rem; color: #bdb6a6; font-size: 0.62rem; font-weight: 700; text-decoration: none; }
-  .mobile-quick-actions i { color: var(--gold-300); font-size: 1.05rem; }
+  .mobile-quick-actions { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(5, 1fr); padding: 0.4rem 0.2rem calc(0.4rem + env(safe-area-inset-bottom)); background: rgba(12, 12, 11, 0.97); border-top: 1px solid rgba(208, 163, 62, 0.28); backdrop-filter: blur(18px); gap: 0; }
+  .mobile-quick-actions .mob-nav-item,
+  .mobile-quick-actions a,
+  .mobile-quick-actions button { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.1rem; padding: 0.3rem 0.1rem 0.28rem; color: #a09891; background: transparent; border: 0; font: inherit; font-size: 0.57rem; font-weight: 700; text-decoration: none; letter-spacing: 0.01em; cursor: pointer; transition: color 0.18s; -webkit-tap-highlight-color: transparent; }
+  .mobile-quick-actions i { font-size: 1.1rem; margin-bottom: 0.05rem; }
+  .mobile-quick-actions .mob-nav-item.active,
+  .mobile-quick-actions a.active,
+  .mobile-quick-actions button.active { color: #f1d57d; }
+  .mobile-quick-actions .mob-nav-item.active::before,
+  .mobile-quick-actions a.active::before { content: ''; position: absolute; top: 0; left: 25%; right: 25%; height: 2px; background: var(--gold-400); border-radius: 0 0 2px 2px; }
+  .mobile-quick-actions a[href*="wa.me"] i { color: #25d366; }
+  .mobile-quick-actions a[href*="wa.me"].active,
+  .mobile-quick-actions a[href*="wa.me"]:not(.active) { color: #25d366; }
   body { padding-bottom: 4.2rem; }
   .top-bar { padding: 0.3rem 0; }
   .rate-ticker-wrap { width: 100%; gap: 0.7rem; }
@@ -3011,7 +3031,8 @@ body.light-theme .showroom-location { color: #766f63; }
   .card-actions { grid-template-columns: 1fr auto; gap: 0.3rem; }
   .card-actions .btn-inquire-whatsapp { min-height: 28px; justify-content: center; padding: 0.3rem; font-size: 0; }
   .card-actions .btn-inquire-whatsapp i { margin: 0; font-size: 0.85rem; }
-  .card-actions .btn-view-details { width: 28px; height: 28px; }
+  .card-actions .btn-view-details { min-height: 28px; padding: 0.3rem 0.5rem; font-size: 0.58rem; gap: 0.2rem; }
+  .card-actions .btn-view-details .btn-view-label { font-size: 0.58rem; }
 }
 
 @media (max-width: 480px) {
@@ -3093,13 +3114,6 @@ body.light-theme .showroom-location { color: #766f63; }
 }
 
 @media (max-width: 768px) {
-  .mobile-quick-actions { grid-template-columns: repeat(5, 1fr); gap: 0.15rem; }
-  .mobile-quick-actions a,
-  .mobile-quick-actions button { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.12rem; padding: 0.35rem 0.15rem; color: #bdb6a6; background: transparent; border: 0; font: inherit; font-size: 0.59rem; font-weight: 700; text-decoration: none; cursor: pointer; }
-  .mobile-quick-actions a.active,
-  .mobile-quick-actions button.active { color: #f1d57d; }
-  .mobile-quick-actions a.active::before { content: ''; position: absolute; top: -0.45rem; width: 22px; height: 2px; background: var(--gold-400); }
-  .mobile-quick-actions i { font-size: 1rem; }
   .mobile-tab-badge { position: absolute; top: 0.05rem; right: 20%; display: inline-flex; min-width: 14px; height: 14px; align-items: center; justify-content: center; padding: 0 0.18rem; color: #15120a; background: #e5b94c; border-radius: 50%; font-size: 0.5rem; }
 }
 
@@ -3158,3 +3172,1173 @@ body.light-theme .browse-search-bar input { color: #332f28; }
   .hero-search-bar { width: min(100%, 330px); min-height: 46px; margin-top: 0.8rem; border-radius: 10px; }
   .hero-search-bar input { font-size: 0.8rem; }
 }
+
+/* ==========================================================================
+   SAVED DESIGNS DRAWER - IMPROVED UX
+   ========================================================================== */
+.drawer-go-browse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.38rem 0.7rem;
+  color: var(--gold-300);
+  background: rgba(208, 163, 62, 0.12);
+  border: 1px solid rgba(208, 163, 62, 0.32);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.18s;
+}
+.drawer-go-browse:hover { background: rgba(208, 163, 62, 0.22); color: var(--gold-200); }
+.drawer-go-browse i { font-size: 0.88rem; }
+
+.drawer-browse-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.62rem 1rem;
+  margin-top: 0.65rem;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px dashed rgba(208, 163, 62, 0.25);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.18s;
+}
+.drawer-browse-more-btn:hover { color: var(--gold-300); border-color: rgba(208, 163, 62, 0.5); background: rgba(208, 163, 62, 0.06); }
+.drawer-browse-more-btn i { font-size: 0.85rem; }
+
+/* ==========================================================================
+   PRODUCT MODAL - COMPARE STRIP
+   ========================================================================== */
+.modal-compare-strip {
+  margin: 0.85rem 0;
+  padding: 0.85rem;
+  background: rgba(208, 163, 62, 0.06);
+  border: 1px solid rgba(208, 163, 62, 0.22);
+  border-radius: 10px;
+}
+.modal-compare-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+  color: var(--gold-300);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.modal-compare-heading i { font-size: 0.9rem; }
+.modal-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+.modal-compare-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.55rem;
+  background: rgba(20, 19, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 7px;
+  text-align: center;
+}
+.modal-compare-item .compare-metal { color: var(--text-dim); font-size: 0.62rem; font-weight: 600; }
+.modal-compare-item .compare-price { color: var(--gold-200); font-size: 0.92rem; font-weight: 800; margin: 0.12rem 0; }
+.modal-compare-item .compare-note { color: var(--text-dim); font-size: 0.56rem; }
+.modal-compare-item.compare-active { border-color: rgba(208, 163, 62, 0.48); background: rgba(208, 163, 62, 0.08); }
+.modal-compare-item.compare-active .compare-metal { color: var(--gold-300); }
+
+@media (max-width: 768px) {
+  .modal-compare-strip { margin: 0.6rem 0; padding: 0.65rem; }
+  .modal-compare-grid { grid-template-columns: repeat(2, 1fr); gap: 0.35rem; }
+  .modal-compare-item { padding: 0.4rem 0.3rem; }
+  .modal-compare-item .compare-price { font-size: 0.82rem; }
+}
+
+/* ==========================================================================
+   PRODUCT CARD - VIEW DETAILS BUTTON IMPROVEMENTS
+   ========================================================================== */
+.btn-view-details {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.38rem 0.65rem;
+  color: var(--gold-300);
+  background: transparent;
+  border: 1px solid rgba(208, 163, 62, 0.38);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.btn-view-details:hover { background: rgba(208, 163, 62, 0.1); border-color: rgba(208, 163, 62, 0.6); color: var(--gold-200); }
+.btn-view-details i { font-size: 0.85rem; }
+
+@media (max-width: 768px) {
+  .btn-view-details { padding: 0.3rem 0.45rem; font-size: 0.62rem; }
+  .btn-view-details .btn-view-label { display: inline; }
+}
+
+/* ==========================================================================
+   ADMIN LOGIN - MOBILE-FIRST IMPROVEMENTS
+   ========================================================================== */
+.admin-login-card {
+  max-width: min(400px, calc(100vw - 2rem));
+}
+.admin-login-offline-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+  padding: 0.6rem;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 8px;
+  color: #f87171;
+  font-size: 0.78rem;
+}
+.admin-login-card label {
+  display: block;
+  margin-top: 0.75rem;
+  margin-bottom: 0.35rem;
+  color: var(--gold-200);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.admin-login-card input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  min-height: 44px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .admin-login-card { padding: 1.5rem 1.25rem; border-radius: 16px 16px 0 0; width: 100%; }
+  #admin-login-modal.open { align-items: flex-end; }
+}
+
+/* ==========================================================================
+   LANGUAGE SWITCHER - ALWAYS VISIBLE
+   ========================================================================== */
+.btn-lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.48rem 0.65rem;
+  color: var(--gold-200);
+  background: rgba(208, 163, 62, 0.08);
+  border: 1px solid rgba(208, 163, 62, 0.3);
+  border-radius: 3px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.18s;
+}
+.btn-lang-switcher::after { content: 'EN/తె'; font-size: 0.62rem; color: var(--text-dim); }
+.btn-lang-switcher:hover { background: rgba(208, 163, 62, 0.16); color: var(--gold-100); }
+
+@media (max-width: 768px) {
+  .btn-lang-switcher { padding: 0.4rem 0.5rem; }
+  .btn-lang-switcher::after { display: none; }
+}
+
+/* ==========================================================================
+   LIVE RATES - PULSE ANIMATION IMPROVEMENT
+   ========================================================================== */
+.live-pulse {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #22c55e;
+  animation: livePulse 1.6s ease-in-out infinite;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.75); }
+}
+
+/* ==========================================================================
+   PRODUCT CARD VIEW BUTTON - NO EYE ICON ON MOBILE
+   ========================================================================== */
+@media (max-width: 768px) {
+  .card-actions { display: flex; gap: 0.35rem; align-items: stretch; }
+  .card-actions .btn-inquire-whatsapp { flex: 1; min-height: 34px; font-size: 0.7rem; justify-content: center; padding: 0.35rem 0.5rem; }
+  .card-actions .btn-view-details { flex: 0 0 auto; min-height: 34px; padding: 0.35rem 0.55rem; font-size: 0.62rem; border-radius: 6px; }
+  .card-actions .btn-view-details i { display: none; }
+  .card-actions .btn-view-details .btn-view-label { font-size: 0.62rem; display: inline !important; }
+}
+
+/* ==========================================================================
+/* ==========================================================================
+   MOBILE NAVIGATION - 5-TAB APP BAR (Requirement 1)
+   Home -> Price -> Browse -> Save -> Ask
+   ========================================================================== */
+.mobile-quick-actions {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-left: 0 !important;
+    padding-bottom: calc(4.2rem + env(safe-area-inset-bottom));
+  }
+
+  .showroom-sidebar {
+    display: none !important;
+  }
+
+  .mobile-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background: rgba(10, 5, 7, 0.98);
+    border-top: 1px solid rgba(208, 163, 62, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0.35rem 0.15rem calc(0.35rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.65);
+  }
+
+  .mob-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    min-height: 3.2rem;
+    padding: 0.25rem 0.1rem;
+    color: #8c857b;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0;
+    position: relative;
+    transition: all 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mob-nav-item i {
+    font-size: 1.25rem;
+    display: block;
+    line-height: 1;
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+
+  .mob-nav-item span:not(.mobile-tab-badge) {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: block;
+    line-height: 1;
+  }
+
+  .mob-nav-item.active,
+  .mob-nav-item:active {
+    color: var(--gold-300);
+  }
+
+  .mob-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -0.35rem;
+    left: 20%;
+    right: 20%;
+    height: 2.5px;
+    background: var(--gold-400);
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 2px 8px rgba(229, 185, 76, 0.6);
+  }
+
+  .mob-nav-item:active i {
+    transform: scale(0.9);
+  }
+
+  .mob-nav-item.active i {
+    color: var(--gold-300);
+    text-shadow: 0 0 10px rgba(229, 185, 76, 0.5);
+  }
+
+  /* WhatsApp button gets green accent */
+  .mob-nav-item[href*="wa.me"] i {
+    color: #25d366;
+  }
+
+  .mob-nav-item[href*="wa.me"].active,
+  .mob-nav-item[href*="wa.me"]:active {
+    color: #25d366;
+  }
+
+  /* Badge positioned over Save button */
+  .mobile-tab-badge {
+    position: absolute;
+    top: 0.15rem;
+    right: calc(50% - 15px);
+    display: inline-flex;
+    min-width: 15px;
+    height: 15px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.2rem;
+    color: #ffffff;
+    background: #ff4d6d;
+    border-radius: 10px;
+    font-size: 0.55rem;
+    font-weight: 800;
+    box-shadow: 0 1px 4px rgba(255, 77, 109, 0.6);
+  }
+
+  /* Toast above bottom nav */
+  .toast-notice {
+    bottom: calc(4.6rem + env(safe-area-inset-bottom));
+  }
+
+  /* Floating shortlist button */
+  .floating-shortlist-btn {
+    bottom: calc(4.8rem + env(safe-area-inset-bottom));
+    right: 1rem;
+  }
+}
+
+/* ==========================================================================
+   SAVED DESIGNS DRAWER - COMPLETE UX & UI ENHANCEMENT (Requirement 2)
+   ========================================================================== */
+.drawer-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.drawer-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.drawer-heading-row h3 {
+  font-family: var(--font-royal);
+  font-size: 1.15rem;
+  color: var(--gold-200);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.drawer-subtext {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin: 0;
+}
+.drawer-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.drawer-go-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.75rem;
+  color: #fff;
+  background: rgba(208, 163, 62, 0.22);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.drawer-go-home-btn:hover,
+.drawer-go-home-btn:active {
+  background: var(--gold-500);
+  color: #120e06;
+}
+.drawer-nav-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.drawer-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: all 0.2s;
+  width: 100%;
+}
+.drawer-action-btn.primary {
+  background: rgba(208, 163, 62, 0.16);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-200);
+}
+.drawer-action-btn.primary:hover,
+.drawer-action-btn.primary:active {
+  background: var(--gold-400);
+  color: #140d04;
+}
+.drawer-action-btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+}
+.drawer-action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+.empty-shortlist-notice {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+}
+
+.drawer-go-home:hover { background: rgba(255, 255, 255, 0.12); color: var(--text-main); }
+.drawer-go-home i { font-size: 0.88rem; }
+
+/* ==========================================================================
+   PRODUCT MODAL - COMPARE + RELATED ALWAYS VISIBLE ON SCROLL
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Make the info column naturally tall so compare/related are below */
+  .modal-backdrop#product-modal .modal-info-col {
+    overflow: visible;
+    padding-bottom: 5rem; /* Space for sticky action bar */
+  }
+
+  .modal-compare-strip,
+  .modal-related-section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Ensure the full modal scrolls to reach compare and related sections */
+  .modal-backdrop#product-modal .modal-content-card {
+    height: auto;
+    max-height: 94dvh;
+    min-height: unset;
+  }
+
+  /* Related products rail on mobile - horizontal scroll with nice sizing */
+  .modal-related-rail {
+    display: flex;
+    gap: 0.65rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .modal-related-rail::-webkit-scrollbar { display: none; }
+
+  .modal-related-card {
+    flex: 0 0 120px;
+    min-width: 120px;
+    scroll-snap-align: start;
+  }
+
+  .modal-related-card img {
+    width: 120px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+}
+
+/* ==========================================================================
+   ADMIN PORTAL - MOBILE FIRST REDESIGN
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Admin portal full screen on mobile */
+  .admin-portal-card {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #admin-portal-modal.open {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .admin-portal-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(20, 9, 14, 0.97);
+    backdrop-filter: blur(16px);
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(208, 163, 62, 0.3);
+    margin-bottom: 0;
+  }
+
+  .admin-portal-header h2 { font-size: 1.1rem; margin: 0.2rem 0; }
+  .admin-portal-header p { font-size: 0.72rem; margin: 0; }
+
+  /* Stack form and list vertically on mobile */
+  .admin-portal-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+  }
+
+  .product-admin-form {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .admin-catalogue-list {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 1rem 1.25rem;
+  }
+
+  /* Single column form grid on mobile */
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .admin-field-wide { grid-column: 1; }
+
+  /* Admin rates panel */
+  .admin-rates-panel {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    margin-top: 0;
+  }
+
+  .admin-rate-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .admin-rate-grid .btn-primary-gold { grid-column: 1 / -1; }
+
+  /* Mobile product list rows */
+  .admin-product-row {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    padding: 0.65rem 0;
+  }
+
+  /* Admin login modal - bottom sheet on mobile */
+  .admin-login-card {
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+  }
+
+  #admin-login-modal.open {
+    align-items: flex-end;
+    padding: 0;
+  }
+}
+
+/* ==========================================================================
+   MOBILE LIGHT THEME - BOTTOM NAV
+   ========================================================================== */
+body.light-theme .mobile-quick-actions {
+  background: rgba(255, 253, 248, 0.96);
+  border-top-color: rgba(157, 112, 22, 0.3);
+  box-shadow: 0 -4px 24px rgba(76, 61, 29, 0.16);
+}
+
+body.light-theme .mob-nav-item {
+  color: #9e9484;
+}
+
+body.light-theme .mob-nav-item.active {
+  color: #7a5410;
+}
+
+/* ==========================================================================
+   MODAL RELATED PRODUCTS SECTION - DESKTOP STYLES
+   ========================================================================== */
+.modal-related-section {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.modal-related-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+  color: var(--gold-300);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modal-related-heading i { font-size: 0.9rem; }
+
+.modal-related-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: color 0.18s;
+}
+
+.modal-related-view-all:hover { color: var(--gold-300); }
+
+.modal-related-rail {
+  display: flex;
+  gap: 0.65rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-related-rail::-webkit-scrollbar { display: none; }
+
+.modal-related-card {
+  display: flex;
+  flex: 0 0 100px;
+  min-width: 100px;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: opacity 0.18s;
+}
+
+.modal-related-card:hover { opacity: 0.82; }
+
+.modal-related-card img {
+  width: 100px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 7px;
+  border: 1px solid rgba(229, 185, 76, 0.22);
+}
+
+.modal-related-card span {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-main);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.25;
+}
+
+.modal-related-card small {
+  font-size: 0.58rem;
+  color: var(--gold-400);
+}
+
+/* ==========================================================================
+   SIDEBAR LANGUAGE WIDGET (Requirement 6)
+   ========================================================================== */
+.sidebar-lang-box {
+  padding: 0.85rem 1.25rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.sidebar-lang-pills {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+.sidebar-lang-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(208, 163, 62, 0.25);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.sidebar-lang-btn:hover,
+.sidebar-lang-btn.active {
+  background: rgba(208, 163, 62, 0.2);
+  color: var(--gold-200);
+  border-color: var(--gold-400);
+}
+
+/* Navbar language button enhancement */
+.btn-lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.42rem 0.65rem;
+  color: var(--gold-200);
+  background: rgba(208, 163, 62, 0.12);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: all 0.18s;
+}
+.btn-lang-switcher:hover {
+  background: rgba(208, 163, 62, 0.25);
+  color: #fff;
+}
+.lang-btn-text {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   PRODUCT DETAILS MODAL - COMPARISON MATRIX (Requirement 4)
+   ========================================================================== */
+.modal-compare-section {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.modal-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.modal-section-title {
+  margin: 0;
+  font-family: var(--font-royal);
+  font-size: 0.96rem;
+  color: var(--gold-200);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.modal-section-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.18rem 0.45rem;
+  background: rgba(208, 163, 62, 0.15);
+  border: 1px solid rgba(208, 163, 62, 0.3);
+  color: var(--gold-300);
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.modal-section-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin: 0 0 0.85rem;
+}
+
+.modal-compare-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+.compare-product-card {
+  position: relative;
+  background: rgba(20, 18, 15, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+.compare-product-card.is-current {
+  border-color: var(--gold-400);
+  background: rgba(208, 163, 62, 0.08);
+  box-shadow: 0 0 12px rgba(229, 185, 76, 0.15);
+}
+.compare-badge-current {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.35rem;
+  background: var(--gold-500);
+  color: #110e08;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 0.12rem 0.35rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+.compare-card-thumb {
+  width: 100%;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.45rem;
+}
+.compare-card-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+  min-height: 1.8rem;
+}
+.compare-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  padding: 0.15rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+.compare-row span:first-child { color: var(--text-dim); }
+.compare-row span:last-child { color: var(--gold-200); font-weight: 700; }
+.compare-card-price {
+  margin: 0.45rem 0 0.35rem;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--gold-300);
+  text-align: center;
+}
+.btn-compare-switch {
+  width: 100%;
+  padding: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--gold-200);
+  background: rgba(208, 163, 62, 0.12);
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-compare-switch:hover {
+  background: var(--gold-400);
+  color: #120e06;
+}
+
+/* ==========================================================================
+   MOBILE-CENTRIC ADMIN PORTAL STYLES (Requirement 5)
+   ========================================================================== */
+.admin-portal-backdrop {
+  z-index: 1200;
+}
+.admin-mobile-app-shell {
+  width: 100%;
+  max-width: 680px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: #0e0d0c;
+  border: 1px solid rgba(208, 163, 62, 0.35);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85);
+}
+
+@media (max-width: 768px) {
+  .admin-mobile-app-shell {
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+}
+
+.admin-appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(18, 16, 14, 0.98);
+  border-bottom: 1px solid rgba(208, 163, 62, 0.22);
+}
+.admin-appbar-title-wrap {
+  text-align: center;
+}
+.admin-appbar-title-wrap h2 {
+  font-family: var(--font-royal);
+  font-size: 1.05rem;
+  color: var(--gold-200);
+  margin: 0;
+}
+.admin-appbar-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #10b981;
+}
+.admin-appbar-status .status-dot {
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #10b981;
+}
+.admin-appbar-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.18s;
+}
+.admin-appbar-btn:hover { background: rgba(208, 163, 62, 0.2); color: var(--gold-200); }
+.admin-appbar-btn.danger:hover { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+/* Admin Segmented Tabs */
+.admin-tabs-nav {
+  display: flex;
+  background: rgba(14, 13, 11, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.admin-tab-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.7rem 0.5rem;
+  color: var(--text-dim);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.admin-tab-btn i { font-size: 1rem; }
+.admin-tab-btn.active {
+  color: var(--gold-300);
+  border-bottom-color: var(--gold-400);
+  background: rgba(208, 163, 62, 0.06);
+}
+
+/* Admin Tab Panes */
+.admin-tab-pane {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+.admin-tab-pane.active {
+  display: block;
+}
+
+.admin-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.admin-pane-header h3 {
+  font-family: var(--font-royal);
+  font-size: 1rem;
+  color: var(--gold-200);
+  margin: 0 0 0.15rem;
+}
+.admin-pane-header p {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin: 0;
+}
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+/* Form sheet */
+.admin-form-sheet {
+  background: rgba(24, 21, 17, 0.9);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+.admin-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Admin Mobile Rate Cards */
+.admin-mobile-rate-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.admin-rate-card {
+  background: rgba(24, 21, 17, 0.8);
+  border: 1px solid rgba(208, 163, 62, 0.28);
+  border-radius: 10px;
+  padding: 0.85rem;
+}
+.admin-rate-card.silver-card {
+  border-color: rgba(220, 225, 230, 0.28);
+}
+.rate-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.rate-metal-tag {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--gold-200);
+}
+.admin-rate-card.silver-card .rate-metal-tag {
+  color: #e2e8f0;
+}
+.rate-unit {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+.rate-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.rate-input-wrap .currency-symbol {
+  position: absolute;
+  left: 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--gold-400);
+}
+.rate-input-wrap input {
+  width: 100%;
+  padding: 0.65rem 0.75rem 0.65rem 1.85rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(10, 8, 6, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+.rate-quick-adjust {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+}
+.rate-quick-adjust button {
+  flex: 1;
+  padding: 0.35rem 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.rate-quick-adjust button:active {
+  background: rgba(208, 163, 62, 0.25);
+  color: #fff;
+}
+
+/* Settings Card */
+.admin-settings-card {
+  background: rgba(20, 18, 15, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.api-quick-presets {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.4rem 0 0.8rem;
+}
+.preset-btn {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gold-300);
+  background: rgba(208, 163, 62, 0.1);
+  border: 1px solid rgba(208, 163, 62, 0.3);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.admin-server-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.server-config-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--gold-300);
+  font: inherit;
+  font-size: 0.74rem;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+

@@ -234,10 +234,10 @@ const PRODUCTS_DATA = [
 
 // Default Bullion Rates (Shop owner can update daily in UI or here)
 const DEFAULT_RATES = {
-  gold22k: 6850, // Rs per gram for 22K 916
-  gold24k: 7475, // Rs per gram for 24K pure
-  gold18k: 5605, // Rs per gram for 18K
-  silver: 92     // Rs per gram for 92.5 Silver
+  gold22k: 13675, // Rs per gram for 22K 916
+  gold24k: 14920, // Rs per gram for 24K pure
+  gold18k: 11190, // Rs per gram for 18K
+  silver: 245     // Rs per gram for 92.5 Silver
 };
 
 // Store Information

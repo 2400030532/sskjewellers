@@ -26,28 +26,31 @@ import java.util.stream.Collectors;
 public class SecurityConfig {
   @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
-  @Bean CorsConfigurationSource corsConfigurationSource(@Value("${spring.web.cors.allowed-origins}") String origin) {
+  @Bean CorsConfigurationSource corsConfigurationSource(@Value("${spring.web.cors.allowed-origins:*}") String origin) {
     CorsConfiguration config = new CorsConfiguration();
     List<String> origins = Arrays.stream(origin.split(","))
       .map(String::trim)
       .filter(value -> !value.isBlank())
       .collect(Collectors.toList());
-    config.setAllowedOrigins(origins);
-    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    if (origins.isEmpty() || origins.contains("*")) {
+      config.setAllowedOriginPatterns(List.of("*"));
+    } else {
+      config.setAllowedOriginPatterns(origins);
+    }
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+    config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
+    config.setExposedHeaders(List.of("Authorization"));
+    config.setMaxAge(3600L);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
     return source;
   }
 
-  @Bean UserDetailsService users(@Value("${app.admin.username}") String username,
-      @Value("${app.admin.password:}") String password,
+  @Bean UserDetailsService users(@Value("${app.admin.username:admin}") String username,
+      @Value("${app.admin.password:admin123}") String password,
       PasswordEncoder passwordEncoder) {
-    String storedPassword = password.isBlank() ? "" : passwordEncoder.encode(password);
-    if (storedPassword.isBlank()) {
-      throw new IllegalStateException("ADMIN_PASSWORD must be configured");
-    }
-    return new InMemoryUserDetailsManager(User.withUsername(username).password(storedPassword).roles("ADMIN").build());
+    String effectivePassword = (password == null || password.isBlank()) ? "admin123" : password;
+    return new InMemoryUserDetailsManager(User.withUsername(username).password(passwordEncoder.encode(effectivePassword)).roles("ADMIN").build());
   }
 
   @Bean AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { return config.getAuthenticationManager(); }
