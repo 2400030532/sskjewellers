@@ -66,12 +66,8 @@ function setupLanguagePrompt() {
   const choices = document.querySelectorAll('[data-language-choice]');
   if (!modal) return;
 
-  const savedLanguage = localStorage.getItem('ssk_language');
-  if (savedLanguage === 'en' || savedLanguage === 'te') {
-    applyLanguage(savedLanguage);
-  } else {
-    modal.classList.add('open');
-  }
+  const savedLanguage = localStorage.getItem('ssk_language') || 'en';
+  applyLanguage(savedLanguage);
 
   choices.forEach(choice => {
     choice.addEventListener('click', () => {
@@ -79,17 +75,21 @@ function setupLanguagePrompt() {
       localStorage.setItem('ssk_language', language);
       applyLanguage(language);
       modal.classList.remove('open');
-      showToast(language === 'te' ? 'భాష తెలుగులోకి మార్చబడింది' : 'Language changed to English');
+      showToast(language === 'te' ? 'భాష తెలుగులోకి మార్చబడింది (Telugu)' : 'Language switched to English');
     });
   });
 
-  // Wire up language switcher buttons (navbar & sidebar)
+  // Wire up language switcher buttons (navbar & sidebar) - Direct one-tap switch!
   const langBtns = document.querySelectorAll('#btn-change-language, .btn-lang-switcher, .mob-lang-btn');
   langBtns.forEach(langBtn => {
     if (langBtn) {
       langBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        modal.classList.add('open');
+        const current = localStorage.getItem('ssk_language') || 'en';
+        const next = current === 'te' ? 'en' : 'te';
+        localStorage.setItem('ssk_language', next);
+        applyLanguage(next);
+        showToast(next === 'te' ? 'వెబ్‌సైట్ తెలుగులోకి మార్చబడింది (Telugu)' : 'Website switched to English');
       });
     }
   });
@@ -103,10 +103,6 @@ function setupLanguagePrompt() {
   // Backdrop click to dismiss
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
-      if (!localStorage.getItem('ssk_language')) {
-        localStorage.setItem('ssk_language', 'en');
-        applyLanguage('en');
-      }
       modal.classList.remove('open');
     }
   });
@@ -126,7 +122,8 @@ function applyLanguage(language) {
     langCodeEl.textContent = telugu ? 'తె/EN' : 'EN/తె';
   }
 
-  const translations = {
+  // 1. Navigation Links (Desktop, Mobile, Sidebar)
+  const navTranslations = {
     '.nav-link[href="#hero-section"]': telugu ? 'హోమ్' : 'Home',
     '.nav-link[href="#calculator-section"]': telugu ? 'ధర' : 'Price',
     '.nav-link[href="#catalog-section"]': telugu ? 'నగలు' : 'Browse',
@@ -144,15 +141,11 @@ function applyLanguage(language) {
     '#mob-browse-link span': telugu ? 'నగలు' : 'Browse',
     '#mob-saved-link span:not(.mobile-tab-badge)': telugu ? 'సేవ్' : 'Save',
     '#mob-ask-link span': telugu ? 'అడగండి' : 'Ask',
-    '.hero-description': telugu ? 'చూడండి. పోల్చండి. ఎంచుకోండి.' : 'Browse. Compare. Choose.',
-    '.hero-cta-group a:first-child': telugu ? 'నగలు చూడండి' : 'Browse jewellery',
-    '.hero-cta-group a:last-child': telugu ? 'కస్టమ్ డిజైన్' : 'Custom design',
-    '#rates-title': telugu ? 'లోహ ధర' : 'Metal rates',
-    '#catalog-section .section-title': telugu ? 'మీ నగలను ఎంచుకోండి' : 'Choose your piece',
-    '#catalog-section .section-subtitle': telugu ? 'సిద్ధంగా ఉన్న మరియు కస్టమ్ డిజైన్లు.' : 'Ready pieces and custom designs. Tap a piece for details.'
+    '#btn-nav-shortlist span:not(.shortlist-badge)': telugu ? 'సేవ్ చేసినవి' : 'Saved',
+    '.btn-whatsapp-nav span': telugu ? 'మమ్మల్ని అడగండి' : 'Ask us'
   };
 
-  Object.entries(translations).forEach(([selector, text]) => {
+  Object.entries(navTranslations).forEach(([selector, text]) => {
     const element = document.querySelector(selector);
     if (!element) return;
     const icon = element.querySelector('i');
@@ -161,11 +154,220 @@ function applyLanguage(language) {
     element.appendChild(document.createTextNode(` ${text}`));
   });
 
+  // 2. Top Bullion Ticker Labels
+  const tickerLiveLabel = document.getElementById('ticker-live-status-label');
+  if (tickerLiveLabel) tickerLiveLabel.textContent = telugu ? 'ప్రత్యక్ష ధరలు' : 'LIVE RATES';
+
+  document.querySelectorAll('.ticker-label-22k').forEach(el => el.textContent = telugu ? '22K బంగారం: ' : '22K Gold: ');
+  document.querySelectorAll('.ticker-label-24k').forEach(el => el.textContent = telugu ? '24K బంగారం: ' : '24K Gold: ');
+  document.querySelectorAll('.ticker-label-18k').forEach(el => el.textContent = telugu ? '18K బంగారం: ' : '18K Gold: ');
+  document.querySelectorAll('.ticker-label-silver').forEach(el => el.textContent = telugu ? 'వెండి: ' : 'Silver: ');
+  document.querySelectorAll('.ticker-label-hallmark').forEach(el => el.textContent = telugu ? 'ఏటికొప్పాక: ' : 'Etikoppaka: ');
+  document.querySelectorAll('.ticker-val-hallmark').forEach(el => el.textContent = telugu ? '100% 916 BIS హాల్‌మార్క్' : '100% 916 BIS Hallmark');
+
+  const tickerCalcText = document.getElementById('ticker-calc-btn-text');
+  if (tickerCalcText) tickerCalcText.textContent = telugu ? 'కాలిక్యులేటర్' : 'Calculator';
+
+  // 3. Instagram-style Story Bubbles
+  const storyMap = {
+    'all': telugu ? 'అన్ని నమూనాలు' : 'All Designs',
+    'necklace': telugu ? 'పెళ్లి హారాలు' : 'Bridal Sets',
+    'bangles': telugu ? 'బంగారు గాజులు' : 'Bangles',
+    'gold-daily': telugu ? 'రోజూ వేసుకునేవి' : 'Daily Wear',
+    'silver-pooja': telugu ? 'వెండి పూజా సామాగ్రి' : 'Silver Pooja',
+    'gold-coins': telugu ? 'బంగారు నాణాలు' : 'Coins & Bars'
+  };
+  document.querySelectorAll('.story-bubble').forEach(bubble => {
+    const cat = bubble.dataset.category;
+    const span = bubble.querySelector('span');
+    if (span && storyMap[cat]) span.textContent = storyMap[cat];
+  });
+
+  // 4. Catalog Controls & Header
+  const catalogTag = document.querySelector('#catalog-section .section-tag');
+  if (catalogTag) catalogTag.textContent = telugu ? 'ఏటికొప్పాక షోరూమ్ కలెక్షన్' : 'Showroom Collection';
+
+  const catalogTitle = document.querySelector('#catalog-section .section-title');
+  if (catalogTitle) catalogTitle.textContent = telugu ? 'మీకు నచ్చిన నగలను ఎంచుకోండి' : 'Choose your piece';
+
+  const catalogSubtitle = document.querySelector('#catalog-section .section-subtitle');
+  if (catalogSubtitle) catalogSubtitle.textContent = telugu 
+    ? 'సిద్ధంగా ఉన్నవి మరియు ప్రత్యేక ఆర్డర్లు. ప్రత్యక్ష ధర మరియు వివరాల కోసం తాకండి.' 
+    : 'Ready pieces & custom designs. Tap any piece for live price & karigar details.';
+
   const heroSearch = document.getElementById('hero-search');
   const catalogueSearch = document.getElementById('search-catalog');
-  if (heroSearch) heroSearch.placeholder = telugu ? 'నగలు వెతకండి...' : 'Search jewellery...';
-  if (catalogueSearch) catalogueSearch.placeholder = telugu ? 'నగలు వెతకండి...' : 'Search jewellery...';
+  if (heroSearch) heroSearch.placeholder = telugu ? 'హారం, గాజులు, నెక్లెస్, కాసుల పేరు వెతకండి...' : 'Search jewellery...';
+  if (catalogueSearch) catalogueSearch.placeholder = telugu ? 'హారం, గాజులు, నెక్లెస్, కాసుల పేరు వెతకండి...' : 'Search necklace, bangles, haram, coins...';
+
+  const filterTriggerBtn = document.querySelector('#btn-open-filter-modal span:not(.filter-count-badge)');
+  if (filterTriggerBtn) filterTriggerBtn.textContent = telugu ? 'ఫిల్టర్' : 'Filter';
+
+  // Quick category pills
+  const pillMap = {
+    'all': telugu ? 'అన్ని నమూనాలు' : 'All Designs',
+    'gold-bridal': telugu ? '👑 పెళ్లి & గుడి నగలు' : '👑 Bridal & Temple',
+    'bangles': telugu ? '💫 గాజులు & కడియాలు' : '💫 Bangles',
+    'gold-daily': telugu ? '✨ రోజూ వేసుకునే నగలు' : '✨ Daily Wear',
+    'silver-pooja': telugu ? '🪔 వెండి పూజా వస్తువులు' : '🪔 Silver Pooja',
+    'silver-jewellery': telugu ? '💎 925 స్వచ్ఛమైన వెండి' : '💎 925 Silver',
+    'gold-coins': telugu ? '🪙 బంగారు నాణాలు' : '🪙 Coins & Bars'
+  };
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const cat = btn.dataset.category;
+    if (pillMap[cat]) btn.textContent = pillMap[cat];
+  });
+
+  // 5. Filter Modal Bottom Sheet
+  const filterTitle = document.getElementById('filter-modal-title');
+  if (filterTitle) {
+    filterTitle.innerHTML = telugu 
+      ? '<i class="ri-equalizer-line" style="color: var(--gold-400);"></i> నగలను ఫిల్టర్ చేయండి' 
+      : '<i class="ri-equalizer-line" style="color: var(--gold-400);"></i> Filter Jewellery';
+  }
+  const filterSub = document.querySelector('.filter-sheet-title-group p');
+  if (filterSub) filterSub.textContent = telugu ? 'లభ్యత, నగల వర్గం మరియు స్వచ్ఛత ఆధారంగా ఎంచుకోండి' : 'Organize by showroom stock, category & metal';
+
+  const sheetLabels = document.querySelectorAll('.sheet-filter-label');
+  if (sheetLabels[0]) sheetLabels[0].innerHTML = telugu ? '<i class="ri-store-2-fill" style="color:var(--gold-400);"></i> షోరూమ్ లభ్యత' : '<i class="ri-store-2-fill" style="color:var(--gold-400);"></i> Showroom Stock Status';
+  if (sheetLabels[1]) sheetLabels[1].innerHTML = telugu ? '<i class="ri-sparkling-fill" style="color:var(--gold-400);"></i> నగల వర్గం' : '<i class="ri-sparkling-fill" style="color:var(--gold-400);"></i> Jewellery Category';
+  if (sheetLabels[2]) sheetLabels[2].innerHTML = telugu ? '<i class="ri-medal-fill" style="color:var(--gold-400);"></i> లోహ స్వచ్ఛత' : '<i class="ri-medal-fill" style="color:var(--gold-400);"></i> Metal Purity';
+
+  // Stock chips
+  const stockChipAll = document.querySelector('.sheet-chip[data-sheet-type="stock"][data-val="all"]');
+  if (stockChipAll) stockChipAll.textContent = telugu ? 'అన్ని రకాలు' : 'All Stock';
+  const stockChipReady = document.querySelector('.sheet-chip[data-sheet-type="stock"][data-val="ready"]');
+  if (stockChipReady) stockChipReady.innerHTML = telugu ? '<i class="ri-checkbox-circle-fill" style="color: #22c55e;"></i> ఏటికొప్పాక షాపులో సిద్ధంగా ఉన్నవి' : '<i class="ri-checkbox-circle-fill" style="color: #22c55e;"></i> Ready in Shop (Etikoppaka)';
+  const stockChipCustom = document.querySelector('.sheet-chip[data-sheet-type="stock"][data-val="custom"]');
+  if (stockChipCustom) stockChipCustom.innerHTML = telugu ? '<i class="ri-hammer-fill" style="color: var(--gold-300);"></i> ఆర్డర్‌పై చేతితో తయారుచేసేవి' : '<i class="ri-hammer-fill" style="color: var(--gold-300);"></i> Handmade to Order';
+
+  // Category chips
+  document.querySelectorAll('.sheet-chip[data-sheet-type="category"]').forEach(chip => {
+    const val = chip.dataset.val;
+    if (pillMap[val]) chip.textContent = pillMap[val];
+  });
+
+  // Metal chips
+  const metalChipAll = document.querySelector('.sheet-chip[data-sheet-type="metal"][data-val="all"]');
+  if (metalChipAll) metalChipAll.textContent = telugu ? 'అన్ని లోహాలు' : 'All Metals';
+  const metalChip22k = document.querySelector('.sheet-chip[data-sheet-type="metal"][data-val="gold-22k"]');
+  if (metalChip22k) metalChip22k.textContent = telugu ? '22K (916 BIS హాల్‌మార్క్)' : '22K (916 BIS Hallmark)';
+  const metalChip24k = document.querySelector('.sheet-chip[data-sheet-type="metal"][data-val="gold-24k"]');
+  if (metalChip24k) metalChip24k.textContent = telugu ? '24K స్వచ్ఛమైన బంగారం (999)' : '24K Fine Gold (999)';
+  const metalChipSlv = document.querySelector('.sheet-chip[data-sheet-type="metal"][data-val="silver"]');
+  if (metalChipSlv) metalChipSlv.textContent = telugu ? '925 స్వచ్ఛమైన వెండి' : '925 Pure Sterling Silver';
+
+  const sheetResetBtn = document.getElementById('btn-sheet-reset');
+  if (sheetResetBtn) sheetResetBtn.innerHTML = telugu ? '<i class="ri-refresh-line"></i> అన్నీ తొలగించు' : '<i class="ri-refresh-line"></i> Reset All';
+  const sheetApplyBtn = document.getElementById('btn-sheet-apply');
+  if (sheetApplyBtn) sheetApplyBtn.textContent = telugu ? 'ఫిల్టర్లను వర్తింపజేయి' : 'Apply Filters';
+
+  // 6. Calculator Section
+  const calcH3 = document.querySelector('.calc-title-box h3');
+  if (calcH3) calcH3.innerHTML = telugu ? '<i class="ri-calculator-line" style="color: var(--gold-400);"></i> లైవ్ నగల ధర కాలిక్యులేటర్' : '<i class="ri-calculator-line" style="color: var(--gold-400);"></i> Live Jewellery Price Calculator';
+  const calcP = document.querySelector('.calc-title-box p');
+  if (calcP) calcP.textContent = telugu ? 'నేటి అధికారిక విశాఖపట్నం & ఏటికొప్పాక బులియన్ రేట్ల ఆధారంగా ప్రత్యక్ష లెక్కింపు.' : "Real-time calculation based on today's official Visakhapatnam showroom bullion rates.";
+
+  const metalLabel = document.querySelector('label[for="calc-metal"]');
+  if (metalLabel) metalLabel.innerHTML = telugu ? '<i class="ri-medal-line"></i> లోహం & స్వచ్ఛత' : '<i class="ri-medal-line"></i> Metal & Purity';
+  const weightLabel = document.querySelector('label[for="calc-weight"]');
+  if (weightLabel) weightLabel.innerHTML = telugu ? '<i class="ri-scales-3-line"></i> బరువు (గ్రాములలో)' : '<i class="ri-scales-3-line"></i> Weight (Grams)';
+  const makingLabel = document.querySelector('label[for="calc-making"]');
+  if (makingLabel) makingLabel.innerHTML = telugu ? '<i class="ri-hammer-line"></i> తయారీ మజూరీ ఖర్చులు (తరుగు / తయారీ)' : '<i class="ri-hammer-line"></i> Making Charges (VA / Karigar)';
+
+  const breakdownKicker = document.querySelector('.breakdown-kicker');
+  if (breakdownKicker) breakdownKicker.innerHTML = telugu ? '<i class="ri-file-list-3-line"></i> అంచనా ధర వివరాలు' : '<i class="ri-file-list-3-line"></i> Estimated Price Breakdown';
+  const totalLabel = document.querySelector('.calc-total-label');
+  if (totalLabel) totalLabel.textContent = telugu ? 'మొత్తం అంచనా ధర' : 'Estimated Total';
+  const totalNote = document.querySelector('.calc-total-box small');
+  if (totalNote) totalNote.textContent = telugu ? 'జీఎస్టీ & మజూరీతో కలిపి' : 'With GST & Making';
+  const calcWhatsappBtn = document.getElementById('calc-whatsapp-btn');
+  if (calcWhatsappBtn) calcWhatsappBtn.innerHTML = telugu ? '<i class="ri-whatsapp-line" style="font-size:1.15rem;color:#25d366;"></i> ఈ అంచనాను వాట్సాప్‌లో అడగండి' : '<i class="ri-whatsapp-line" style="font-size:1.15rem;color:#25d366;"></i> Inquire this estimate on WhatsApp';
+
+  // 7. Artisan Section
+  const artisanTag = document.querySelector('#artisan-section .section-tag');
+  if (artisanTag) artisanTag.textContent = telugu ? 'మా సంప్రదాయ కళ' : 'Our craft';
+  const artisanH2 = document.querySelector('#artisan-section h2');
+  if (artisanH2) artisanH2.innerHTML = telugu ? 'చేతిపని <span class="gold-text">స్వర్ణకారులు.</span>' : 'Made by <span class="gold-text">karigars.</span>';
+  const artisanDesc = document.querySelector('#artisan-section .artisan-content > p');
+  if (artisanDesc) artisanDesc.textContent = telugu ? 'ఫోటో పంపండి. బరువు ఎంచుకోండి. మేము మీ కోసం తయారుచేస్తాము.' : 'Send a photo. Choose the weight. We make it for you.';
+  const stepItems = document.querySelectorAll('.craft-step-item');
+  if (stepItems[0]) {
+    stepItems[0].querySelector('h5').textContent = telugu ? 'ఫోటో పంపండి' : 'Share a photo';
+    stepItems[0].querySelector('p').textContent = telugu ? 'మీకు నచ్చిన నమూనా చూపించండి.' : 'Show us what you like.';
+  }
+  if (stepItems[1]) {
+    stepItems[1].querySelector('h5').textContent = telugu ? 'బరువు ఎంచుకోండి' : 'Choose weight';
+    stepItems[1].querySelector('p').textContent = telugu ? 'మీ బడ్జెట్ మరియు స్వచ్ఛతను నిర్ణయించండి.' : 'Pick your budget and purity.';
+  }
+  if (stepItems[2]) {
+    stepItems[2].querySelector('h5').textContent = telugu ? 'మేము తయారుచేస్తాము' : 'We make it';
+    stepItems[2].querySelector('p').textContent = telugu ? 'హాల్‌మార్క్ ముద్రతో పరిపూర్ణంగా సిద్ధం చేస్తాము.' : 'Finished and hallmarked.';
+  }
+  const artisanBtn = document.querySelector('#artisan-section .btn-primary-gold');
+  if (artisanBtn) artisanBtn.innerHTML = telugu ? '<i class="ri-hammer-line"></i> ప్రత్యేక ఆర్డర్ ఇవ్వండి' : '<i class="ri-hammer-line"></i> Start a custom order';
+
+  // 8. Custom Order Desk Section
+  const customTag = document.querySelector('#custom-order-section .section-tag');
+  if (customTag) customTag.textContent = telugu ? 'ప్రత్యేక ఆర్డర్' : 'Custom order';
+  const customTitle = document.querySelector('#custom-order-section .section-title');
+  if (customTitle) customTitle.textContent = telugu ? 'మీకు నచ్చిన డిజైన్ తయారుచేయించుకోండి' : 'Make your design';
+  const customSub = document.querySelector('#custom-order-section .section-subtitle');
+  if (customSub) customSub.textContent = telugu ? 'వివరాలు పంపండి. మేము వాట్సాప్‌లో సమాధానం ఇస్తాము.' : 'Send the details. We will reply on WhatsApp.';
+  const customNameLabel = document.querySelector('label[for="custom-name"]');
+  if (customNameLabel) customNameLabel.textContent = telugu ? 'మీ పేరు *' : 'Name *';
+  const customPhoneLabel = document.querySelector('label[for="custom-phone"]');
+  if (customPhoneLabel) customPhoneLabel.textContent = telugu ? 'వాట్సాప్ నంబర్ *' : 'WhatsApp number *';
+  const customTypeLabel = document.querySelector('label[for="custom-type"]');
+  if (customTypeLabel) customTypeLabel.textContent = telugu ? 'నగల రకం *' : 'Jewellery type *';
+  const customWeightLabel = document.querySelector('label[for="custom-weight"]');
+  if (customWeightLabel) customWeightLabel.textContent = telugu ? 'బరువు (గ్రాములలో) *' : 'Weight in grams *';
+  const customMetalLabel = document.querySelector('label[for="custom-metal"]');
+  if (customMetalLabel) customMetalLabel.textContent = telugu ? 'లోహం & స్వచ్ఛత' : 'Metal & Purity';
+  const customCityLabel = document.querySelector('label[for="custom-city"]');
+  if (customCityLabel) customCityLabel.textContent = telugu ? 'ఊరు / నగరం' : 'City';
+  const customNotesLabel = document.querySelector('label[for="custom-notes"]');
+  if (customNotesLabel) customNotesLabel.textContent = telugu ? 'సందేశం / ప్రత్యేక వివరాలు' : 'Notes';
+  const customSubmitBtn = document.querySelector('#custom-order-form button[type="submit"]');
+  if (customSubmitBtn) customSubmitBtn.innerHTML = telugu ? '<i class="ri-whatsapp-line"></i> వాట్సాప్‌లో పంపండి' : '<i class="ri-whatsapp-line"></i> Send on WhatsApp';
+
+  // 9. Store Section
+  const storeH3 = document.querySelector('.store-info-box h3');
+  if (storeH3) storeH3.innerHTML = telugu ? '<i class="ri-store-3-line" style="color: var(--gold-400);"></i> మా దుకాణాన్ని సందర్శించండి' : '<i class="ri-store-3-line" style="color: var(--gold-400);"></i> Visit the shop';
+  const btnCallShop = document.querySelector('.btn-call-shop');
+  if (btnCallShop) btnCallShop.innerHTML = telugu ? '<i class="ri-phone-line"></i> ఫోన్ చేయండి' : '<i class="ri-phone-line"></i> Call us';
+  const btnDirections = document.querySelector('.store-cta-btns a.btn-outline-gold');
+  if (btnDirections) btnDirections.innerHTML = telugu ? '<i class="ri-direction-line"></i> రూట్ మ్యాప్' : '<i class="ri-direction-line"></i> Get directions';
+  const videoShopH3 = document.querySelectorAll('.store-info-box')[1]?.querySelector('h3');
+  if (videoShopH3) videoShopH3.innerHTML = telugu ? '<i class="ri-video-on-line" style="color: var(--gold-400);"></i> లైవ్ వీడియో షాపింగ్' : '<i class="ri-video-on-line" style="color: var(--gold-400);"></i> Video shopping';
+  const videoShopP = document.querySelectorAll('.store-info-box')[1]?.querySelector('p');
+  if (videoShopP) videoShopP.textContent = telugu ? 'రాకముందే వీడియో కాల్‌లో నగలను ప్రత్యక్షంగా చూడండి.' : 'See a piece live before you visit.';
+  const btnBookCall = document.querySelector('.store-section .btn-primary-gold');
+  if (btnBookCall) btnBookCall.innerHTML = telugu ? '<i class="ri-whatsapp-line"></i> వీడియో కాల్ బుక్ చేయండి' : '<i class="ri-whatsapp-line"></i> Book a call';
+
+  // 10. Saved Designs Drawer
+  const drawerTitle = document.querySelector('.drawer-heading-row h3');
+  if (drawerTitle) drawerTitle.innerHTML = telugu ? '<i class="ri-heart-3-fill" style="color: #ff4d6d;"></i> మీరు దాచుకున్న నగలు' : '<i class="ri-heart-3-fill" style="color: #ff4d6d;"></i> Saved Designs';
+  const drawerSub = document.querySelector('.drawer-subtext');
+  if (drawerSub) drawerSub.textContent = telugu ? 'ఎంపిక చేసిన ఆభరణాలు • Shortlisted jewellery' : 'Shortlisted jewellery • మీరు దాచుకున్న నగలు';
+  const drawerHomeBtn = document.getElementById('btn-drawer-footer-home');
+  if (drawerHomeBtn) drawerHomeBtn.innerHTML = telugu ? '<i class="ri-home-5-line"></i> హోమ్ స్క్రీన్‌కు వెళ్ళండి' : '<i class="ri-home-5-line"></i> Back to Home Screen (హోమ్)';
+  const drawerBrowseBtn = document.getElementById('btn-drawer-footer-browse');
+  if (drawerBrowseBtn) drawerBrowseBtn.innerHTML = telugu ? '<i class="ri-layout-grid-line"></i> మరిన్ని డిజైన్లు చూడండి' : '<i class="ri-layout-grid-line"></i> Browse More Designs';
+  const drawerSendBtn = document.getElementById('btn-send-drawer-whatsapp');
+  if (drawerSendBtn) drawerSendBtn.innerHTML = telugu ? '<i class="ri-whatsapp-fill"></i> దాచుకున్న అన్ని నగల గురించి వాట్సాప్‌లో అడగండి' : '<i class="ri-whatsapp-fill"></i> Ask about all saved designs on WhatsApp';
+
+  // 11. Footer
+  const footerCols = document.querySelectorAll('.footer-col h4');
+  if (footerCols[1]) footerCols[1].textContent = telugu ? 'నగల విభాగాలు' : 'Jewellery Categories';
+  if (footerCols[2]) footerCols[2].textContent = telugu ? 'గ్రాహక సేవలు' : 'Customer Service';
+  if (footerCols[3]) footerCols[3].textContent = telugu ? 'షోరూమ్ వివరాలు' : 'Contact Showroom';
+
   document.documentElement.lang = telugu ? 'te' : 'en';
+
+  // Re-render products to display localized titles and buttons!
+  renderProducts();
+  updateCalculatorResult();
 }
 
 function setupHeroSearch() {
@@ -568,15 +770,16 @@ function renderRatesTicker() {
   if (g18) g18.textContent = `₹${currentRates.gold18k.toLocaleString('en-IN')}`;
   if (slv) slv.textContent = `₹${currentRates.silver.toLocaleString('en-IN')}`;
 
-  // Top Bullion Ticker Bar elements
-  const tg22 = document.getElementById('ticker-rate-22k');
-  const tg24 = document.getElementById('ticker-rate-24k');
-  const tg18 = document.getElementById('ticker-rate-18k');
-  const tslv = document.getElementById('ticker-rate-silver');
-  if (tg22) tg22.textContent = `₹${currentRates.gold22k.toLocaleString('en-IN')}`;
-  if (tg24) tg24.textContent = `₹${currentRates.gold24k.toLocaleString('en-IN')}`;
-  if (tg18) tg18.textContent = `₹${currentRates.gold18k.toLocaleString('en-IN')}`;
-  if (tslv) tslv.textContent = `₹${currentRates.silver.toLocaleString('en-IN')}`;
+  // Top Bullion Marquee Ticker elements
+  const str22 = `₹${currentRates.gold22k.toLocaleString('en-IN')}`;
+  const str24 = `₹${currentRates.gold24k.toLocaleString('en-IN')}`;
+  const str18 = `₹${currentRates.gold18k.toLocaleString('en-IN')}`;
+  const strSlv = `₹${currentRates.silver.toLocaleString('en-IN')}`;
+
+  document.querySelectorAll('.rate-val-22k, #ticker-rate-22k').forEach(el => el.textContent = str22);
+  document.querySelectorAll('.rate-val-24k, #ticker-rate-24k').forEach(el => el.textContent = str24);
+  document.querySelectorAll('.rate-val-18k, #ticker-rate-18k').forEach(el => el.textContent = str18);
+  document.querySelectorAll('.rate-val-silver, #ticker-rate-silver').forEach(el => el.textContent = strSlv);
 
   // Update hero spotlight price estimate (48.5g 22K gold, 10% making, 3% GST)
   const spotlightPriceEl = document.getElementById('spotlight-price');
@@ -812,8 +1015,12 @@ function renderProducts() {
     return catMatch && typeMatch && metalMatch && searchMatch;
   });
 
+  const isTelugu = (localStorage.getItem('ssk_language') === 'te');
+
   if (countDisplay) {
-    countDisplay.textContent = `Showing ${filtered.length} jewellery design${filtered.length === 1 ? '' : 's'}`;
+    countDisplay.textContent = isTelugu 
+      ? `${filtered.length} ఆభరణాల నమూనాలు ప్రదర్శించబడుతున్నాయి` 
+      : `Showing ${filtered.length} jewellery design${filtered.length === 1 ? '' : 's'}`;
   }
 
   // Update active filter tags and badge
@@ -823,9 +1030,9 @@ function renderProducts() {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-dim);">
         <i class="ri-search-eye-line" style="font-size: 3rem; color: var(--gold-400); display: block; margin-bottom: 1rem;"></i>
-        <h3 style="font-family: var(--font-royal); color: var(--gold-200); margin-bottom: 0.5rem;">No Designs Found</h3>
-        <p>Try clearing your search query or selecting another jewellery category.</p>
-        <button class="btn-outline-gold" style="margin-top: 1rem;" onclick="resetFilters()">Reset All Filters</button>
+        <h3 style="font-family: var(--font-royal); color: var(--gold-200); margin-bottom: 0.5rem;">${isTelugu ? 'నమూనాలు ఏవీ కనిపించలేదు' : 'No Designs Found'}</h3>
+        <p>${isTelugu ? 'దయచేసి సెర్చ్‌ను క్లియర్ చేయండి లేదా వేరే వర్గాన్ని ఎంచుకోండి.' : 'Try clearing your search query or selecting another jewellery category.'}</p>
+        <button class="btn-outline-gold" style="margin-top: 1rem;" onclick="resetFilters()">${isTelugu ? 'అన్ని ఫిల్టర్లను తొలగించండి' : 'Reset All Filters'}</button>
       </div>
     `;
     return;
@@ -835,21 +1042,32 @@ function renderProducts() {
     const isShortlisted = shortlist.some(s => s.id === item.id);
     const availabilityBadgeClass = item.availability === 'ready' ? 'badge-ready' : 'badge-custom';
     const availabilityIcon = item.availability === 'ready' ? 'ri-checkbox-circle-fill' : 'ri-hammer-fill';
+    const availabilityBadgeText = item.availability === 'ready' 
+      ? (isTelugu ? 'షాపులో లభించును' : 'Available now') 
+      : (isTelugu ? 'చేతితో తయారవును' : 'Made to order');
+
+    const primaryTitle = isTelugu ? (item.teluguName || item.name) : item.name;
+    const secondaryTitle = isTelugu ? item.name : item.teluguName;
+    const weightLabel = isTelugu ? `సుమారు ${item.approxGrossWeight} గ్రా.` : `About ${item.approxGrossWeight}g`;
+    const detailsLabel = isTelugu ? 'వివరాలు:' : 'Details:';
+    const availLabel = isTelugu ? 'లభ్యత:' : 'Availability:';
+    const viewPriceLabel = isTelugu ? 'ధర చూడండి' : 'View Price';
+    const whatsappLabel = isTelugu ? 'వాట్సాప్' : 'WhatsApp';
 
     return `
       <div class="product-card" id="card-${item.id}">
         <div class="card-image-wrap" onclick="openProductModal('${item.id}')">
-          <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.src='assets/hero.jpg'">
+          <img src="${item.image}" alt="${escapeHtml(primaryTitle)}" loading="lazy" onerror="this.src='assets/hero.jpg'">
           <div class="card-badges">
             <span class="badge-pill ${availabilityBadgeClass}">
-              <i class="${availabilityIcon}"></i> ${item.availability === 'ready' ? 'Available now' : 'Made to order'}
+              <i class="${availabilityIcon}"></i> ${availabilityBadgeText}
             </span>
             ${item.badge ? `<span class="badge-pill" style="background: rgba(10,5,7,0.85); color: var(--gold-300); border: 1px solid var(--border-gold);">${item.badge}</span>` : ''}
           </div>
           <span class="badge-sku">${item.sku}</span>
           <button class="btn-shortlist-heart ${isShortlisted ? 'active' : ''}" 
                   onclick="event.stopPropagation(); toggleShortlist('${item.id}')" 
-                  title="${isShortlisted ? 'Remove saved design' : 'Save this design'}">
+                  title="${isShortlisted ? (isTelugu ? 'సేవ్ నుండి తొలగించు' : 'Remove saved design') : (isTelugu ? 'ఈ డిజైన్ సేవ్ చేయండి' : 'Save this design')}">
             <i class="${isShortlisted ? 'ri-heart-fill' : 'ri-heart-line'}"></i>
           </button>
         </div>
@@ -857,24 +1075,24 @@ function renderProducts() {
         <div class="card-body">
           <div class="card-meta-row">
             <span class="card-purity">${item.purity}</span>
-            <span class="card-weight">About ${item.approxGrossWeight}g</span>
+            <span class="card-weight">${weightLabel}</span>
           </div>
           ${item.price ? `<div class="card-price">₹${Number(item.price).toLocaleString('en-IN')}</div>` : ''}
 
-          <h3 class="card-title" onclick="openProductModal('${item.id}')" style="cursor: pointer;">${item.name}</h3>
-          <h4 class="card-telugu-name">${item.teluguName}</h4>
+          <h3 class="card-title" onclick="openProductModal('${item.id}')" style="cursor: pointer;">${escapeHtml(primaryTitle)}</h3>
+          <h4 class="card-telugu-name">${escapeHtml(secondaryTitle)}</h4>
 
           <p class="card-specs-mini">
-            <strong>Details:</strong> ${item.stoneDetails}<br>
-            <strong>Availability:</strong> ${item.availabilityText}
+            <strong>${detailsLabel}</strong> ${escapeHtml(item.stoneDetails)}<br>
+            <strong>${availLabel}</strong> ${escapeHtml(item.availabilityText)}
           </p>
 
           <div class="card-actions">
-            <button class="btn-view-details" onclick="openProductModal('${item.id}')" title="View details and live price" aria-label="View Details and Price for ${escapeHtml(item.name)}">
-              <i class="ri-eye-line"></i> <span class="btn-view-label">View Price</span>
+            <button class="btn-view-details" onclick="openProductModal('${item.id}')" title="View details and live price" aria-label="View Details and Price for ${escapeHtml(primaryTitle)}">
+              <i class="ri-eye-line"></i> <span class="btn-view-label">${viewPriceLabel}</span>
             </button>
             <a href="${getWhatsAppProductUrl(item)}" target="_blank" rel="noopener noreferrer" class="btn-inquire-whatsapp" title="Ask about this design on WhatsApp">
-              <i class="ri-whatsapp-line"></i> <span>WhatsApp</span>
+              <i class="ri-whatsapp-line"></i> <span>${whatsappLabel}</span>
             </a>
           </div>
         </div>
@@ -1593,28 +1811,50 @@ function openProductModal(productId) {
   const purityChoice = document.getElementById('modal-purity-choice');
   const customChoice = document.getElementById('modal-custom-choice');
 
+  const isTelugu = (localStorage.getItem('ssk_language') === 'te');
+
   if (imgEl) imgEl.src = product.image;
   if (purityEl) purityEl.textContent = product.purity;
-  if (titleEl) titleEl.textContent = product.name;
-  if (teluguEl) teluguEl.textContent = product.teluguName;
+  if (titleEl) titleEl.textContent = isTelugu ? (product.teluguName || product.name) : product.name;
+  if (teluguEl) teluguEl.textContent = isTelugu ? product.name : product.teluguName;
   if (descEl) descEl.textContent = product.description;
   if (skuEl) skuEl.textContent = product.sku;
-  if (grossEl) grossEl.textContent = `${product.approxGrossWeight} grams`;
-  if (netEl) netEl.textContent = `${product.approxNetWeight} grams`;
+  if (grossEl) grossEl.textContent = isTelugu ? `${product.approxGrossWeight} గ్రాములు` : `${product.approxGrossWeight} grams`;
+  if (netEl) netEl.textContent = isTelugu ? `${product.approxNetWeight} గ్రాములు` : `${product.approxNetWeight} grams`;
   if (stonesEl) stonesEl.textContent = product.stoneDetails;
-  if (availEl) availEl.textContent = product.availabilityText;
-  if (leadEl) leadEl.textContent = product.leadTime;
+  if (availEl) availEl.textContent = isTelugu ? (product.availability === 'ready' ? 'షాపులో సిద్ధంగా ఉంది (ఏటికొప్పాక)' : 'ఆర్డర్‌పై తయారు (7-10 రోజులు)') : product.availabilityText;
+  if (leadEl) leadEl.textContent = isTelugu ? (product.availability === 'ready' ? 'వెంటనే షాపులో లభించును' : product.leadTime) : product.leadTime;
   if (priceEl) {
     const estimate = calculateProductEstimate(product);
-    priceEl.textContent = estimate ? `₹${estimate.toLocaleString('en-IN')}` : "Ask for today's price";
+    priceEl.textContent = estimate ? `₹${estimate.toLocaleString('en-IN')}` : (isTelugu ? "నేటి ధర కొరకు సంప్రదించండి" : "Ask for today's price");
   }
-  if (badgeEl) badgeEl.textContent = product.badge || (product.availability === 'ready' ? 'Available now' : 'Made to order');
-  if (reviewCount) reviewCount.textContent = `${Math.max(8, Math.round((product.approxGrossWeight || 10) / 2))} reviews`;
-  if (highlightPurity) highlightPurity.textContent = product.purity.includes('Silver') ? '925 pure silver' : '916 BIS hallmarked';
-  if (highlightWeight) highlightWeight.textContent = `${product.approxGrossWeight}g approx.`;
+  if (badgeEl) badgeEl.textContent = product.badge || (product.availability === 'ready' ? (isTelugu ? 'షాపులో సిద్ధంగా ఉంది' : 'Available now') : (isTelugu ? 'ఆర్డర్‌పై తయారు' : 'Made to order'));
+  if (reviewCount) reviewCount.textContent = `${Math.max(8, Math.round((product.approxGrossWeight || 10) / 2))} ${isTelugu ? 'సమీక్షలు' : 'reviews'}`;
+  if (highlightPurity) highlightPurity.textContent = product.purity.includes('Silver') ? (isTelugu ? '925 స్వచ్ఛమైన వెండి' : '925 pure silver') : (isTelugu ? '916 BIS హాల్‌మార్క్ ముద్రితం' : '916 BIS hallmarked');
+  if (highlightWeight) highlightWeight.textContent = isTelugu ? `సుమారు ${product.approxGrossWeight} గ్రా.` : `${product.approxGrossWeight}g approx.`;
   if (highlightStones) highlightStones.textContent = product.stoneDetails;
-  if (highlightStock) highlightStock.textContent = product.availabilityText;
-  if (purityChoice) purityChoice.textContent = product.metal === 'silver' ? '925 silver' : '22K / 916';
+  if (highlightStock) highlightStock.textContent = isTelugu ? (product.availability === 'ready' ? 'షాపులో సిద్ధంగా ఉంది' : 'ఆర్డర్‌పై తయారు') : product.availabilityText;
+  if (purityChoice) purityChoice.textContent = product.metal === 'silver' ? (isTelugu ? '925 వెండి' : '925 silver') : '22K / 916';
+  if (customChoice) customChoice.textContent = isTelugu ? 'కస్టమ్ బరువు' : 'Custom weight';
+
+  // Translate modal specs table labels
+  const specRows = document.querySelectorAll('.modal-specs-table tbody tr');
+  if (specRows[0]) specRows[0].children[0].textContent = isTelugu ? 'డిజైన్ కోడ్:' : 'Design code:';
+  if (specRows[1]) specRows[1].children[0].textContent = isTelugu ? 'సుమారు మొత్తం బరువు:' : 'Approx. total weight:';
+  if (specRows[2]) specRows[2].children[0].textContent = isTelugu ? 'సుమారు బంగారం/వెండి బరువు:' : 'Approx. gold/silver weight:';
+  if (specRows[3]) specRows[3].children[0].textContent = isTelugu ? 'రాళ్ళు & పొదిగినవి:' : 'Stones & Gemstones:';
+  if (specRows[4]) specRows[4].children[0].textContent = isTelugu ? 'వెంటనే లభించునా?:' : 'Can I buy it now?';
+  if (specRows[5]) specRows[5].children[0].textContent = isTelugu ? 'తయారీ సమయం?:' : 'How long will it take?';
+
+  // Translate compare & related section headers in modal
+  const compareTitle = document.querySelector('.modal-compare-section .modal-section-title');
+  if (compareTitle) compareTitle.innerHTML = isTelugu ? '<i class="ri-scales-2-line"></i> ఇలాంటి ఇతర నమూనాలతో పోల్చండి' : '<i class="ri-scales-2-line"></i> Compare with Similar Designs';
+  const compareSub = document.querySelector('.modal-compare-section .modal-section-subtitle');
+  if (compareSub) compareSub.textContent = isTelugu ? 'బరువు, స్వచ్ఛత మరియు అంచనా విలువలను సరిపోల్చండి' : 'Compare weight, hallmark purity, and estimated value with similar ornaments';
+  const relatedTitle = document.querySelector('.modal-related-section .modal-section-title');
+  if (relatedTitle) relatedTitle.innerHTML = isTelugu ? '<i class="ri-sparkling-2-line"></i> మరిన్ని ఆభరణాల నమూనాలు' : '<i class="ri-sparkling-2-line"></i> More Designs to Explore';
+  const relatedViewAll = document.querySelector('.modal-related-view-all');
+  if (relatedViewAll) relatedViewAll.innerHTML = isTelugu ? 'అన్నీ చూడండి <i class="ri-arrow-right-line"></i>' : 'View all <i class="ri-arrow-right-line"></i>';
 
   [purityChoice, customChoice].forEach(choice => {
     if (!choice) return;
@@ -1626,12 +1866,15 @@ function openProductModal(productId) {
 
   if (whatsappBtn) {
     whatsappBtn.href = getWhatsAppProductUrl(product);
+    whatsappBtn.innerHTML = `<i class="ri-whatsapp-line"></i> ${isTelugu ? 'వాట్సాప్‌లో అడగండి' : 'Ask on WhatsApp'}`;
   }
 
   if (shortlistBtn) {
     const isSaved = shortlist.some(s => s.id === product.id);
     const updateSaveButtons = saved => {
-      shortlistBtn.innerHTML = saved ? `<i class="ri-heart-fill"></i> Saved` : `<i class="ri-heart-line"></i> Save`;
+      shortlistBtn.innerHTML = saved 
+        ? `<i class="ri-heart-fill"></i> ${isTelugu ? 'సేవ్ చేయబడింది' : 'Saved'}` 
+        : `<i class="ri-heart-line"></i> ${isTelugu ? 'సేవ్ చేయండి' : 'Save'}`;
       if (imageSaveBtn) imageSaveBtn.innerHTML = `<i class="${saved ? 'ri-heart-fill' : 'ri-heart-line'}"></i>`;
     };
     updateSaveButtons(isSaved);

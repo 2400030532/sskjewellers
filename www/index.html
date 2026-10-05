@@ -144,21 +144,35 @@
        ========================================================================== */ -->
   <main id="main-content">
 
-  <!-- 1. TOP SLEEK BULLION TICKER BAR -->
+  <!-- 1. TOP SLEEK BULLION TICKER BAR (CONTINUOUS RIGHT-TO-LEFT HORIZONTAL MARQUEE) -->
   <div class="top-bullion-ticker-bar" id="top-bullion-ticker">
     <div class="ticker-inner">
       <div class="ticker-live-status">
         <span class="live-pulse"></span>
-        <span class="ticker-badge-text">LIVE RATES</span>
+        <span class="ticker-badge-text" id="ticker-live-status-label">LIVE RATES</span>
       </div>
-      <div class="ticker-rates-scroll">
-        <div class="ticker-pill"><strong>22K Gold:</strong> <span id="ticker-rate-22k">₹13,675</span>/g</div>
-        <div class="ticker-pill"><strong>24K Gold:</strong> <span id="ticker-rate-24k">₹14,918</span>/g</div>
-        <div class="ticker-pill"><strong>18K Gold:</strong> <span id="ticker-rate-18k">₹11,189</span>/g</div>
-        <div class="ticker-pill"><strong>Silver:</strong> <span id="ticker-rate-silver">₹245</span>/g</div>
+      <div class="ticker-marquee-track-container" id="ticker-marquee-container">
+        <div class="ticker-marquee-track">
+          <!-- First stream -->
+          <div class="ticker-rates-group">
+            <div class="ticker-pill"><strong class="ticker-label-22k">22K Gold:</strong> <span class="rate-val-22k" id="ticker-rate-22k">₹13,675</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-24k">24K Gold:</strong> <span class="rate-val-24k" id="ticker-rate-24k">₹14,918</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-18k">18K Gold:</strong> <span class="rate-val-18k" id="ticker-rate-18k">₹11,189</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-silver">Silver:</strong> <span class="rate-val-silver" id="ticker-rate-silver">₹245</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-hallmark">Etikoppaka:</strong> <span class="ticker-val-hallmark">100% 916 BIS Hallmark</span></div>
+          </div>
+          <!-- Second stream for seamless infinite loop -->
+          <div class="ticker-rates-group" aria-hidden="true">
+            <div class="ticker-pill"><strong class="ticker-label-22k">22K Gold:</strong> <span class="rate-val-22k">₹13,675</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-24k">24K Gold:</strong> <span class="rate-val-24k">₹14,918</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-18k">18K Gold:</strong> <span class="rate-val-18k">₹11,189</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-silver">Silver:</strong> <span class="rate-val-silver">₹245</span>/g</div>
+            <div class="ticker-pill"><strong class="ticker-label-hallmark">Etikoppaka:</strong> <span class="ticker-val-hallmark">100% 916 BIS Hallmark</span></div>
+          </div>
+        </div>
       </div>
-      <a href="#calculator-section" class="ticker-calc-btn" title="Open price calculator">
-        <i class="ri-calculator-line"></i> <span>Calculator</span>
+      <a href="#calculator-section" class="ticker-calc-btn" id="ticker-calc-link" title="Open price calculator">
+        <i class="ri-calculator-line"></i> <span id="ticker-calc-btn-text">Calculator</span>
       </a>
     </div>
   </div>

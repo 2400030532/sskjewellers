@@ -4583,11 +4583,9 @@ body.light-theme .mob-nav-item.active {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  overflow-x: auto;
-  scrollbar-width: none;
+  gap: 0.85rem;
+  overflow: hidden;
 }
-.ticker-inner::-webkit-scrollbar { display: none; }
 
 .ticker-live-status {
   display: inline-flex;
@@ -4599,29 +4597,61 @@ body.light-theme .mob-nav-item.active {
   color: #22c55e;
   white-space: nowrap;
   flex-shrink: 0;
+  z-index: 2;
 }
 
-.ticker-rates-scroll {
+.ticker-marquee-track-container {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  white-space: nowrap;
+}
+
+.ticker-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ratesMarqueeContinuous 22s linear infinite;
+}
+
+.ticker-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.ticker-rates-group {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  overflow-x: auto;
-  white-space: nowrap;
-  scrollbar-width: none;
+  gap: 1.8rem;
+  padding-right: 1.8rem;
+  flex-shrink: 0;
 }
-.ticker-rates-scroll::-webkit-scrollbar { display: none; }
 
 .ticker-pill {
   font-size: 0.76rem;
   color: #c9c3b6;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 .ticker-pill strong {
   color: var(--gold-300);
+  font-weight: 700;
 }
 .ticker-pill span {
   font-weight: 700;
   color: #fff;
+}
+
+@keyframes ratesMarqueeContinuous {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 .ticker-calc-btn {
