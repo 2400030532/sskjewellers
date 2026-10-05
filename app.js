@@ -3105,24 +3105,27 @@ function GemstoneSparkle(container, posX, posY) {
   setTimeout(() => sparkle.remove(), 500);
 }
 
+// Helper for mobile responsive motion tuning (Section 8)
+const isMobileDevice = () => window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
 // 3. REUSABLE VELOCITY-RESPONSIVE GOLD DUST TRAIL (Section 6, Step 3)
 function GoldParticleTrail(startX, startY, endX, endY) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const count = 10;
+  const count = isMobileDevice() ? 5 : 10;
   for (let i = 0; i < count; i++) {
     const fraction = (i + 1) / count;
-    const x = startX + (endX - startX) * fraction + (Math.random() - 0.5) * 20;
-    const y = startY + (endY - startY) * fraction + (Math.random() - 0.5) * 20;
+    const x = startX + (endX - startX) * fraction + (Math.random() - 0.5) * 16;
+    const y = startY + (endY - startY) * fraction + (Math.random() - 0.5) * 16;
 
     const speck = document.createElement('div');
     speck.className = 'gold-dust-speck';
-    const size = Math.random() * 3 + 2;
+    const size = Math.random() * 2.5 + 1.8;
     speck.style.width = `${size}px`;
     speck.style.height = `${size}px`;
     speck.style.left = `${x}px`;
     speck.style.top = `${y}px`;
-    speck.style.setProperty('--dust-x', `${(Math.random() - 0.5) * 30}px`);
-    speck.style.setProperty('--dust-y', `${Math.random() * 25 + 10}px`);
+    speck.style.setProperty('--dust-x', `${(Math.random() - 0.5) * 25}px`);
+    speck.style.setProperty('--dust-y', `${Math.random() * 20 + 8}px`);
     document.body.appendChild(speck);
 
     setTimeout(() => speck.remove(), 550);
@@ -3163,16 +3166,23 @@ function LuxuryProductReveal(event, productId) {
     return;
   }
 
+  // Card gives a subtle haptic lift
+  card.style.transform = 'translateY(-6px) scale(0.985)';
+  setTimeout(() => { card.style.transform = ''; }, 450);
+
   const rect = cardImg.getBoundingClientRect();
   const flyingImg = document.createElement('img');
   flyingImg.className = 'product-flying-clone';
   flyingImg.src = cardImg.src;
-  flyingImg.alt = cardImg.alt;
+  flyingImg.alt = cardImg.alt || '';
   flyingImg.style.left = `${rect.left}px`;
   flyingImg.style.top = `${rect.top}px`;
   flyingImg.style.width = `${rect.width}px`;
   flyingImg.style.height = `${rect.height}px`;
   document.body.appendChild(flyingImg);
+
+  // Force geometry reflow so initial coordinate is locked before CSS transition starts
+  void flyingImg.offsetWidth;
 
   // STEP 4 — BACKGROUND TRANSFORMATION: Rest of website subtly defocuses (opacity 75%, blur 6px)
   const pageWrapper = document.getElementById('page-content-wrapper');
@@ -3180,12 +3190,12 @@ function LuxuryProductReveal(event, productId) {
 
   // STEP 3 — GOLD PARTICLE TRAIL along velocity vector
   const targetX = window.innerWidth / 2;
-  const targetY = window.innerHeight * 0.42;
+  const targetY = window.innerHeight * (isMobileDevice() ? 0.38 : 0.42);
   GoldParticleTrail(rect.left + rect.width / 2, rect.top + rect.height / 2, targetX, targetY);
 
   // Animate lifted product to center
   requestAnimationFrame(() => {
-    const targetWidth = Math.min(window.innerWidth * 0.75, 340);
+    const targetWidth = Math.min(window.innerWidth * (isMobileDevice() ? 0.8 : 0.72), 340);
     const targetHeight = targetWidth;
 
     flyingImg.style.left = `${targetX - targetWidth / 2}px`;
@@ -3196,10 +3206,11 @@ function LuxuryProductReveal(event, productId) {
   });
 
   // STEP 5 — CINEMATIC REVEAL: Spotlight, reflection sweep, gemstone sparkle, and open modal
+  const transitTime = isMobileDevice() ? 400 : 480;
   setTimeout(() => {
     flyingImg.style.transform = 'scale(1)';
     flyingImg.style.opacity = '0';
-    setTimeout(() => flyingImg.remove(), 250);
+    setTimeout(() => flyingImg.remove(), 260);
 
     // Open actual product detail modal
     openProductModal(productId);
@@ -3208,9 +3219,9 @@ function LuxuryProductReveal(event, productId) {
     const modalMedia = document.querySelector('.modal-media-col');
     if (modalMedia) {
       GoldLightSweep(modalMedia);
-      setTimeout(() => GemstoneSparkle(modalMedia, 45, 35), 400);
+      setTimeout(() => GemstoneSparkle(modalMedia, 45, 35), 350);
     }
-  }, 480);
+  }, transitTime);
 }
 
 // 5. PRODUCT CARD HOVER (Section 5: 5 Layers)
