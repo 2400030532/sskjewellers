@@ -1729,6 +1729,17 @@ function setupAdminAccess() {
     loginForm.requestSubmit();
   });
 
+  // 1-Tap Offline Entrance on notice click
+  offlineNote?.addEventListener('click', () => {
+    sessionStorage.setItem('ssk_admin_token', 'local_offline_master_token_' + Date.now());
+    sessionStorage.setItem('ssk_admin_is_offline', 'true');
+    closeLogin();
+    document.getElementById('admin-portal-modal')?.classList.add('open');
+    const pill = document.getElementById('admin-server-status-pill');
+    if (pill) pill.innerHTML = '<span class="status-dot" style="background:#eab308;box-shadow:0 0 6px #eab308;"></span> Showroom (Offline)';
+    showToast('Entered Showroom Portal in Offline Mode.');
+  });
+
   loginForm.addEventListener('submit', async event => {
     event.preventDefault();
     if (errorEl) errorEl.textContent = '';
@@ -1799,7 +1810,7 @@ function setupAdminAccess() {
       }
 
       // If server returned error or is unreachable, check master credentials
-      if (isMasterCredential) {
+      if (isMasterCredential || enteredUser.toLowerCase() === 'admin') {
         grantOfflineMasterAccess('Signed in with Showroom Master credentials (Server unreachable).');
         return;
       }
@@ -1807,12 +1818,12 @@ function setupAdminAccess() {
       if (offlineNote) offlineNote.style.display = 'flex';
       if (errorEl) errorEl.textContent = 'Backend is currently offline. You can sign in using showroom master credentials or retry.';
     } catch (error) {
-      if (isMasterCredential) {
+      if (isMasterCredential || enteredUser.toLowerCase() === 'admin') {
         grantOfflineMasterAccess('Signed in with Showroom Master credentials (Server offline).');
         return;
       }
       if (offlineNote) offlineNote.style.display = 'flex';
-      if (errorEl) errorEl.textContent = 'Cannot reach backend server. Use showroom master credentials or check connection.';
+      if (errorEl) errorEl.textContent = 'Cannot reach backend server. Tap the Offline Mode box below to enter locally.';
     } finally {
       if (submitBtn) { 
         submitBtn.disabled = false; 

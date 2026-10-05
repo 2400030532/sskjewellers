@@ -18,24 +18,44 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.cors.CorsUtils;
 import java.util.List;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.LinkedHashSet;
+import java.util.ArrayList;
 
 @Configuration
 public class SecurityConfig {
   @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
-  @Bean CorsConfigurationSource corsConfigurationSource(@Value("${spring.web.cors.allowed-origins}") String origin) {
-    if (origin == null || origin.isBlank()) {
-      throw new IllegalStateException("FRONTEND_ORIGIN must be configured in environment variables");
-    }
+  @Bean
+  public CorsFilter corsFilter(CorsConfigurationSource corsConfigurationSource) {
+    return new CorsFilter(corsConfigurationSource);
+  }
+
+  @Bean CorsConfigurationSource corsConfigurationSource(@Value("${spring.web.cors.allowed-origins:https://2400030532.github.io}") String origin) {
     CorsConfiguration config = new CorsConfiguration();
-    List<String> origins = Arrays.stream(origin.split(","))
-      .map(String::trim)
-      .filter(value -> !value.isBlank())
-      .collect(Collectors.toList());
-    config.setAllowedOriginPatterns(origins);
+    Set<String> origins = new LinkedHashSet<>();
+    if (origin != null && !origin.isBlank()) {
+      for (String o : origin.split(",")) {
+        String trimmed = o.trim();
+        if (!trimmed.isEmpty()) {
+          origins.add(trimmed);
+          origins.add(trimmed.replaceAll("/+$", ""));
+          try {
+            java.net.URI uri = java.net.URI.create(trimmed);
+            if (uri.getHost() != null) {
+              origins.add((uri.getScheme() != null ? uri.getScheme() : "https") + "://" + uri.getHost() + (uri.getPort() > 0 ? ":" + uri.getPort() : ""));
+            }
+          } catch (Exception ignored) {}
+        }
+      }
+    }
+    // Always include project GitHub Pages origin
+    origins.add("https://2400030532.github.io");
+    config.setAllowedOriginPatterns(new ArrayList<>(origins));
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
     config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
     config.setExposedHeaders(List.of("Authorization"));
@@ -56,9 +76,12 @@ public class SecurityConfig {
 
   @Bean AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { return config.getAuthenticationManager(); }
 
-  @Bean SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
-    return http.csrf(csrf -> csrf.disable()).cors(cors -> {}).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+  @Bean SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter, CorsConfigurationSource corsConfigurationSource) throws Exception {
+    return http.csrf(csrf -> csrf.disable())
+      .cors(cors -> cors.configurationSource(corsConfigurationSource))
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> auth
+        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
         .requestMatchers("/api/auth/login", "/actuator/health").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/rates", "/api/catalogue/**").permitAll()

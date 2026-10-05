@@ -21,9 +21,13 @@ public class AuthController {
   public AuthController(AuthenticationManager authenticationManager, UserDetailsService users, JwtService jwtService) { this.authenticationManager = authenticationManager; this.users = users; this.jwtService = jwtService; }
 
   @PostMapping("/login")
-  public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
-    return ResponseEntity.ok(new TokenResponse(jwtService.issue(users.loadUserByUsername(request.username()))));
+  public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+    try {
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+      return ResponseEntity.ok(new TokenResponse(jwtService.issue(users.loadUserByUsername(request.username()))));
+    } catch (org.springframework.security.core.AuthenticationException e) {
+      return ResponseEntity.status(401).body(java.util.Map.of("message", "Incorrect username or password"));
+    }
   }
 
   public record LoginRequest(@NotBlank String username, @NotBlank String password) {}
