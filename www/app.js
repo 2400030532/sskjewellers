@@ -21,6 +21,8 @@ let API_BASE_URL = getApiBaseUrl();
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
+  initAudioSystem();
+  initCinematicIntro();
   loadCustomProducts();
   loadRates();
   loadRemoteShowroomRates();
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRatesTicker();
   renderProducts();
   renderHeroProductRail();
+  setupProductCard3DMotion();
   setupStoryBubbles();
   setupEventListeners();
   setupFilterModal();
@@ -1055,8 +1058,9 @@ function renderProducts() {
     const whatsappLabel = isTelugu ? 'వాట్సాప్' : 'WhatsApp';
 
     return `
-      <div class="product-card" id="card-${item.id}">
-        <div class="card-image-wrap" onclick="openProductModal('${item.id}')">
+      <div class="product-card" id="card-${item.id}" data-product-id="${item.id}">
+        <div class="card-glare"></div>
+        <div class="card-image-wrap" onclick="handleProductCardAction(event, '${item.id}')">
           <img src="${item.image}" alt="${escapeHtml(primaryTitle)}" loading="lazy" onerror="this.src='assets/hero.jpg'">
           <div class="card-badges">
             <span class="badge-pill ${availabilityBadgeClass}">
@@ -1079,7 +1083,7 @@ function renderProducts() {
           </div>
           ${item.price ? `<div class="card-price">₹${Number(item.price).toLocaleString('en-IN')}</div>` : ''}
 
-          <h3 class="card-title" onclick="openProductModal('${item.id}')" style="cursor: pointer;">${escapeHtml(primaryTitle)}</h3>
+          <h3 class="card-title" onclick="handleProductCardAction(event, '${item.id}')" style="cursor: pointer;">${escapeHtml(primaryTitle)}</h3>
           <h4 class="card-telugu-name">${escapeHtml(secondaryTitle)}</h4>
 
           <p class="card-specs-mini">
@@ -1088,7 +1092,7 @@ function renderProducts() {
           </p>
 
           <div class="card-actions">
-            <button class="btn-view-details" onclick="openProductModal('${item.id}')" title="View details and live price" aria-label="View Details and Price for ${escapeHtml(primaryTitle)}">
+            <button class="btn-view-details" onclick="handleProductCardAction(event, '${item.id}')" title="View details and live price" aria-label="View Details and Price for ${escapeHtml(primaryTitle)}">
               <i class="ri-eye-line"></i> <span class="btn-view-label">${viewPriceLabel}</span>
             </button>
             <a href="${getWhatsAppProductUrl(item)}" target="_blank" rel="noopener noreferrer" class="btn-inquire-whatsapp" title="Ask about this design on WhatsApp">
@@ -1099,6 +1103,9 @@ function renderProducts() {
       </div>
     `;
   }).join('');
+
+  // Apply Framer-grade 3D tilt & glare to newly rendered cards
+  setupProductCard3DMotion();
 }
 
 function renderHeroProductRail() {
@@ -1107,7 +1114,7 @@ function renderHeroProductRail() {
 
   const featured = PRODUCTS_DATA.slice(0, 8);
   const renderCard = product => `
-    <button class="hero-product-card" type="button" onclick="openProductModal('${product.id}')" aria-label="View ${escapeHtml(product.name)}">
+    <button class="hero-product-card" type="button" onclick="handleProductCardAction(event, '${product.id}')" aria-label="View ${escapeHtml(product.name)}">
       <img src="${escapeHtml(product.image)}" alt="" loading="lazy" onerror="this.src='assets/hero.jpg'">
       <span>${escapeHtml(product.name)}</span>
       <small>${escapeHtml(product.approxGrossWeight)}g · ${product.metal === 'silver' ? '925 silver' : '916 gold'}</small>
@@ -1912,6 +1919,10 @@ function openProductModal(productId) {
 
   // Populate related products rail
   renderModalRelatedProducts(product);
+
+  // Framer-grade Macro Inspection Lens & Ambient Spotlight
+  setupModalMacroInspection(product);
+  playSparkleSfx();
 }
 
 function closeProductModal(triggerHistoryBack = true) {
@@ -2744,7 +2755,485 @@ function closeAnyOpenModal() {
     langModal.classList.remove('open');
     return true;
   }
+  const introGateway = document.getElementById('cinematic-intro-gateway');
+  if (introGateway && !introGateway.classList.contains('intro-exiting') && introGateway.style.display !== 'none') {
+    exitCinematicIntro(localStorage.getItem('ssk_language') || 'en');
+    return true;
+  }
   return false;
+}
+
+// ============================================================================
+// LUXURY WEB AUDIO SYSTEM (Royal Gold Bells, Chimes & Haptic Feedback)
+// ============================================================================
+let audioCtx = null;
+let sfxSoundEnabled = true;
+
+function initAudioSystem() {
+  const toggleBtn = document.getElementById('intro-sound-toggle');
+  const label = document.getElementById('intro-sound-label');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      sfxSoundEnabled = !sfxSoundEnabled;
+      if (label) label.textContent = sfxSoundEnabled ? 'Sound On' : 'Sound Off';
+      toggleBtn.innerHTML = sfxSoundEnabled 
+        ? '<i class="ri-volume-up-line"></i> <span id="intro-sound-label">Sound On</span>'
+        : '<i class="ri-volume-mute-line"></i> <span id="intro-sound-label">Sound Off</span>';
+      if (sfxSoundEnabled) {
+        getAudioContext();
+        playLuxuryTapSfx();
+      }
+    });
+  }
+
+  // Pre-warm audio context on first user interaction anywhere
+  const unlockAudio = () => {
+    getAudioContext();
+    window.removeEventListener('pointerdown', unlockAudio);
+    window.removeEventListener('keydown', unlockAudio);
+  };
+  window.addEventListener('pointerdown', unlockAudio, { passive: true });
+  window.addEventListener('keydown', unlockAudio, { passive: true });
+}
+
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+// Royal Pentatonic Chime / Bell Gong
+function playRoyalChime() {
+  if (!sfxSoundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    
+    // Pure golden harmony: E4, G#4, B4, E5, G#5, B5
+    const chord = [329.63, 415.30, 493.88, 659.25, 830.61, 987.77];
+    chord.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(2600, now);
+      filter.frequency.exponentialRampToValueAtTime(500, now + 2.5);
+
+      const amp = 0.08 / (idx + 1);
+      gain.gain.setValueAtTime(0.0001, now + idx * 0.07);
+      gain.gain.linearRampToValueAtTime(amp, now + idx * 0.07 + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.00001, now + idx * 0.07 + 2.4);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + idx * 0.07);
+      osc.stop(now + idx * 0.07 + 2.5);
+    });
+  } catch (e) {}
+}
+
+// Soft Luxury Tap Chime
+function playLuxuryTapSfx() {
+  if (!sfxSoundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.12);
+
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.2);
+  } catch (e) {}
+}
+
+// Gold Shimmer Sparkle SFX
+function playSparkleSfx() {
+  if (!sfxSoundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    [1046.5, 1318.5, 1567.98, 2093.0].forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.045);
+      gain.gain.setValueAtTime(0.035, now + idx * 0.045);
+      gain.gain.exponentialRampToValueAtTime(0.00001, now + idx * 0.045 + 0.3);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + idx * 0.045);
+      osc.stop(now + idx * 0.045 + 0.32);
+    });
+  } catch (e) {}
+}
+
+// ============================================================================
+// CINEMATIC INTRO GATEWAY & PARTICLE CANVAS
+// ============================================================================
+let particleAnimationId = null;
+
+function initCinematicIntro() {
+  const gateway = document.getElementById('cinematic-intro-gateway');
+  if (!gateway) return;
+
+  const skipBtn = document.getElementById('intro-skip-btn');
+  const langCards = document.querySelectorAll('[data-intro-lang]');
+  const replayNavBtn = document.getElementById('btn-replay-intro');
+  const replaySidebarBtn = document.getElementById('btn-sidebar-replay-intro');
+
+  startIntroParticleCanvas();
+
+  // Check if already visited in this session
+  const introSeen = sessionStorage.getItem('ssk_intro_seen');
+  if (introSeen === 'true') {
+    gateway.classList.add('intro-exiting');
+    gateway.style.display = 'none';
+  } else {
+    // Play warm opening chime on first gesture or trigger
+    setTimeout(() => {
+      playRoyalChime();
+    }, 450);
+  }
+
+  // Skip Button
+  if (skipBtn) {
+    skipBtn.addEventListener('click', () => {
+      exitCinematicIntro(localStorage.getItem('ssk_language') || 'en');
+    });
+  }
+
+  // Language selection cards in intro
+  langCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const lang = card.dataset.introLang || 'en';
+      playRoyalChime();
+      spawnGoldenSparkles(window.innerWidth / 2, window.innerHeight / 2);
+      exitCinematicIntro(lang);
+    });
+  });
+
+  // Replay buttons
+  const triggerReplay = () => {
+    replayCinematicIntro();
+    if (typeof closeSidebar === 'function') closeSidebar();
+  };
+  if (replayNavBtn) replayNavBtn.addEventListener('click', triggerReplay);
+  if (replaySidebarBtn) replaySidebarBtn.addEventListener('click', triggerReplay);
+}
+
+function startIntroParticleCanvas() {
+  const canvas = document.getElementById('intro-particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  // Particle pool
+  const particleCount = 65;
+  const particles = [];
+  const goldColors = ['#fff5cc', '#ffe699', '#ffd700', '#dfb74e', '#cda845'];
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 2.2 + 0.8,
+      color: goldColors[Math.floor(Math.random() * goldColors.length)],
+      alpha: Math.random() * 0.7 + 0.3,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: -Math.random() * 1.2 - 0.3,
+      sparkleSpeed: Math.random() * 0.04 + 0.015,
+      sparklePhase: Math.random() * Math.PI * 2
+    });
+  }
+
+  let mouseX = width / 2;
+  let mouseY = height / 2;
+
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.sparklePhase += p.sparkleSpeed;
+
+      // Wrap around bounds
+      if (p.y < -10) {
+        p.y = height + 10;
+        p.x = Math.random() * width;
+      }
+      if (p.x < -10) p.x = width + 10;
+      if (p.x > width + 10) p.x = -10;
+
+      // Soft mouse gravity
+      const dx = mouseX - p.x;
+      const dy = mouseY - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        p.x -= (dx / dist) * 0.6;
+        p.y -= (dy / dist) * 0.6;
+      }
+
+      const currentAlpha = Math.max(0.1, p.alpha * (0.6 + 0.4 * Math.sin(p.sparklePhase)));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = currentAlpha;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#ffd700';
+      ctx.fill();
+    }
+
+    ctx.globalAlpha = 1;
+    particleAnimationId = requestAnimationFrame(render);
+  }
+
+  if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
+  render();
+}
+
+function exitCinematicIntro(language = 'en') {
+  const gateway = document.getElementById('cinematic-intro-gateway');
+  if (!gateway) return;
+
+  localStorage.setItem('ssk_language', language);
+  sessionStorage.setItem('ssk_intro_seen', 'true');
+  applyLanguage(language);
+
+  gateway.classList.add('intro-exiting');
+  setTimeout(() => {
+    gateway.style.display = 'none';
+    if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
+  }, 780);
+
+  showToast(language === 'te' 
+    ? 'శ్రీ సాయి కృష్ణ జ్యువెలర్స్ షోరూమ్‌కు స్వాగతం!' 
+    : 'Welcome to Sri Sai Krishna Jewellers Showroom!');
+}
+
+function replayCinematicIntro() {
+  const gateway = document.getElementById('cinematic-intro-gateway');
+  if (!gateway) return;
+
+  gateway.style.display = 'flex';
+  gateway.classList.remove('intro-exiting');
+  startIntroParticleCanvas();
+  playRoyalChime();
+}
+
+// ============================================================================
+// FRAMER-GRADE 3D PRODUCT CARD PERSPECTIVE TILT & SPECULAR GLARE
+// ============================================================================
+function setupProductCard3DMotion() {
+  const cards = document.querySelectorAll('.product-card');
+
+  cards.forEach(card => {
+    if (card.dataset.motionBound === 'true') return;
+    card.dataset.motionBound = 'true';
+
+    // Insert card-glare if missing
+    if (!card.querySelector('.card-glare')) {
+      const glare = document.createElement('div');
+      glare.className = 'card-glare';
+      card.appendChild(glare);
+    }
+
+    const onPointerMove = (e) => {
+      const rect = card.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      const px = (x / rect.width - 0.5);
+      const py = (y / rect.height - 0.5);
+
+      // Max tilt ±8 degrees
+      const rotX = (-py * 16).toFixed(2);
+      const rotY = (px * 16).toFixed(2);
+
+      card.style.setProperty('--rot-x', `${rotX}deg`);
+      card.style.setProperty('--rot-y', `${rotY}deg`);
+      card.style.setProperty('--card-scale', '1.025');
+      card.style.setProperty('--glare-x', `${(x / rect.width * 100).toFixed(1)}%`);
+      card.style.setProperty('--glare-y', `${(y / rect.height * 100).toFixed(1)}%`);
+      card.style.setProperty('--glare-opacity', '1');
+    };
+
+    const onPointerLeave = () => {
+      card.style.setProperty('--rot-x', '0deg');
+      card.style.setProperty('--rot-y', '0deg');
+      card.style.setProperty('--card-scale', '1');
+      card.style.setProperty('--glare-opacity', '0');
+    };
+
+    card.addEventListener('pointerenter', () => {});
+    card.addEventListener('pointermove', onPointerMove, { passive: true });
+    card.addEventListener('pointerleave', onPointerLeave);
+  });
+}
+
+// Action Trigger when tapping on a Product Card
+function handleProductCardAction(event, productId) {
+  if (event) {
+    const x = event.touches ? event.touches[0].clientX : (event.clientX || window.innerWidth / 2);
+    const y = event.touches ? event.touches[0].clientY : (event.clientY || window.innerHeight / 2);
+    spawnGoldenSparkles(x, y);
+  }
+
+  const card = document.getElementById(`card-${productId}`);
+  if (card) {
+    card.classList.add('card-tapped-spring');
+    setTimeout(() => {
+      card.classList.remove('card-tapped-spring');
+    }, 600);
+  }
+
+  playLuxuryTapSfx();
+  openProductModal(productId);
+}
+
+// Dynamic Golden Sparkle Particle Burst
+function spawnGoldenSparkles(originX, originY) {
+  let container = document.getElementById('gold-sparkle-burst-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'gold-sparkle-burst-container';
+    container.className = 'gold-sparkle-burst-container';
+    document.body.appendChild(container);
+  }
+
+  const count = 16;
+  for (let i = 0; i < count; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'gold-sparkle-particle';
+
+    const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+    const distance = Math.random() * 75 + 40;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
+    const size = Math.random() * 5 + 4;
+    const rot = Math.random() * 360;
+
+    particle.style.left = `${originX}px`;
+    particle.style.top = `${originY}px`;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.setProperty('--tx', `${tx}px`);
+    particle.style.setProperty('--ty', `${ty}px`);
+    particle.style.setProperty('--rot', `${rot}deg`);
+
+    container.appendChild(particle);
+
+    setTimeout(() => {
+      particle.remove();
+    }, 680);
+  }
+}
+
+// ============================================================================
+// PRODUCT DETAIL MODAL MACRO INSPECTION LENS & 3D SPOTLIGHT
+// ============================================================================
+function setupModalMacroInspection(product) {
+  const viewport = document.getElementById('modal-img-viewport');
+  const img = document.getElementById('modal-img');
+  const lens = document.getElementById('modal-zoom-lens');
+  const glare = document.getElementById('modal-specular-glare');
+  if (!viewport || !img || !lens) return;
+
+  const updateInspection = (clientX, clientY) => {
+    const rect = viewport.getBoundingClientRect();
+    if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
+      lens.classList.remove('active');
+      if (glare) glare.style.opacity = '0';
+      img.style.transform = 'translate3d(0, 0, 0) scale(1)';
+      return;
+    }
+
+    lens.classList.add('active');
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    lens.style.left = `${x}px`;
+    lens.style.top = `${y}px`;
+
+    // 2.2x High-resolution Inspection Lens
+    const bgX = (x / rect.width * 100);
+    const bgY = (y / rect.height * 100);
+    lens.style.backgroundImage = `url('${img.src}')`;
+    lens.style.backgroundSize = `${rect.width * 2.2}px ${rect.height * 2.2}px`;
+    lens.style.backgroundPosition = `${bgX}% ${bgY}%`;
+
+    // Subtle 3D tilt on modal image
+    const px = (x / rect.width - 0.5);
+    const py = (y / rect.height - 0.5);
+    img.style.transform = `perspective(800px) rotateX(${-py * 12}deg) rotateY(${px * 12}deg) scale(1.02)`;
+
+    if (glare) {
+      glare.style.setProperty('--modal-glare-x', `${bgX}%`);
+      glare.style.setProperty('--modal-glare-y', `${bgY}%`);
+      glare.style.setProperty('--modal-glare-opacity', '1');
+    }
+  };
+
+  viewport.onmousemove = e => updateInspection(e.clientX, e.clientY);
+  viewport.onmouseleave = () => {
+    lens.classList.remove('active');
+    if (glare) glare.style.setProperty('--modal-glare-opacity', '0');
+    img.style.transform = 'translate3d(0, 0, 0) scale(1)';
+  };
+
+  viewport.ontouchmove = e => {
+    if (e.touches && e.touches[0]) {
+      updateInspection(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  };
+  viewport.ontouchend = () => {
+    lens.classList.remove('active');
+    if (glare) glare.style.setProperty('--modal-glare-opacity', '0');
+    img.style.transform = 'translate3d(0, 0, 0) scale(1)';
+  };
 }
 
 
