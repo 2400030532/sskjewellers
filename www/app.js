@@ -249,7 +249,9 @@ function setupShowroomNavigation() {
   const sidebar = document.getElementById('showroom-sidebar');
   const backdrop = document.getElementById('sidebar-backdrop');
   const menuButton = document.getElementById('btn-mobile-menu');
+  const closeButton = document.getElementById('btn-close-sidebar');
   const navLinks = document.querySelectorAll('.side-nav-link');
+  const langButtons = document.querySelectorAll('.sidebar-lang-btn');
   const mobileLinks = document.querySelectorAll('.mobile-quick-actions a[href^="#"]');
   const sections = [...document.querySelectorAll('.side-nav-link[data-section]')]
     .map(link => document.getElementById(link.dataset.section))
@@ -260,14 +262,27 @@ function setupShowroomNavigation() {
   const setSidebarState = isOpen => {
     sidebar.classList.toggle('open', isOpen);
     backdrop?.classList.toggle('open', isOpen);
+    document.body.classList.toggle('sidebar-drawer-open', isOpen);
     menuButton.setAttribute('aria-expanded', String(isOpen));
     menuButton.setAttribute('aria-label', isOpen ? 'Close showroom navigation' : 'Open showroom navigation');
     menuButton.innerHTML = `<i class="${isOpen ? 'ri-close-line' : 'ri-menu-line'}"></i>`;
   };
 
-  menuButton.addEventListener('click', () => setSidebarState(!sidebar.classList.contains('open')));
+  menuButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setSidebarState(!sidebar.classList.contains('open'));
+  });
+
+  closeButton?.addEventListener('click', () => setSidebarState(false));
   backdrop?.addEventListener('click', () => setSidebarState(false));
   navLinks.forEach(link => link.addEventListener('click', () => setSidebarState(false)));
+  langButtons.forEach(btn => btn.addEventListener('click', () => setSidebarState(false)));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+      setSidebarState(false);
+    }
+  });
 
   const observer = new IntersectionObserver(entries => {
     const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -1624,21 +1639,6 @@ function setupEventListeners() {
   }
 
   const refreshRatesBtn = document.getElementById('btn-refresh-rates');
-  const mobileMenuBtn = document.getElementById('btn-mobile-menu');
-  const navLinks = document.querySelector('.nav-links');
-
-  if (mobileMenuBtn && navLinks) {
-    mobileMenuBtn.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('mobile-open');
-      mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
-      mobileMenuBtn.innerHTML = `<i class="${isOpen ? 'ri-close-line' : 'ri-menu-line'}"></i>`;
-    });
-    navLinks.addEventListener('click', () => {
-      navLinks.classList.remove('mobile-open');
-      mobileMenuBtn.setAttribute('aria-expanded', 'false');
-      mobileMenuBtn.innerHTML = '<i class="ri-menu-line"></i>';
-    });
-  }
 
   if (refreshRatesBtn) {
     refreshRatesBtn.addEventListener('click', () => {
