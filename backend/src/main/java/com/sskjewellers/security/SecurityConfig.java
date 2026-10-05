@@ -26,17 +26,16 @@ import java.util.stream.Collectors;
 public class SecurityConfig {
   @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
-  @Bean CorsConfigurationSource corsConfigurationSource(@Value("${spring.web.cors.allowed-origins:*}") String origin) {
+  @Bean CorsConfigurationSource corsConfigurationSource(@Value("${spring.web.cors.allowed-origins}") String origin) {
+    if (origin == null || origin.isBlank()) {
+      throw new IllegalStateException("FRONTEND_ORIGIN must be configured in environment variables");
+    }
     CorsConfiguration config = new CorsConfiguration();
     List<String> origins = Arrays.stream(origin.split(","))
       .map(String::trim)
       .filter(value -> !value.isBlank())
       .collect(Collectors.toList());
-    if (origins.isEmpty() || origins.contains("*")) {
-      config.setAllowedOriginPatterns(List.of("*"));
-    } else {
-      config.setAllowedOriginPatterns(origins);
-    }
+    config.setAllowedOriginPatterns(origins);
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
     config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
     config.setExposedHeaders(List.of("Authorization"));

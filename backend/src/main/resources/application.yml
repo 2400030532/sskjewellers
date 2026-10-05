@@ -24,7 +24,7 @@ spring:
             non_contextual_creation: true
   web:
     cors:
-      allowed-origins: ${FRONTEND_ORIGIN:https://2400030532.github.io}
+      allowed-origins: ${FRONTEND_ORIGIN}
 app:
   jwt:
     secret: ${JWT_SECRET}
