@@ -1,0 +1,15 @@
+# Sri Sai Krishna Jewellers - Generative 3D & AI Vision Requirements
+# Core Python 3.10+ dependencies
+numpy>=1.24.0
+Pillow>=9.5.0
+scipy>=1.10.0
+
+# Optional Neural Segmentation (BiRefNet / RMBG-1.4 / u2net)
+rembg>=2.0.50
+
+# Optional Deep Neural Generative 3D Reconstruction (TripoSR / InstantMesh)
+# Note: Requires CUDA GPU for real-time sub-second neural inference;
+# In CPU-only environments, the service automatically engages the high-fidelity PBR silhouette synthesizer.
+# torch>=2.1.0
+# torchvision>=0.16.0
+# trimesh>=4.0.0

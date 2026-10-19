@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 260" width="160" height="260">
+  <defs>
+    <!-- Rich Gold Gradients -->
+    <linearGradient id="goldGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff2a3"/>
+      <stop offset="25%" stop-color="#dfb76c"/>
+      <stop offset="50%" stop-color="#f8db8c"/>
+      <stop offset="75%" stop-color="#b8860b"/>
+      <stop offset="100%" stop-color="#7a5500"/>
+    </linearGradient>
+    <radialGradient id="goldDome" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fff8cc"/>
+      <stop offset="30%" stop-color="#ffd56b"/>
+      <stop offset="70%" stop-color="#c99700"/>
+      <stop offset="100%" stop-color="#6e4a00"/>
+    </radialGradient>
+    <radialGradient id="rubyGlow" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ff7b91"/>
+      <stop offset="40%" stop-color="#d61c4e"/>
+      <stop offset="85%" stop-color="#800b28"/>
+      <stop offset="100%" stop-color="#400010"/>
+    </radialGradient>
+    <radialGradient id="emeraldGlow" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#7df9b5"/>
+      <stop offset="40%" stop-color="#00a86b"/>
+      <stop offset="85%" stop-color="#025938"/>
+      <stop offset="100%" stop-color="#012b1b"/>
+    </radialGradient>
+    <radialGradient id="pearl" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#fcf6ea"/>
+      <stop offset="85%" stop-color="#e8dcbe"/>
+      <stop offset="100%" stop-color="#b8a782"/>
+    </radialGradient>
+    <filter id="goldShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#goldShadow)">
+    <!-- 1. Top Stud (Earlobe Attachment) -->
+    <!-- Outer Floral Petals -->
+    <circle cx="80" cy="40" r="28" fill="url(#goldGrad1)" stroke="#b8860b" stroke-width="2"/>
+    <!-- Intricate beaded ring around stud -->
+    <circle cx="80" cy="40" r="24" fill="none" stroke="#fff8cc" stroke-width="2" stroke-dasharray="2,3"/>
+    <!-- Outer Ruby Halo (8 gemstones) -->
+    <circle cx="80" cy="18" r="4" fill="url(#rubyGlow)"/>
+    <circle cx="96" cy="24" r="4" fill="url(#rubyGlow)"/>
+    <circle cx="102" cy="40" r="4" fill="url(#rubyGlow)"/>
+    <circle cx="96" cy="56" r="4" fill="url(#rubyGlow)"/>
+    <circle cx="80" cy="62" r="4" fill="url(#rubyGlow)"/>
+    <circle cx="64" cy="56" r="4" fill="url(#rubyGlow)"/>
+    <circle cx="58" cy="40" r="4" fill="url(#rubyGlow)"/>
+    <circle cx="64" cy="24" r="4" fill="url(#rubyGlow)"/>
+    <!-- Stud Center Emerald -->
+    <circle cx="80" cy="40" r="12" fill="url(#emeraldGlow)" stroke="#ffd56b" stroke-width="2"/>
+    <circle cx="77" cy="37" r="3" fill="#ffffff" opacity="0.6"/>
+
+    <!-- 2. Intermediate Linking Rings & Peacock Connector -->
+    <path d="M 77 68 L 83 68 L 82 82 L 78 82 Z" fill="url(#goldGrad1)"/>
+    <circle cx="80" cy="85" r="5" fill="url(#rubyGlow)" stroke="#ffd700" stroke-width="1.5"/>
+    <path d="M 72 88 Q 80 95 88 88" stroke="url(#goldGrad1)" stroke-width="3" fill="none"/>
+
+    <!-- 3. Classic Temple Bell (Buttalu / Jhumka Dome) -->
+    <!-- Dome Base Shadow & Curve -->
+    <path d="M 30 148 C 30 100, 130 100, 130 148 C 130 156, 30 156, 30 148 Z" fill="url(#goldDome)" stroke="#b8860b" stroke-width="2"/>
+    <!-- Filigree Ribs across Dome -->
+    <path d="M 80 102 Q 62 124 50 148" stroke="#ffe082" stroke-width="1.8" fill="none"/>
+    <path d="M 80 102 Q 70 125 65 150" stroke="#ffe082" stroke-width="1.8" fill="none"/>
+    <path d="M 80 102 L 80 152" stroke="#ffe082" stroke-width="2" fill="none"/>
+    <path d="M 80 102 Q 90 125 95 150" stroke="#ffe082" stroke-width="1.8" fill="none"/>
+    <path d="M 80 102 Q 98 124 110 148" stroke="#ffe082" stroke-width="1.8" fill="none"/>
+
+    <!-- Middle Ruby Band on Dome -->
+    <path d="M 40 135 Q 80 144 120 135" stroke="url(#goldGrad1)" stroke-width="6" fill="none"/>
+    <circle cx="52" cy="136" r="3" fill="url(#rubyGlow)"/>
+    <circle cx="66" cy="138" r="3" fill="url(#rubyGlow)"/>
+    <circle cx="80" cy="139" r="3" fill="url(#rubyGlow)"/>
+    <circle cx="94" cy="138" r="3" fill="url(#rubyGlow)"/>
+    <circle cx="108" cy="136" r="3" fill="url(#rubyGlow)"/>
+
+    <!-- Bottom Rim of Dome -->
+    <path d="M 28 152 Q 80 162 132 152 Q 80 166 28 152 Z" fill="url(#goldGrad1)" stroke="#b8860b" stroke-width="1.5"/>
+    <!-- Golden Beaded Wire Fringe -->
+    <path d="M 32 158 Q 80 168 128 158" stroke="#fff8cc" stroke-width="2" stroke-dasharray="2,3" fill="none"/>
+
+    <!-- 4. Hanging Basara Pearl & Gold Drops (Muvvalu) -->
+    <!-- Left pearls -->
+    <line x1="38" y1="156" x2="38" y2="175" stroke="#dfb76c" stroke-width="1.5"/>
+    <circle cx="38" cy="180" r="5" fill="url(#pearl)"/>
+    <circle cx="38" cy="188" r="2.5" fill="url(#goldDome)"/>
+
+    <line x1="52" y1="159" x2="52" y2="183" stroke="#dfb76c" stroke-width="1.5"/>
+    <circle cx="52" cy="188" r="5" fill="url(#pearl)"/>
+    <circle cx="52" cy="196" r="2.5" fill="url(#goldDome)"/>
+
+    <line x1="66" y1="161" x2="66" y2="190" stroke="#dfb76c" stroke-width="1.5"/>
+    <circle cx="66" cy="195" r="5" fill="url(#pearl)"/>
+    <circle cx="66" cy="203" r="2.5" fill="url(#goldDome)"/>
+
+    <!-- Center Grand Drop (Ruby + Large Pearl) -->
+    <line x1="80" y1="162" x2="80" y2="192" stroke="#dfb76c" stroke-width="2"/>
+    <circle cx="80" cy="195" r="4" fill="url(#rubyGlow)" stroke="#ffd700" stroke-width="1"/>
+    <circle cx="80" cy="207" r="7.5" fill="url(#pearl)"/>
+    <circle cx="77" cy="204" r="2" fill="#ffffff" opacity="0.8"/>
+    <circle cx="80" cy="218" r="3" fill="url(#goldDome)"/>
+
+    <!-- Right pearls -->
+    <line x1="94" y1="161" x2="94" y2="190" stroke="#dfb76c" stroke-width="1.5"/>
+    <circle cx="94" cy="195" r="5" fill="url(#pearl)"/>
+    <circle cx="94" cy="203" r="2.5" fill="url(#goldDome)"/>
+
+    <line x1="108" y1="159" x2="108" y2="183" stroke="#dfb76c" stroke-width="1.5"/>
+    <circle cx="108" cy="188" r="5" fill="url(#pearl)"/>
+    <circle cx="108" cy="196" r="2.5" fill="url(#goldDome)"/>
+
+    <line x1="122" y1="156" x2="122" y2="175" stroke="#dfb76c" stroke-width="1.5"/>
+    <circle cx="122" cy="180" r="5" fill="url(#pearl)"/>
+    <circle cx="122" cy="188" r="2.5" fill="url(#goldDome)"/>
+  </g>
+</svg>

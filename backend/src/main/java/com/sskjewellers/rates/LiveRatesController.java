@@ -36,21 +36,26 @@ public class LiveRatesController {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() >= 200 && response.statusCode() < 300) {
           JsonNode root = objectMapper.readTree(response.body());
-          if (root.path("success").asBoolean(false)) {
             double usdToInr = root.path("rates").path("INR").asDouble(0);
             double goldPerUsd = root.path("rates").path("XAU").asDouble(0);
+            double silverPerUsd = root.path("rates").path("XAG").asDouble(0);
             if (usdToInr > 0 && goldPerUsd > 0) {
               double rawGoldInr = (usdToInr / goldPerUsd) / TROY_OUNCE_TO_GRAMS;
               // 1.15475 includes Indian import duty + cess + AP retail benchmark
               double gold24k = Math.round(rawGoldInr * 1.15475);
+              double silverRate = 245;
+              if (silverPerUsd > 0) {
+                double rawSilverInr = (usdToInr / silverPerUsd) / TROY_OUNCE_TO_GRAMS;
+                double calculatedSilver = Math.round(rawSilverInr * 1.15475);
+                if (calculatedSilver > 0) silverRate = calculatedSilver;
+              }
               return ResponseEntity.ok(Map.of(
                   "gold24k", gold24k,
                   "gold22k", Math.round(gold24k * 22.0 / 24.0),
                   "gold18k", Math.round(gold24k * 18.0 / 24.0),
-                  "silver", 245,
+                  "silver", silverRate,
                   "source", "MetalpriceAPI (India Retail)"));
             }
-          }
         }
       } catch (Exception ignored) {}
     }

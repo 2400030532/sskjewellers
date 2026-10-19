@@ -3,3 +3,12 @@ node_modules/
 .env
 *.log
 install.cmd
+.chrome-test-profile/
+.chrome-test-reels-profile/
+backend/__pycache__/
+*.webp
+*.png
+!assets/*.png
+!assets/**/*.png
+!www/assets/*.png
+!www/assets/**/*.png

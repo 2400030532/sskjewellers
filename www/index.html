@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -305,7 +305,7 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="light-theme">
+<body class="theme-dark">
 
   <!-- ==========================================================================
        CINEMATIC 1.5s ENTRY VEIL & HORIZONTAL GOLD BEAM REVEAL (Section 2)
@@ -477,9 +477,6 @@
       <button type="button" class="side-nav-link" id="btn-sidebar-replay-intro" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; color: var(--gold-500);">
         <i class="ri-sparkling-fill"></i><span>Cinematic Intro 🎬</span>
       </button>
-      <button type="button" class="side-nav-link" id="btn-sidebar-theme-toggle" onclick="toggleTheme()" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; color: var(--gold-500);">
-        <i class="ri-moon-line" id="sidebar-theme-icon"></i><span id="sidebar-theme-text">Dark Mode</span>
-      </button>
       <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08);">
         <button type="button" class="side-nav-link" id="btn-sidebar-owner-login" style="background: none; border: none; width: 100%; text-align: left; opacity: 0.75; font-size: 0.82rem; cursor: pointer; color: var(--gold-300);">
           <i class="ri-shield-keyhole-line"></i><span>Owner / Admin Sign In</span>
@@ -517,6 +514,7 @@
         <li><a href="#hero-section" class="nav-link">Home</a></li>
         <li><a href="#calculator-section" class="nav-link">Price</a></li>
         <li><a href="#catalog-section" class="nav-link">Browse</a></li>
+        <li><a href="reels.html" class="nav-link nav-link-reels"><i class="ri-instagram-line" style="color: #e1306c;"></i> Reels 🎥</a></li>
         <li><a href="#artisan-section" class="nav-link">Craft</a></li>
         <li><a href="#custom-order-section" class="nav-link">Custom</a></li>
         <li><a href="#store-section" class="nav-link">Shop</a></li>
@@ -534,9 +532,9 @@
           <span class="lang-btn-text">EN/తె</span>
         </button>
 
-        <button id="btn-theme-toggle" class="btn-theme-toggle" type="button" onclick="toggleTheme()" title="Switch to Dark Mode / డార్క్ మోడ్" aria-label="Toggle Dark Mode">
-          <i class="ri-moon-line"></i>
-          <span class="theme-btn-text">Dark</span>
+        <button id="btn-nav-tryon" class="btn-tryon-nav" type="button" onclick="launchVirtualTryOn('ssk-gld-105')" title="Wear Ornaments Online (ఆన్‌లైన్ ట్రై-ఆన్)" aria-label="Wear Ornaments Online">
+          <i class="ri-sparkling-fill" style="color: #ffd700;"></i>
+          <span>Try-On ✨</span>
         </button>
 
         <button id="btn-nav-shortlist" class="btn-shortlist-nav btn-open-shortlist-drawer" type="button" aria-label="Open saved designs">
@@ -553,13 +551,13 @@
     </div>
   </nav>
 
-  <!-- Mobile Bottom Navigation Bar (Requirement 1: home -> price -> browse -> save -> ask) -->
+  <!-- Mobile Bottom Navigation Bar (Streamlined 5-icon thumb-friendly layout) -->
   <nav class="mobile-quick-actions" aria-label="Main app navigation">
     <a href="#hero-section" class="mob-nav-item active" id="mob-home-link"><i class="ri-home-5-line"></i><span>Home</span></a>
-    <a href="#calculator-section" class="mob-nav-item" id="mob-price-link"><i class="ri-price-tag-3-line"></i><span>Price</span></a>
     <a href="#catalog-section" class="mob-nav-item" id="mob-browse-link"><i class="ri-layout-grid-line"></i><span>Browse</span></a>
-    <button type="button" class="btn-open-shortlist-drawer mob-nav-item" id="mob-saved-link"><i class="ri-heart-line"></i><span>Save</span><span class="shortlist-count mobile-tab-badge" style="display: none;">0</span></button>
-    <a href="https://wa.me/919573199344?text=Namaste%20Sri%20Sai%20Krishna%20Jewellers,%20please%20help%20me%20choose%20a%20design." target="_blank" rel="noopener noreferrer" class="mob-nav-item" id="mob-ask-link"><i class="ri-whatsapp-line"></i><span>Ask</span></a>
+    <a href="reels.html" class="mob-nav-item" id="mob-reels-link"><i class="ri-film-line" style="color: #ff3366;"></i><span>Reels</span></a>
+    <button type="button" class="mob-nav-item mob-nav-tryon" onclick="launchVirtualTryOn('ssk-gld-105')" title="Try Ornaments Live"><i class="ri-sparkling-fill" style="color: var(--gold-300);"></i><span>Try-On</span></button>
+    <button type="button" class="btn-open-shortlist-drawer mob-nav-item" id="mob-saved-link"><i class="ri-heart-line"></i><span>Saved</span><span class="shortlist-count mobile-tab-badge" style="display: none;">0</span></button>
   </nav>
 
   <!-- ==========================================================================
@@ -604,6 +602,10 @@
   <section class="collection-stories-section" id="hero-section" aria-label="Featured jewellery collections">
     <div class="container stories-container">
       <div class="stories-track">
+        <button type="button" class="story-bubble" onclick="launchVirtualTryOn('ssk-gld-105')" title="Live Virtual Try-On">
+          <div class="story-ring" style="border-color: #ffd700; box-shadow: 0 0 12px rgba(223, 183, 108, 0.4);"><img src="assets/tryon/peacock_jhumka.svg" alt="Virtual Try-On" style="padding: 4px; background: rgba(18, 9, 14, 0.8);"></div>
+          <span style="color: var(--gold-300); font-weight: 700;">Try-On ✨</span>
+        </button>
         <button type="button" class="story-bubble active" data-category="all" title="View all designs">
           <div class="story-ring"><img src="assets/hero.jpg" alt="All jewellery designs"></div>
           <span>All Designs</span>
@@ -643,6 +645,18 @@
         <p class="section-subtitle" style="margin-bottom: 0.4rem;">
           Ready pieces &amp; custom designs. Tap any piece for live price &amp; karigar details.
         </p>
+      </div>
+
+      <!-- Prominent Virtual Try-On Banner -->
+      <div class="vto-promo-banner" onclick="launchVirtualTryOn('ssk-gld-105')">
+        <div class="vto-promo-content">
+          <span class="vto-promo-badge"><i class="ri-sparkling-fill"></i> New AI Computer Vision</span>
+          <h3>Live Virtual Try-On (ఆన్‌లైన్ ధరించి చూడండి)</h3>
+          <p>Adorn traditional gold earrings, chokers, harams &amp; papidi billa live with your camera right now!</p>
+        </div>
+        <button type="button" class="btn-primary-gold vto-promo-btn">
+          <i class="ri-camera-lens-line"></i> Launch Try-On ✨
+        </button>
       </div>
 
       <!-- Clean & Organized Search + Filter Control Panel -->
@@ -800,9 +814,6 @@
           <div class="showroom-controls">
             <button id="btn-admin-login" class="admin-login-btn" title="Admin sign in" style="display: none !important;">
               <i class="ri-shield-keyhole-line"></i> Admin
-            </button>
-            <button id="btn-theme-toggle-secondary" class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch theme">
-              <i class="ri-moon-line"></i><span>Dark</span>
             </button>
           </div>
         </div>
@@ -1317,17 +1328,105 @@
 
       <div class="modal-media-col">
         <div class="modal-ambient-aura"></div>
-        <div class="modal-img-viewport" id="modal-img-viewport">
-          <img id="modal-img" src="" alt="Jewellery Design View">
-          <div class="modal-specular-glare" id="modal-specular-glare"></div>
-          <div class="modal-zoom-lens" id="modal-zoom-lens"></div>
+        
+        <!-- Segmented Media Mode Tabs (3D Model / High-Res Photo / Reel) -->
+        <div class="modal-media-tabs" id="modal-media-tabs" style="display: flex; gap: 8px; margin-bottom: 12px; z-index: 5; width: 100%; justify-content: center;">
+          <button type="button" class="modal-media-tab-btn active" id="modal-tab-3d" data-tab="3d" style="display: none; padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; background: rgba(212,175,55,0.18); border: 1px solid var(--border-gold); color: var(--gold-300); cursor: pointer; align-items: center; gap: 6px; transition: all 0.2s ease;">
+            <i class="ri-box-3-fill" style="color:var(--gold-400);"></i> <span>3D Model 360°</span>
+          </button>
+          <button type="button" class="modal-media-tab-btn" id="modal-tab-photo" data-tab="photo" style="padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; background: rgba(20,15,22,0.85); border: 1px solid rgba(212,175,55,0.3); color: var(--gold-200); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease;">
+            <i class="ri-image-line"></i> <span>Photo</span>
+          </button>
+          <button type="button" class="modal-media-tab-btn" id="modal-tab-video" data-tab="video" style="display: none; padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; background: rgba(20,15,22,0.85); border: 1px solid rgba(212,175,55,0.3); color: var(--text-dim); cursor: pointer; align-items: center; gap: 6px; transition: all 0.2s ease;">
+            <i class="ri-instagram-line" style="color:#e1306c;"></i> <span>Reel</span>
+          </button>
         </div>
-        <div class="modal-lens-hint"><i class="ri-sparkling-fill" style="color: var(--gold-300);"></i> <span>Hover or touch to inspect 916 Hallmark &amp; filigree craftsmanship</span></div>
+
+        <!-- Media Gallery Swiper Container -->
+        <div class="modal-gallery-container" id="modal-gallery-container">
+          <div class="modal-gallery-track" id="modal-gallery-track">
+            <!-- Slide 0: High-Res Photo & Hallmark Zoom Lens -->
+            <div class="modal-gallery-slide active" id="modal-slide-photo" data-slide-index="0">
+              <div class="modal-img-viewport" id="modal-img-viewport">
+                <img id="modal-img" src="" alt="Jewellery Design View">
+                <div class="modal-specular-glare" id="modal-specular-glare"></div>
+                <div class="modal-zoom-lens" id="modal-zoom-lens"></div>
+              </div>
+            </div>
+
+            <!-- Slide: Interactive 3D GLB Model Viewer -->
+            <div class="modal-gallery-slide" id="modal-slide-3d" data-slide-index="1" style="display: none;">
+              <div class="modal-3d-viewport" id="modal-3d-viewport" style="position: relative; width: 100%; height: 100%; min-height: 440px; background: radial-gradient(circle at center, #1b131c 0%, #0c080e 100%); border-radius: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <div id="modal-3d-canvas-wrap" style="width: 100%; height: 100%; position: absolute; inset: 0;"></div>
+                
+                <div id="modal-3d-loading" style="position: absolute; inset: 0; background: rgba(12,8,14,0.88); z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; backdrop-filter: blur(6px);">
+                  <div class="ai-3d-spinner" style="width: 40px; height: 40px; border: 3px solid rgba(212,175,55,0.25); border-top-color: var(--gold-400); border-radius: 50%; animation: ssk-spin 0.8s linear infinite;"></div>
+                  <span style="color: var(--gold-300); font-size: 0.88rem; font-weight: 500; letter-spacing: 0.03em;">Loading 3D Hallmarked Model...</span>
+                </div>
+
+                <div id="modal-3d-error" style="display: none; position: absolute; inset: 0; background: rgba(12,8,14,0.92); z-index: 6; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; text-align: center;">
+                  <i class="ri-error-warning-line" style="font-size: 2rem; color: #ef4444;"></i>
+                  <span style="color: #fca5a5; font-size: 0.88rem;" id="modal-3d-error-text">Unable to render 3D model.</span>
+                  <button type="button" id="modal-3d-fallback-btn" class="btn-outline-gold" style="padding: 6px 14px; font-size: 0.8rem; margin-top: 6px;">
+                    <i class="ri-image-line"></i> View Product Photos
+                  </button>
+                </div>
+
+                <div class="modal-3d-controls-overlay" style="position: absolute; bottom: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; z-index: 4;">
+                  <div class="modal-3d-hint-pill" style="background: rgba(15,10,18,0.8); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; padding: 5px 12px; font-size: 0.72rem; color: var(--gold-200); backdrop-filter: blur(8px); display: flex; gap: 8px;">
+                    <span><i class="ri-drag-move-line"></i> Drag to rotate</span>
+                    <span><i class="ri-zoom-in-line"></i> Pinch / Scroll to zoom</span>
+                  </div>
+                  <div style="display: flex; gap: 6px; pointer-events: auto;">
+                    <button type="button" id="modal-3d-reset-btn" class="modal-3d-pill-btn" title="Reset Camera View" style="background: rgba(20,15,22,0.85); border: 1px solid var(--border-gold); color: var(--gold-300); border-radius: 20px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                      <i class="ri-restart-line"></i> Reset
+                    </button>
+                    <button type="button" id="modal-3d-fullscreen-btn" class="modal-3d-pill-btn" title="Inspect in 360° Studio" style="background: rgba(212,175,55,0.18); border: 1px solid var(--border-gold); color: var(--gold-300); border-radius: 20px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                      <i class="ri-fullscreen-line"></i> 360° Studio
+                    </button>
+                  </div>
+                </div>
+
+                <div style="position: absolute; top: 12px; left: 12px; z-index: 4; pointer-events: none; background: rgba(15,10,18,0.75); border: 1px solid rgba(212,175,55,0.35); border-radius: 20px; padding: 4px 10px; font-size: 0.72rem; color: var(--gold-300); backdrop-filter: blur(8px); display: flex; align-items: center; gap: 5px;">
+                  <i class="ri-box-3-fill" style="color: var(--gold-400);"></i>
+                  <span>3D Hallmarked Model</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide: Instagram Reel / Video Player (Only shown if product has video) -->
+            <div class="modal-gallery-slide" id="modal-slide-video" data-slide-index="2" style="display: none;">
+              <div class="modal-video-viewport" id="modal-video-viewport">
+                <!-- Dynamically populated by app.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Carousel Navigation Arrows -->
+          <button type="button" class="gallery-nav-btn prev" id="modal-gallery-prev" aria-label="Previous Slide" style="display: none;">
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button type="button" class="gallery-nav-btn next" id="modal-gallery-next" aria-label="Next Slide" style="display: none;">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+
+        <div class="modal-lens-hint" id="modal-media-hint">
+          <i class="ri-sparkling-fill" style="color: var(--gold-300);"></i> 
+          <span id="modal-media-hint-text">Hover or touch to inspect 916 Hallmark &amp; filigree craftsmanship</span>
+        </div>
+
         <div class="modal-media-actions">
           <button type="button" id="modal-share-btn" title="Share this design" aria-label="Share this design"><i class="ri-share-forward-line"></i></button>
           <button type="button" id="modal-image-save-btn" title="Save this design" aria-label="Save this design"><i class="ri-heart-line"></i></button>
         </div>
-        <div class="modal-image-dots" aria-label="Product images"><span class="active"></span><span></span><span></span><span></span></div>
+
+        <!-- Dynamic Indicator Dots (Photo, 3D Model, Reel) -->
+        <div class="modal-image-dots" id="modal-image-dots" aria-label="Product media slides">
+          <span class="active" data-index="0" title="Photo"></span>
+          <span id="modal-dot-3d" data-index="1" style="display: none;" title="3D Model"></span>
+          <span id="modal-dot-video" data-index="2" style="display: none;" title="Instagram Reel"></span>
+        </div>
       </div>
 
       <div class="modal-info-col">
@@ -1383,6 +1482,20 @@
 
         <p class="modal-description" id="modal-description"></p>
 
+        <!-- Live Virtual Try-On & 3D Model Launch Buttons -->
+        <div id="modal-tryon-container" style="margin-bottom: 0.85rem; display: none;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+            <button id="modal-tryon-btn" type="button" class="btn-tryon-luxury" style="width: 100%; justify-content: center; font-size: 0.88rem; padding: 0.8rem 0.5rem;">
+              <i class="ri-sparkling-fill"></i>
+              <span>Live Try-On</span>
+            </button>
+            <button id="modal-3d-btn" type="button" class="btn-outline-gold" style="width: 100%; justify-content: center; font-size: 0.88rem; padding: 0.8rem 0.5rem; background: rgba(212,175,55,0.06); border-color: var(--border-gold);">
+              <i class="ri-box-3-line" style="color:var(--gold-400);"></i>
+              <span>3D Model 360°</span>
+            </button>
+          </div>
+        </div>
+
         <div class="modal-actions-row">
           <button id="modal-shortlist-btn" class="btn-outline-gold" type="button" style="border-radius: 8px; justify-content: center; padding: 0.75rem 1rem;">
             <i class="ri-heart-line"></i> Save
@@ -1425,6 +1538,84 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       FULLSCREEN INSTAGRAM REELS VIEWER MODAL
+       Account: https://www.instagram.com/sri_sai_krishna_jewellers/
+       ========================================================================== -->
+  <div class="reels-modal-backdrop" id="reels-modal" role="dialog" aria-modal="true" aria-label="Instagram Reel Player">
+    <div class="reels-modal-wrapper">
+      <!-- Top Bar -->
+      <div class="reels-modal-topbar">
+        <div class="reels-modal-account">
+          <div class="reels-modal-avatar">SSK</div>
+          <div class="reels-modal-account-info">
+            <strong>sri_sai_krishna_jewellers</strong>
+            <span>Etikoppaka • Original Reel</span>
+          </div>
+        </div>
+        <div class="reels-modal-top-actions">
+          <button type="button" class="btn-reel-audio" id="btn-reel-audio-toggle" title="Toggle Sound" aria-label="Toggle Sound">
+            <i class="ri-volume-mute-line"></i>
+          </button>
+          <button type="button" class="btn-reel-close" id="btn-reel-close" onclick="closeReelsModal()" title="Close Reel" aria-label="Close Reel">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Video Stage -->
+      <div class="reels-modal-stage" id="reels-modal-stage">
+        <video id="reels-active-video" class="reels-active-video" playsinline loop preload="auto"></video>
+        <div class="reels-video-overlay" id="reels-video-overlay">
+          <div class="reels-play-center-btn" id="reels-play-center-btn"><i class="ri-play-fill"></i></div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="reels-progress-bar-track">
+          <div class="reels-progress-bar-fill" id="reels-progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- Reel Sidebar Actions (Right side like Instagram) -->
+      <div class="reels-modal-actions">
+        <a href="https://www.instagram.com/sri_sai_krishna_jewellers/" target="_blank" rel="noopener noreferrer" class="reel-action-btn" id="reel-action-instagram" title="Open on Instagram">
+          <i class="ri-instagram-line"></i>
+          <span>Instagram</span>
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="reel-action-btn whatsapp" id="reel-action-whatsapp" title="Inquire on WhatsApp">
+          <i class="ri-whatsapp-line"></i>
+          <span>Ask</span>
+        </a>
+        <button type="button" class="reel-action-btn product" id="reel-action-product" title="View in Catalogue">
+          <i class="ri-store-2-line"></i>
+          <span>Piece</span>
+        </button>
+        <button type="button" class="reel-action-btn share" id="reel-action-share" title="Share Reel">
+          <i class="ri-share-forward-line"></i>
+          <span>Share</span>
+        </button>
+      </div>
+
+      <!-- Bottom Meta Caption & Tagged Product -->
+      <div class="reels-modal-caption-bar">
+        <div class="reels-tagged-product-chip" id="reels-modal-product-chip" style="display: none;">
+          <i class="ri-price-tag-3-fill"></i>
+          <span id="reels-modal-product-name">22K Lakshmi Kasu Mala</span>
+          <i class="ri-arrow-right-s-line"></i>
+        </div>
+        <h4 class="reels-modal-title" id="reels-modal-title">Reel Title</h4>
+        <p class="reels-modal-desc" id="reels-modal-desc">Reel Caption</p>
+      </div>
+
+      <!-- Prev / Next Vertical Navigation for Reels -->
+      <button type="button" class="reels-nav-arrow up" id="btn-reel-prev" title="Previous Reel" aria-label="Previous Reel">
+        <i class="ri-arrow-up-s-line"></i>
+      </button>
+      <button type="button" class="reels-nav-arrow down" id="btn-reel-next" title="Next Reel" aria-label="Next Reel">
+        <i class="ri-arrow-down-s-line"></i>
+      </button>
     </div>
   </div>
 
@@ -1566,11 +1757,17 @@
         <button type="button" class="admin-tab-btn active" data-admin-tab="catalogue">
           <i class="ri-gem-line"></i><span>Catalogue</span>
         </button>
+        <button type="button" class="admin-tab-btn" data-admin-tab="reels" id="tab-btn-admin-reels">
+          <i class="ri-instagram-line" style="color:#e1306c"></i><span>Reels</span>
+        </button>
         <button type="button" class="admin-tab-btn" data-admin-tab="rates">
           <i class="ri-price-tag-3-line"></i><span>Daily Rates</span>
         </button>
         <button type="button" class="admin-tab-btn" data-admin-tab="settings">
           <i class="ri-settings-4-line"></i><span>Server &amp; Sync</span>
+        </button>
+        <button type="button" class="admin-tab-btn" data-admin-tab="tryon-prep" id="tab-btn-tryon-prep">
+          <i class="ri-sparkling-fill" style="color:var(--gold-400)"></i><span>AI Try-On Studio</span>
         </button>
       </nav>
 
@@ -1663,13 +1860,108 @@
               <div class="admin-field admin-field-wide">
                 <label for="product-image-file">Upload Photo (or Camera)</label>
                 <input id="product-image-file" type="file" accept="image/jpeg,image/png,image/webp">
-                <div id="product-image-preview-wrap" style="display:none;margin-top:0.5rem;">
-                  <img id="product-image-preview" src="" alt="Preview" style="max-height:100px;border-radius:8px;border:1px solid var(--border-gold);">
+                <div id="product-image-preview-wrap" style="display:none;margin-top:0.6rem;">
+                  <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start;">
+                    <div style="flex:1; min-width:130px; text-align:center;">
+                      <span style="font-size:0.75rem; color:var(--text-dim); display:block; margin-bottom:4px;">Original Photograph</span>
+                      <img id="product-image-preview" src="" alt="Original Upload" style="max-height:120px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#1a151f; object-fit:contain; width:100%;">
+                    </div>
+                    <div style="flex:1; min-width:130px; text-align:center;" id="product-transparent-preview-col">
+                      <span style="font-size:0.75rem; color:var(--gold-400); display:block; margin-bottom:4px;">AI Segmented (Try-On Asset)</span>
+                      <img id="product-transparent-preview" src="" alt="AI Cutout" style="max-height:120px; border-radius:8px; border:1px solid var(--border-gold); background:repeating-conic-gradient(#1e1823 0% 25%, #15101a 0% 50%) 50% / 16px 16px; object-fit:contain; width:100%;">
+                    </div>
+                  </div>
                 </div>
+                <div id="product-ai-scan-result" style="display:none;margin-top:0.6rem;padding:0.75rem 0.95rem;background:rgba(212,175,55,0.08);border:1px solid var(--border-gold);border-radius:8px;font-size:0.82rem;color:var(--gold-200);line-height:1.4;"></div>
               </div>
               <div class="admin-field admin-field-wide">
                 <label for="product-image">Or Image URL</label>
                 <input id="product-image" type="text" placeholder="https://... or assets/...">
+              </div>
+              <div class="admin-field admin-field-wide">
+                <label for="product-model-file" style="display: flex; justify-content: space-between; align-items: center;">
+                  <span>Upload 3D Model File (.GLB / .GLTF)</span>
+                  <span id="product-model-size-badge" style="display:none; font-size:0.75rem; color:var(--gold-300);"></span>
+                </label>
+                <input id="product-model-file" type="file" accept=".glb,.gltf,model/gltf-binary,application/octet-stream">
+                <small style="color:var(--text-dim);font-size:0.75rem;">Upload Blender CAD, MatrixGold, or TripoSR .GLB model for interactive 360° customer inspection</small>
+                
+                <!-- Attached Model Information Pill -->
+                <div id="product-model-attached-info" style="display:none; margin-top:0.5rem; padding:0.6rem 0.85rem; background:rgba(212,175,55,0.08); border:1px solid var(--border-gold); border-radius:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <i class="ri-box-3-fill" style="color:var(--gold-400);"></i>
+                    <span id="product-model-attached-name" style="font-size:0.8rem; color:var(--text-main); font-weight:500;">No model attached</span>
+                  </div>
+                  <div style="display:flex; gap:6px;">
+                    <button type="button" class="btn-outline-gold" id="btn-admin-preview-attached-3d" style="padding:0.25rem 0.6rem; font-size:0.75rem;">
+                      <i class="ri-eye-line"></i> Preview Model
+                    </button>
+                    <button type="button" class="btn-outline-gold" id="btn-admin-remove-3d" style="padding:0.25rem 0.6rem; font-size:0.75rem; border-color:rgba(239,68,68,0.5); color:#fca5a5;">
+                      <i class="ri-delete-bin-line"></i> Remove
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Validation and Status Feedback -->
+                <div id="product-model-validation-msg" style="display:none; margin-top:0.4rem; font-size:0.8rem; line-height:1.4;"></div>
+              </div>
+              <div class="admin-field admin-field-wide" style="background:rgba(212,175,55,0.05); border:1px solid var(--border-gold); border-radius:8px; padding:0.85rem; margin-top:0.5rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                  <div>
+                    <strong style="color:var(--gold-300); font-size:0.88rem; display:flex; align-items:center; gap:6px;">
+                      <i class="ri-box-3-line"></i> AI 2D-to-3D Model Studio
+                    </strong>
+                    <span id="product-3d-status-badge" class="badge-status" style="font-size:0.72rem; padding:2px 8px; border-radius:12px; background:rgba(255,255,255,0.1); color:var(--text-dim); margin-top:4px; display:inline-block;">
+                      Status: NONE
+                    </span>
+                  </div>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <button type="button" class="btn-outline-gold" id="btn-admin-generate-3d" style="padding:0.4rem 0.8rem; font-size:0.8rem;">
+                      <i class="ri-sparkling-fill"></i> Generate 3D Model
+                    </button>
+                    <button type="button" class="btn-outline-gold" id="btn-admin-preview-3d" style="padding:0.4rem 0.8rem; font-size:0.8rem; display:none;">
+                      <i class="ri-eye-line"></i> Preview 3D
+                    </button>
+                  </div>
+                </div>
+                <div id="product-3d-progress-wrap" style="display:none; margin-top:0.6rem;">
+                  <div style="height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+                    <div id="product-3d-progress-bar" style="width:0%; height:100%; background:var(--gold-400); transition:width 0.4s ease;"></div>
+                  </div>
+                  <small id="product-3d-progress-text" style="color:var(--text-dim); font-size:0.75rem; margin-top:4px; display:block;">Reconstructing 3D geometry...</small>
+                </div>
+                <div style="margin-top:0.6rem; display:flex; align-items:center; gap:8px;">
+                  <input type="checkbox" id="product-publish-3d" checked style="width:auto; cursor:pointer;">
+                  <label for="product-publish-3d" style="margin:0; font-size:0.8rem; color:var(--text-main); cursor:pointer;">
+                    Publish 3D model for customer 360° inspection
+                  </label>
+                </div>
+              </div>
+              <div class="admin-field admin-field-wide" style="border-top: 1px dashed var(--border-gold); padding-top: 0.85rem; margin-top: 0.5rem;">
+                <label style="color: var(--gold-300); font-weight: 600; display: flex; align-items: center; gap: 0.4rem;">
+                  <i class="ri-sparkling-fill" style="color: var(--gold-400);"></i> 3D Virtual Try-On Settings (ఆన్‌లైన్ ట్రై-ఆన్)
+                </label>
+                <p style="font-size: 0.8rem; color: var(--text-dim); margin: 0.25rem 0 0.5rem 0; line-height: 1.4;">
+                  ✨ Any ornament you add automatically connects to AI Face Mesh / Hand Tracking! Choose how customers wear it or leave on Auto-Detect.
+                </p>
+              </div>
+              <div class="admin-field">
+                <label for="product-tryon-mode">Try-On Wear Style</label>
+                <select id="product-tryon-mode">
+                  <option value="auto">✨ Auto-Detect (Open-Source AI Vision)</option>
+                  <option value="BANGLES">Bangles / Kadas / Bracelets (గాజులు / కంకణాలు - Wrists)</option>
+                  <option value="RING">Finger Rings / Solitaire (ఉంగరాలు / నవరత్న - Fingers)</option>
+                  <option value="NECKLACE">Long Haram / Necklace (హారం / నెక్లెస్ - Chest Drape)</option>
+                  <option value="CHOKER">Choker / Collar (చోకర్ / గుత్తపూసలు - Neck)</option>
+                  <option value="EARRINGS">Earrings / Buttalu (కమ్మలు / బుట్టలు - Ears)</option>
+                  <option value="MAANG_TIKKA">Maang Tikka / Papidi Billa (పాపిడి బిళ్ల - Forehead)</option>
+                  <option value="VADDANAM">Vaddanam / Waist Belt (వడ్డాణం - Waist)</option>
+                  <option value="disabled">Disable Try-On for this item</option>
+                </select>
+              </div>
+              <div class="admin-field">
+                <label for="product-tryon-asset">Custom Try-On Graphic (Optional)</label>
+                <input id="product-tryon-asset" placeholder="Leave blank for auto gold vector">
               </div>
               <div class="admin-field admin-field-wide">
                 <label for="product-description">Description *</label>
@@ -1693,6 +1985,82 @@
             <span class="admin-storage-note"><i class="ri-hard-drive-2-line"></i> Synced</span>
           </div>
           <div id="admin-product-list" class="admin-product-cards-grid"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Instagram Reels Manager -->
+      <div class="admin-tab-pane" id="pane-admin-reels">
+        <div class="admin-pane-header">
+          <div>
+            <h3>Instagram Reels Showcase</h3>
+            <p>Publish any reel from @sri_sai_krishna_jewellers directly into the website's customer reels section</p>
+          </div>
+          <a href="reels.html" target="_blank" class="btn-outline-gold btn-sm" style="display:inline-flex; align-items:center; gap:0.35rem;">
+            <i class="ri-external-link-line"></i> View Live Reels Page
+          </a>
+        </div>
+
+        <!-- Add Reel Form Card -->
+        <div class="admin-settings-card" style="margin-bottom: 1.5rem; border: 1px solid rgba(225, 48, 108, 0.4);">
+          <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;">
+            <i class="ri-instagram-fill" style="font-size: 1.6rem; color: #e1306c;"></i>
+            <div>
+              <h4 style="margin: 0; color: #fff; font-size: 1.05rem;">Share New Instagram Reel</h4>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Paste your reel link below. It will be embedded directly without redirecting out of the website.</p>
+            </div>
+          </div>
+
+          <form id="admin-add-reel-form">
+            <div class="admin-field admin-field-wide" style="margin-bottom: 0.85rem;">
+              <label for="admin-reel-url"><i class="ri-link"></i> Instagram Reel URL *</label>
+              <input type="url" id="admin-reel-url" required placeholder="https://www.instagram.com/reel/DbBpkA7NEjb/..." autocomplete="off">
+              <small style="color: var(--text-muted); font-size: 0.76rem; display: block; margin-top: 0.25rem;">
+                Supports any Instagram link format: <code>https://www.instagram.com/reel/SHORTCODE/</code> or <code>https://www.instagram.com/p/SHORTCODE/</code>
+              </small>
+            </div>
+
+            <div class="admin-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 0.85rem;">
+              <div class="admin-field">
+                <label for="admin-reel-title">Reel Title / Description</label>
+                <input type="text" id="admin-reel-title" placeholder="e.g. 22K Lakshmi Kasu Mala Bridal Reel">
+              </div>
+              <div class="admin-field">
+                <label for="admin-reel-category">Jewellery Category</label>
+                <select id="admin-reel-category">
+                  <option value="bridal">Bridal Harams</option>
+                  <option value="bangles">Kadas &amp; Bangles</option>
+                  <option value="choker">Chokers</option>
+                  <option value="earrings">Jhumkas / Buttalu</option>
+                  <option value="chains">Chains</option>
+                  <option value="coins">Gold Coins</option>
+                  <option value="silver">Silver Ornaments</option>
+                  <option value="craft">Karigar Workshop</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="admin-field admin-field-wide" style="margin-bottom: 1rem;">
+              <label for="admin-reel-product">Link to Catalogue Product (Optional)</label>
+              <select id="admin-reel-product">
+                <option value="">-- No linked product --</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-primary-gold" id="btn-admin-submit-reel" style="width: 100%; justify-content: center; padding: 0.75rem 1rem;">
+              <i class="ri-add-circle-line"></i> Add Reel to Customer Website
+            </button>
+          </form>
+        </div>
+
+        <!-- Published Reels Section -->
+        <div class="admin-catalogue-list">
+          <div class="admin-list-filter-row">
+            <span class="admin-count-label">Active Published Reels: <strong id="admin-reels-count">1</strong></span>
+            <span class="admin-storage-note"><i class="ri-shield-check-line" style="color: var(--gold-300);"></i> 100% IG Embed</span>
+          </div>
+          <div id="admin-reels-list" class="admin-reels-cards-grid">
+            <!-- Dynamic list of reels rendered by JS with live IG iframe and delete button -->
+          </div>
         </div>
       </div>
 
@@ -1824,14 +2192,287 @@
           </button>
         </div>
       </div>
+
+      <!-- Tab 4: AI Try-On Studio (Phase 1 Exact Product Preprocessing & Quality Control) -->
+      <div class="admin-tab-pane" id="pane-admin-tryon-prep">
+        <div class="admin-pane-header">
+          <div>
+            <h3>Prepare Product for Virtual Try-On</h3>
+            <p>High-precision edge extraction, chain preservation, and mask quality inspection</p>
+          </div>
+          <span class="badge-pill badge-ready" id="vto-ai-engine-status-pill" style="font-size:0.75rem;padding:4px 10px;display:inline-flex;align-items:center;gap:5px;">
+            <i class="ri-sparkling-fill" style="color:var(--gold-400)"></i> AI Vision Active
+          </span>
+        </div>
+
+        <div class="vto-prep-card">
+          <!-- Step 1: Select Catalogue Product -->
+          <div class="admin-field admin-field-wide">
+            <label for="vto-prep-product-select">Select Jewellery Product to Prepare</label>
+            <select id="vto-prep-product-select">
+              <option value="">-- Choose an ornament from catalogue --</option>
+            </select>
+          </div>
+
+          <!-- Parameter Controls -->
+          <div class="vto-prep-controls-row">
+            <div class="vto-prep-control-item" style="flex: 1.2;">
+              <label for="vto-prep-sensitivity" style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-dim); margin-bottom:4px;">
+                <span>Background Cutoff Sensitivity:</span>
+                <strong id="vto-prep-sens-val" style="color:var(--gold-300);">1.0x</strong>
+              </label>
+              <input type="range" id="vto-prep-sensitivity" min="0.5" max="2.0" step="0.1" value="1.0" style="width:100%; accent-color:var(--gold-400);">
+            </div>
+            <div class="vto-prep-control-item" style="flex: 1;">
+              <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:var(--text-main); cursor:pointer; margin-top:1.2rem;">
+                <input type="checkbox" id="vto-prep-preserve-chains" checked style="accent-color:var(--gold-400); width:16px; height:16px;">
+                <span>Preserve Thin Chains &amp; Filigree</span>
+              </label>
+            </div>
+            <div class="vto-prep-control-item" style="flex: 0.8;">
+              <button type="button" class="btn-primary-gold" id="btn-vto-run-prep" style="width:100%; height:2.5rem; justify-content:center; gap:6px;">
+                <i class="ri-sparkling-fill"></i> Extract Asset
+              </button>
+            </div>
+          </div>
+
+          <!-- Processing State -->
+          <div id="vto-prep-loading" style="display:none; text-align:center; padding: 2rem 1rem; border:1px dashed var(--border-gold); border-radius:10px; margin-top:1rem; background:rgba(212,175,55,0.03);">
+            <i class="ri-loader-4-line ri-spin" style="font-size:2rem; color:var(--gold-400);"></i>
+            <p style="margin-top:0.75rem; color:var(--gold-200); font-weight:600; font-size:0.95rem;">Analyzing pixels with AI Vision Engine...</p>
+            <span style="font-size:0.78rem; color:var(--text-dim);">Detecting studio background, isolating gold chains, evaluating mask quality</span>
+          </div>
+
+          <!-- Step 2: Quality Inspection & Visual Comparison Workspace -->
+          <div id="vto-prep-workspace" style="display:none; margin-top: 1.25rem;">
+            <div class="vto-prep-comparison-grid">
+              <!-- Original Photo Box -->
+              <div class="vto-prep-preview-box">
+                <div class="vto-prep-preview-header">
+                  <span><i class="ri-image-line"></i> Original Product Photo</span>
+                  <span id="vto-prep-orig-dims" class="vto-prep-badge-dim">--</span>
+                </div>
+                <div class="vto-prep-img-container">
+                  <img id="vto-prep-orig-img" src="" alt="Original Photo">
+                </div>
+              </div>
+
+              <!-- AI Extracted Transparent Product Box -->
+              <div class="vto-prep-preview-box">
+                <div class="vto-prep-preview-header">
+                  <span><i class="ri-sparkling-fill" style="color:var(--gold-400);"></i> AI Extracted Product</span>
+                  <div class="vto-prep-view-toggle">
+                    <button type="button" class="btn-toggle-view active" id="btn-view-transparent" title="Transparent RGBA">RGBA</button>
+                    <button type="button" class="btn-toggle-view" id="btn-view-mask" title="Binary Alpha Mask">Mask</button>
+                    <button type="button" class="btn-toggle-view" id="btn-view-anchors" title="Landmarks &amp; BBox">Anchors</button>
+                  </div>
+                </div>
+                <div class="vto-prep-img-container vto-checkerboard" id="vto-prep-extracted-wrap">
+                  <img id="vto-prep-extracted-img" src="" alt="Extracted Asset">
+                  <img id="vto-prep-mask-img" src="" alt="Binary Mask" style="display:none;">
+                  <div id="vto-prep-bbox-overlay" class="vto-bbox-box" style="display:none;"></div>
+                  <div id="vto-prep-anchor-top" class="vto-anchor-dot top" style="display:none;" title="Top Anchor (Chain Clasp)"></div>
+                  <div id="vto-prep-anchor-bot" class="vto-anchor-dot bot" style="display:none;" title="Bottom Anchor (Pendant Tip)"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quality Inspection Score Card -->
+            <div class="vto-quality-scorecard" id="vto-quality-scorecard">
+              <div class="vto-quality-header">
+                <div class="vto-quality-title-group">
+                  <h4 style="margin:0; font-size:0.92rem; color:var(--text-main); display:flex; align-items:center; gap:6px;">
+                    <i class="ri-shield-check-line" style="color:var(--gold-400);"></i> Mask Quality Control
+                  </h4>
+                  <div id="vto-quality-status-badge" class="badge-pill badge-ready" style="font-size:0.72rem; padding:2px 8px;">APPROVED</div>
+                </div>
+                <div class="vto-quality-score-display">
+                  <span class="score-num" id="vto-quality-score-num">--</span>
+                  <span class="score-denom" style="color:var(--text-dim); font-size:0.75rem;">/ 100</span>
+                </div>
+              </div>
+
+              <p class="vto-quality-reason" id="vto-quality-reason-text" style="font-size:0.8rem; color:var(--text-dim); margin:0.4rem 0 0.85rem; line-height:1.4;">Asset verified.</p>
+
+              <!-- Metric Bars -->
+              <div class="vto-metrics-grid">
+                <div class="vto-metric-item">
+                  <div class="vto-metric-label"><span>Chain Continuity</span><strong id="vto-m-chain">--%</strong></div>
+                  <div class="vto-bar-track"><div class="vto-bar-fill" id="vto-bar-chain" style="width:0%;"></div></div>
+                </div>
+                <div class="vto-metric-item">
+                  <div class="vto-metric-label"><span>Background Isolation</span><strong id="vto-m-bg">--%</strong></div>
+                  <div class="vto-bar-track"><div class="vto-bar-fill" id="vto-bar-bg" style="width:0%;"></div></div>
+                </div>
+                <div class="vto-metric-item">
+                  <div class="vto-metric-label"><span>Edge Smoothness</span><strong id="vto-m-edge">--%</strong></div>
+                  <div class="vto-bar-track"><div class="vto-bar-fill" id="vto-bar-edge" style="width:0%;"></div></div>
+                </div>
+                <div class="vto-metric-item">
+                  <div class="vto-metric-label"><span>Gold / Gem Preservation</span><strong id="vto-m-gold">--%</strong></div>
+                  <div class="vto-bar-track"><div class="vto-bar-fill" id="vto-bar-gold" style="width:0%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Admin Review Actions -->
+            <div class="vto-prep-actions-bar">
+              <button type="button" class="btn-primary-gold" id="btn-vto-approve-asset" style="flex:1.4; justify-content:center; gap:6px;">
+                <i class="ri-checkbox-circle-fill"></i> Approve &amp; Publish for Virtual Try-On
+              </button>
+              <button type="button" class="btn-outline-gold" id="btn-vto-refine-asset" style="flex:1; justify-content:center; gap:6px;">
+                <i class="ri-equalizer-line"></i> Refine Sensitivity
+              </button>
+              <button type="button" class="btn-outline-gold" id="btn-vto-regen-asset" style="flex:1; justify-content:center; gap:6px;">
+                <i class="ri-refresh-line"></i> Re-extract
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- ==========================================================================
+       VIRTUAL TRY-ON (VTO) MODAL - COMPUTER VISION ENGINE
+       ========================================================================== -->
+  <div class="vto-modal-backdrop" id="vto-modal" aria-hidden="true" role="dialog">
+    <div class="vto-modal-container">
+      <!-- Header -->
+      <div class="vto-header">
+        <div class="vto-header-info">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <h3 class="vto-header-title" id="vto-product-title">Virtual Try-On</h3>
+            <span class="vto-type-pill" id="vto-ornament-type-badge"><i class="ri-sparkling-fill"></i> Gold Jewellery</span>
+          </div>
+          <span class="vto-header-sku" id="vto-product-sku">SKU</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-close-modal" id="btn-close-vto" title="Close Try-On" aria-label="Close Try-On">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Stage Viewport -->
+      <div class="vto-stage-area" id="vto-stage-area">
+        <!-- Hidden Video for Camera Stream -->
+        <video id="vto-video" playsinline muted autoplay style="display:none;"></video>
+        <!-- Hidden Photo Input -->
+        <input type="file" id="vto-photo-input" accept="image/*" style="display:none;">
+
+        <!-- Active Tracking Canvas -->
+        <canvas id="vto-canvas" width="640" height="480" class="vto-canvas"></canvas>
+
+        <!-- In-Memory Photo Privacy Notice -->
+        <div id="vto-privacy-banner" class="vto-privacy-banner" style="display:none; position:absolute; top:12px; left:12px; right:12px; z-index:9; background:rgba(12,10,14,0.85); border:1px solid rgba(16,185,129,0.35); border-radius:8px; padding:6px 12px; font-size:0.76rem; color:#d1fae5; backdrop-filter:blur(6px); align-items:center; gap:8px;">
+          <i class="ri-shield-check-fill" style="color:#10b981; font-size:0.95rem;"></i>
+          <span><strong>100% In-Memory Privacy:</strong> Your photo is analyzed strictly in your device's browser memory and is never uploaded or saved to any external servers.</span>
+        </div>
+
+        <!-- Dynamic Status Indicator Pill -->
+        <div class="vto-status-pill loading" id="vto-status-pill">
+          <i class="ri-loader-4-line ri-spin"></i> Initializing AI Face Detection...
+        </div>
+
+        <!-- Camera Shutter Flash Animation -->
+        <div class="vto-shutter-flash" id="vto-shutter-flash"></div>
+
+        <!-- Fine-Tuning Floating Controls -->
+        <div class="vto-fine-tune-bar">
+          <span style="font-size:0.75rem; color:var(--gold-300);">Size:</span>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-scale-down" title="Shrink Ornament">−</button>
+          <span id="vto-scale-value" style="font-size:0.75rem; font-weight:600; min-width:34px; text-align:center;">100%</span>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-scale-up" title="Enlarge Ornament">+</button>
+          <span style="margin: 0 4px; opacity:0.3;">|</span>
+          <span style="font-size:0.75rem; color:var(--gold-300);">Position:</span>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-move-left" title="Move Left">◀</button>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-move-up" title="Move Up">▲</button>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-move-down" title="Move Down">▼</button>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-move-right" title="Move Right">▶</button>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-rot-ccw" title="Rotate Counter-Clockwise">↺</button>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-rot-cw" title="Rotate Clockwise">↻</button>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-reset-adj" title="Reset Adjustments" style="margin-left:4px;"><i class="ri-restart-line"></i></button>
+          <button type="button" class="vto-btn-ctrl" id="btn-vto-bangle-mode" title="Toggle 1 Bangle / Stacked Pair" style="display:none; font-size:0.72rem; padding: 2px 8px; margin-left: 6px; border-color: var(--gold-400); color: var(--gold-200);">1 Bangle</button>
+        </div>
+      </div>
+
+      <!-- Fast Ornament Switcher Tray -->
+      <div class="vto-tray-container" id="vto-ornament-tray">
+        <!-- Filled dynamically by tryon.js -->
+      </div>
+
+      <!-- Control Footer -->
+      <div class="vto-footer">
+        <div class="vto-mode-group">
+          <button type="button" class="vto-mode-btn" id="vto-mode-camera" title="Live Video Mode">
+            <i class="ri-camera-line"></i> Camera
+          </button>
+          <button type="button" class="vto-mode-btn" id="btn-vto-flip-camera" title="Switch Front/Back Camera">
+            <i class="ri-camera-switch-line"></i> Flip
+          </button>
+          <button type="button" class="vto-mode-btn" id="vto-mode-upload" title="Upload Selfie Photo">
+            <i class="ri-upload-2-line"></i> Photo
+          </button>
+        </div>
+
+        <button type="button" class="vto-shutter-btn" id="btn-vto-shutter" title="Capture Try-On Photo" aria-label="Capture Try-On Photo">
+          <i class="ri-camera-lens-line"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Snapshot Preview & WhatsApp Share Modal -->
+  <div class="vto-snap-backdrop" id="vto-snapshot-modal" aria-hidden="true" role="dialog">
+    <div class="vto-snap-card">
+      <div class="vto-header">
+        <div class="vto-header-info">
+          <h3 class="vto-header-title" id="vto-snap-title">Your Try-On Look</h3>
+          <span class="vto-header-sku">Sri Sai Krishna Jewellers</span>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-snap">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+
+      <div class="vto-snap-img-wrap">
+        <img id="vto-snapshot-preview" src="" alt="Captured Try-On Preview">
+      </div>
+
+      <div class="vto-snap-actions">
+        <button type="button" class="btn-outline-gold" id="btn-download-snap" style="flex:1;">
+          <i class="ri-download-2-line"></i> Download Photo
+        </button>
+        <button type="button" class="btn-inquire-whatsapp" id="btn-whatsapp-snap" style="flex:1.2;">
+          <i class="ri-whatsapp-line"></i> Inquire on WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Virtual Try-On Quick Button -->
+  <button type="button" id="floating-tryon-btn" class="floating-vto-pill" onclick="launchVirtualTryOn('ssk-gld-105')" title="Try Jewellery Online / ఆన్‌లైన్ ట్రై-ఆన్">
+    <i class="ri-sparkling-fill"></i>
+    <span>Try-On Live ✨</span>
+  </button>
 
   <!-- Scripts -->
   <script>
     window.SSK_API_BASE_URL = 'https://sskjewellers.onrender.com';
   </script>
+  <!-- MediaPipe Face Mesh & Hands Vision AI Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <!-- Open-Source Three.js 3D WebGL Engine, Loaders & Exporters -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
   <script src="products.js"></script>
+  <script src="ai-3d-engine.js"></script>
+  <script src="tryon.js"></script>
   <script src="app.js"></script>
+  <script src="ai-stylist.js"></script>
 </body>
 </html>

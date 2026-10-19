@@ -30,7 +30,7 @@ jobs:
       - name: Prepare website files
         run: |
           mkdir -p _site/assets
-          cp index.html app.js products.js style.css robots.txt sitemap.xml sitemap.xsl CNAME site.webmanifest google7c5bd26d6662522f.html _site/
+          cp index.html reels.html app.js products.js tryon.js ai-stylist.js ai-3d-engine.js style.css robots.txt sitemap.xml sitemap.xsl CNAME site.webmanifest google7c5bd26d6662522f.html _site/
           cp -R assets/. _site/assets/
           touch _site/.nojekyll
 
