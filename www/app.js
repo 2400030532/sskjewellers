@@ -1070,6 +1070,8 @@ function renderProducts() {
     const viewPriceLabel = isTelugu ? 'ధర చూడండి' : 'View Price';
     const whatsappLabel = isTelugu ? 'వాట్సాప్' : 'WhatsApp';
 
+    const has3D = !!(item.model3dUrl || (item.model3d && (item.model3d.status === 'PUBLISHED' || item.model3d.publishToCustomer)));
+
     return `
       <div class="product-card" id="card-${item.id}" data-product-id="${item.id}">
         <div class="card-glare"></div>
@@ -1079,6 +1081,7 @@ function renderProducts() {
             <span class="badge-pill ${availabilityBadgeClass}">
               <i class="${availabilityIcon}"></i> ${availabilityBadgeText}
             </span>
+            ${has3D ? `<span class="badge-pill badge-3d-indicator" style="background: rgba(212,175,55,0.25); color: #ffd700; border: 1px solid var(--border-gold);" title="360° 3D Model"><i class="ri-box-3-fill"></i> 3D</span>` : ''}
             ${item.badge ? `<span class="badge-pill" style="background: rgba(10,5,7,0.85); color: var(--gold-300); border: 1px solid var(--border-gold);">${item.badge}</span>` : ''}
             ${(typeof hasProductVideo === 'function' ? hasProductVideo(item) : (item.video || item.instagramReelUrl)) ? `
               <span class="badge-reel-card" title="Watch Instagram Reel Video">
@@ -1109,22 +1112,9 @@ function renderProducts() {
           <h3 class="card-title" onclick="handleProductCardAction(event, '${item.id}')" style="cursor: pointer;">${escapeHtml(primaryTitle)}</h3>
           <h4 class="card-telugu-name">${escapeHtml(secondaryTitle)}</h4>
 
-          <p class="card-specs-mini">
-            <strong>${detailsLabel}</strong> ${escapeHtml(item.stoneDetails)}<br>
-            <strong>${availLabel}</strong> ${escapeHtml(item.availabilityText)}
-          </p>
-
           <div class="card-actions">
-            ${item.tryOn && item.tryOn.enabled ? `
-              <button type="button" class="btn-card-tryon" onclick="event.stopPropagation(); launchVirtualTryOn('${item.id}')" title="Wear Online with Camera">
-                <i class="ri-sparkling-fill" style="color:var(--gold-400);"></i> <span>${isTelugu ? 'ట్రై-ఆన్' : 'Try-On ✨'}</span>
-              </button>
-              <button type="button" class="btn-card-3d" onclick="event.stopPropagation(); launchShowroom3D('${item.id}')" title="Inspect 3D Model in 360°">
-                <i class="ri-box-3-line" style="color:var(--gold-400);"></i> <span>3D</span>
-              </button>
-            ` : ''}
-            <button class="btn-view-details" onclick="handleProductCardAction(event, '${item.id}')" title="View details and live price" aria-label="View Details and Price for ${escapeHtml(primaryTitle)}">
-              <i class="ri-eye-line"></i> <span class="btn-view-label">${viewPriceLabel}</span>
+            <button class="btn-view-details" onclick="handleProductCardAction(event, '${item.id}')" title="View details, 3D & price" aria-label="View Details and Price for ${escapeHtml(primaryTitle)}">
+              <i class="ri-eye-line"></i> <span class="btn-view-label">${has3D ? (isTelugu ? 'వివరాలు & 3D' : 'Details & 3D') : viewPriceLabel}</span>
             </button>
             <a href="${getWhatsAppProductUrl(item)}" target="_blank" rel="noopener noreferrer" class="btn-inquire-whatsapp" title="Ask about this design on WhatsApp">
               <i class="ri-whatsapp-line"></i> <span>${whatsappLabel}</span>
